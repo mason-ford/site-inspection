@@ -55,7 +55,7 @@ app.locals.msalClient = new msal.ConfidentialClientApplication(msalConfig);
 // NOTE: Uses default in-memory session store, which is not
 // suitable for production
 app.use(session({
-  secret: '4SSN7VsE5821S2qOL7HL8r909Zn8FoBv',
+  secret: '',
   resave: false,
   saveUninitialized: false,
   unset: 'destroy'
