@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <% include ../partials/head %> 
+</head>
+<body>
+<% include ../partials/menu %>
+<div class="container bg-3">
+
+  <div class="row">
+    <div class="col-sm">
+      <h1><%= checkpoint.name %></h1>
+    </div>
+  </div>
+
+  <%# Checkpoint %>
+  <div class="row">
+    <div class="col-sm">
+      <% if (checkpoint) { %>
+        <div class="card">
+
+          <div class="card-header">
+            Checkpoint Information
+          </div>
+
+          <div class="card-body">
+            <p class="card-text"><b>Good Text:</b> <%= checkpoint.textValues.good %></p>
+            <p class="card-text"><b>Needs Attention Text:</b> <%= checkpoint.textValues.attention %></p>
+            <p class="card-text"><b>Description:</b> <%= checkpoint.description %></p>
+          </div>
+
+        </div>
+      <% } else { %>
+          <p>Does not exist</p>
+      <% } %>
+
+    </div>
+  </div>
+
+  <%# Edit %>
+  <div class="row my-3">
+    <div class="col-sm-4">
+      <a class="btn btn-warning" href="/checkpoints/edit/<%= checkpoint._id %>">Edit</a>
+    </div>
+  </div>
+
+</div>
+<% include ../partials/script %>
+</body>
+</html>

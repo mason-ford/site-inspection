@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <% include ../partials/head %> 
+</head>
+<body>
+<% include ../partials/menu %>
+<div class="container bg-3">    
+
+  <div class="row">
+    <div class="col-sm">
+      <h1><%= page %></h1>
+    </div>
+  </div>
+
+  <form class="agency-add-form" action="" method="post">
+
+  <%# Information %>
+  <div class="row">
+    <div class="col-sm">
+      <div class="card">
+
+        <div class="card-body">
+
+          <div class="form-row">
+            <div class="form-group col-md-10">
+              <label for="agency-name">Name</label>
+              <input type="text" class="form-control" name="agency_name" id="agency-name" required title="Agency name">
+            </div>
+            <div class="form-group col-md-2">
+              <label for="agency-acronym">Acronym</label>
+              <input type="text" class="form-control" name="agency_acronym" id="agency-acronym" required title="Agency Acronym">
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group col-md-12">
+              <label for="agency-description">Description</label>
+              <input type="text" class="form-control" name="agency_description" id="agency-description" required title="Agency description">
+            </div>
+          </div>
+
+        </div>
+      
+      </div>
+    </div>
+  </div>
+
+  <%# Add/Cancel %>
+  <div class="row my-3">
+    <div class="col-sm">
+      <button type="submit" class="btn btn-success float-left">Add</button>
+      <a href="/agency/" class="btn btn-danger float-right">Cancel</a>    
+    </div>
+  </div>
+
+  </form>
+
+</div>
+<% include ../partials/script %>
+</body>
+</html>

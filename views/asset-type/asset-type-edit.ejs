@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <% include ../partials/head %> 
+</head>
+<body>
+<% include ../partials/menu %>
+<div class="container bg-3">    
+
+  <div class="row">
+    <div class="col-sm">
+      <h1><%= page %></h1>
+    </div>
+  </div>
+
+  <% if (assetType) { %>
+
+  <form class="asset-type-add-form" action="" method="post">
+
+  <%# Information %>
+  <div class="row">
+    <div class="col-sm">
+      <div class="card">
+
+        <div class="card-body">
+
+          <div class="form-row">
+            <div class="form-group col-md-12">
+              <label for="asset-type-name">Name</label>
+              <input type="text" class="form-control" name="assetType_name" id="asset-type-name" value="<%= assetType.name %>"required title="Asset type name">
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group col-md-12">
+              <label for="asset-type-description">Description</label>
+              <input type="text" class="form-control" name="assetType_description" id="asset-type-description" value="<%= assetType.description %>" required title="Asset type description">
+            </div>
+          </div>
+
+        </div>
+      
+      </div>
+    </div>
+  </div>
+
+  <%# Add/Cancel %>
+  <div class="row my-3">
+    <div class="col-sm">
+      <button type="submit" class="btn btn-success float-left">Edit</button>
+      <a href="/asset-type/asset-type/<%= assetType.id %>" class="btn btn-danger float-right">Cancel</a>    
+    </div>
+  </div>
+
+  </form>
+
+  <% } else { %>
+    <div class="row">
+      <p>Does not exist</p>
+    </div>
+  <% } %>
+
+</div>
+<% include ../partials/script %>
+</body>
+</html>

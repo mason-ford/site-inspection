@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <% include partials/head %> 
+</head>
+<body>
+<% include partials/menu %>
+<div class="container-fluid bg-3">
+
+  <div class="row">
+    <div class="col-sm">
+      <h1><%= page %></h1>
+    </div>
+  </div>
+
+  <div class="row mb-3">
+
+    <div class="col-sm-6 mb-3">
+      <div class="card">
+
+        <div class="card-header">
+          Sites that Needs Attention
+        </div>
+        <% if (needsAttention.length > 0) { %>
+          <ul class="list-group list-group-flush">
+            <% needsAttention.forEach(attention => { %>
+              <li class="list-group-item">
+                <div class="row">
+                  <div class="col-sm-4">
+                    <a href="/sites/site/<%= attention.siteId %>"><%= attention.siteName %></a>
+                  </div>
+                  <div class="col-sm-4">
+                    <%= attention.checkpoint %>
+                  </div>
+                  <div class="col-sm-4">
+                    <%= moment(attention.date).format('MMMM DD, YYYY') %>
+                  </div>
+              </li>
+            <% }) %>
+          </ul>
+        <% } else { %>
+          <div class="card-body">
+            <p class="card-text">No sites need attention</p>
+          </div>
+        <% } %>
+        
+      </div>
+    </div>
+
+    <div class="col-sm-6 mb-3">
+      <% if (oldestInspection.length > 0) { %>
+        <div class="card">
+
+          <div class="card-header">
+            Oldest 10 Site Inspections
+          </div>
+
+          <ul class="list-group list-group-flush">
+            <% for(var i = 0; i < 10 && i < oldestInspection.length; i++) { %>
+              <li class="list-group-item">
+                <div class="row">
+                  <div class="col-sm-6">
+                    <a href="/sites/site/<%= oldestInspection[i].siteId %>"><%= oldestInspection[i].siteName %></a>
+                  </div>
+                  <div class="col-sm-6">
+                    <% if(oldestInspection[i].date) { %>
+                      <%= moment(oldestInspection[i].date).format('MMMM DD, YYYY') %>
+                    <% } else { %>
+                      Never
+                    <% } %>
+                  </div>
+              </li>
+            <% } %>
+          </ul>
+        </div>
+      <% } else { %>
+          <p>No sites</p>
+      <% } %>
+    </div>
+
+  </div>
+
+</div>
+</body>
+<% include partials/script %>
+</html>

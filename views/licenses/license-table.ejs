@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <% include ../partials/head %> 
+</head>
+<body>
+<% include ../partials/menu %>
+<div class="container-fluid bg-3"> 
+
+  <div class="row">
+    <div class="col">
+      <h1><%= page %></h1>
+    </div>
+  </div>  
+
+  <%# Licenses %>
+  <% if (license.length > 0) {%>
+    <div class="card">
+
+      <%# Card Header %>
+      <div class="card-header">
+        <ul class="nav nav-tabs card-header-tabs">
+          <li class="nav-item">
+            <a class="nav-link active" href="/licenses/">Full Table</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/licenses/map">Map</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Disabled</a>
+          </li>
+        </ul>
+      </div>
+
+      <%# Table Full %>
+      <div class="card-body p-0">
+        <table class="table table-striped" id="tableLicense">
+          <thead>
+            <tr>
+              <th scope="col">License #</th>
+              <th scope="col">Start Date</th>
+              <th scope="col">Station</th>
+            </tr>
+          </thead>
+          <tbody>
+          <% for(let i=0; i < license.length; i++) { %>
+              <tr>
+                <td><%= license[i].number %></td>
+                <td><%= moment(license[i].dateStart).format('YYYY-MM-DD') %></td>
+                <td>
+                  <table class="table mb-0">
+                    <thead>
+                      <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Channel</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <% for(let j=0; j < license[i].station.length; j++) { %>
+                        <tr>
+                          <td class="cellStation"><%= license[i].station[j].name %></td>
+                          <td class="cellStation"><%= license[i].station[j].type %></td>
+                          <td class="cellStation">
+                            <table class="table mb-0" id="tableChannel">
+                              <thead>
+                                <tr>
+                                  <th>ERP (W)</th>
+                                  <th>Tx (MHz)</th>
+                                  <th>Rx (MHz)</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <% for(let k=0; k < license[i].station[j].channel.length; k++) { %>
+                                  <tr>
+                                    <td class="cellFrequency">
+                                      <% if(license[i].station[j].channel[k].txPower) { %>
+                                        <%= Number(license[i].station[j].channel[k].txPower).toFixed(1) %>
+                                      <% } %>
+                                    </td>
+                                    <td class="cellFrequency">
+                                      <% if(license[i].station[j].channel[k].transmitter) { %>
+                                        <%= Number(license[i].station[j].channel[k].transmitter.frequency)/1000000 %>
+                                      <% } %>
+                                    </td>
+                                    <td class="cellFrequency">
+                                      <% if(license[i].station[j].channel[k].receiver) { %>
+                                        <%= Number(license[i].station[j].channel[k].receiver.frequency)/1000000 %>
+                                      <% } %>
+                                    </td>
+                                  </tr>
+                                <% } %>
+                              </tbody>
+                            </table>
+                          </td>
+                        </tr>
+                      <% } %>
+                    </tbody>
+                  </table>
+                </td>
+              </tr>
+          <% } %>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+  <% } else { %>
+    <p>No Licenses</p>
+  <% } %>
+
+</div>
+<% include ../partials/script %>
+</body>
+</html>

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <% include ../partials/head %> 
+</head>
+<body>
+<% include ../partials/menu %>
+<div class="container bg-3">    
+
+  <div class="row">
+    <div class="col-sm">
+      <h1><%= page %></h1>
+    </div>
+  </div>
+
+  <% if (model) { %>
+
+  <form class="model-add-form" action="" method="post">
+
+  <%# Information %>
+  <div class="row">
+    <div class="col-sm">
+      <div class="card">
+
+        <div class="card-body">
+
+          <div class="form-row">
+            <div class="form-group col-md-12">
+              <label for="model-model">Model</label>
+              <input type="text" class="form-control" name="model_model" id="model-model" value="<%= model.model %>" required title="Model">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-md-12">
+              <label for="model-name">Name</label>
+              <input type="text" class="form-control" name="model_name" id="model-name" value="<%= model.name %>" required title="Model Name">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-md-12">
+              <label for="model-type">Type</label>
+              <select class="form-control" id="model-type" name="model_type" required title="Model Type">
+                <% if (types.length > 0) {%>
+                  <% types.forEach(type => { %>
+                    <option value="<%= type.id %>" <%= type.id.equals(model.type.id) ? "selected" : "" %>><%= type.name %></option>
+                  <% }) %>
+                <% } %>
+              </select>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-md-12">
+              <label for="model-description">Description</label>
+              <input type="text" class="form-control" name="model_description" id="model-description" value="<%= model.description %>" required title="Model description">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-md-12">
+              <label for="model-manufacturer">Manufacturer</label>
+              <input type="text" class="form-control" name="model_manufacturer" id="model-manufacturer" value="<%= model.manufacturer %>" required title="Model Manufacturer">
+            </div>
+          </div>
+
+        </div>
+      
+      </div>
+    </div>
+  </div>
+
+  <%# Add/Cancel %>
+  <div class="row my-3">
+    <div class="col-sm">
+      <button type="submit" class="btn btn-success float-left">Edit</button>
+      <a href="/model/model/<%= model.id %>" class="btn btn-danger float-right">Cancel</a>    
+    </div>
+  </div>
+
+  </form>
+
+  <% } else { %>
+    <div class="row">
+      <p>Does not exist</p>
+    </div>
+  <% } %>
+
+</div>
+<% include ../partials/script %>
+</body>
+</html>

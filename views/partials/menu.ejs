@@ -1,0 +1,41 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="/">PM</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item <%= menuId === "home" ? "active" : "" %>">
+        <a class="nav-link" href="/">Home</a>
+      </li>
+      <li class="nav-item <%= menuId === "inspection" ? "active" : "" %>">
+        <a class="nav-link" href="/inspections/">Inspections</a>
+      </li>
+      <li class="nav-item <%= menuId === "site" ? "active" : "" %>">
+        <a class="nav-link" href="/sites">Sites</a>
+      </li>
+      <li class="nav-item <%= menuId === "checkpoint" ? "active" : "" %>">
+        <a class="nav-link" href="/checkpoints/">Checkpoints</a>
+      </li>
+      <li class="nav-item <%= menuId === "task" ? "active" : "" %>">
+        <a class="nav-link" href="/tasks/">Tasks</a>
+      </li>
+      <li class="nav-item <%= menuId === "license" ? "active" : "" %>">
+        <a class="nav-link" href="/licenses/">Licenses</a>
+      </li>
+      <li class="nav-item <%= menuId === "assetType" ? "active" : "" %>">
+        <a class="nav-link" href="/asset-type/">Asset Type</a>
+      </li>
+      <li class="nav-item <%= menuId === "model" ? "active" : "" %>">
+        <a class="nav-link" href="/model/">Model</a>
+      </li>
+      <li class="nav-item <%= menuId === "agency" ? "active" : "" %>">
+        <a class="nav-link" href="/agency/">Agency</a>
+      </li>
+    </ul>
+    <span class="navbar-text">
+      <%= user.displayName %> <a href="/auth/signout/">Sign Out</a>
+    </span>
+  </div>
+</nav>

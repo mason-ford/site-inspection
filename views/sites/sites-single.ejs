@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <% include ../partials/head %> 
+</head>
+<body>
+<% include ../partials/menu %>
+<div class="container bg-3">    
+
+  <div class="row">
+    <div class="col-sm">
+      <h1><%= site.name %></h1>
+    </div>
+  </div>
+
+  <%# Information %>
+  <div class="row">
+    <div class="col-sm">
+      <div class="card">
+
+        <div class="card-header">
+          Information
+        </div>
+
+        <div class="card-body">
+          <p class="card-text">Number: <%= site.number %></p>
+          <p class="card-text">Acronym: <%= site.acronym %></p>
+          <p class="card-text">Address: <%= site.address %></p>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <%# Contact %>
+  <div class="row my-3">
+    <div class="col-sm">
+      <div class="card">
+
+        <div class="card-header">
+          Contact
+        </div>
+
+        <% if (site.contact && site.contact.length > 0) {%>
+          <ul class="list-group list-group-flush" id="contactList">
+            <% for (let i=0; i < site.contact.length; i++) { %>
+              <li class="list-group-item">
+                <p class="card-text">Name: <%= site.contact[i].name %></p>
+                <p class="card-text">Number: <%= site.contact[i].number %></p>
+                <p class="card-text">Info: <%= site.contact[i].info %></p>
+              </li>
+            <% } %>
+          </ul>
+        <% } else { %>
+          <div class="card-body">
+            No contact information
+          </div>
+        <% } %>
+
+      </div>
+    </div>
+  </div>
+
+  <%# Air Filter %>
+  <div class="row my-3">
+    <div class="col-sm">
+      <div class="card">
+
+        <div class="card-header">
+          Air Filter
+        </div>
+
+        <% if (site.airfilter && site.airfilter.length > 0) {%>
+          <ul class="list-group list-group-flush" id="airFilterList">
+            <% for (let i=0; i < site.airfilter.length; i++) { %>
+              <li class="list-group-item">
+                  <p class="card-text">Type: <%= site.airfilter[i].type %></p>
+                  <p class="card-text">Size: <%= site.airfilter[i].size %></p>
+                  <p class="card-text">Amount: <%= site.airfilter[i].amount %></p>
+              </li>
+            <% } %>
+          </ul>
+        <% } else { %>
+          <div class="card-body">
+            No air filter
+          </div>
+        <% } %>
+
+      </div>
+    </div>
+  </div>
+
+  <%# Tasks %>
+  <div class="row my-3">
+    <div class="col-sm">
+      <div class="card">
+        <div class="card-header">
+          Tasks
+        </div>
+        <% if (site.tasks.length > 0) { %>
+          <table class="table table-hover table-sm mb-0">
+            <thead>
+              <th scrope="col">Date</th>
+              <th scrope="col">Task</th>
+              <th scrope="col">Complete</th>
+              <th scrope="col">Submitted</th>
+            </thead>
+            <tbody>
+            <% site.tasks.forEach(task => { %>
+              <tr>
+                <td><a href="/tasks/task/<%= task.id %>"><%= task.taskInfo.date.toDateString() %></a></td>
+                <td><%= task.taskInfo.text %></td> 
+                <td><%= task.complete %></td>
+                <td><%= task.taskInfo.user %></td> 
+              </tr>
+            <% }) %>
+            </tbody>
+          </table>
+        <% } else { %>
+          <div class="card-body">No tasks</div>
+        <% } %>
+      </div>
+    </div>
+  </div>
+
+  <%# Inspections %>
+  <div class="row my-3">
+    <div class="col-sm">
+      <div class="card">
+        <div class="card-header">
+          Inspections
+        </div>
+        <% if (site.inspections.length > 0) { %>
+          <table class="table table-hover table-sm mb-0">
+            <thead>
+              <th scrope="col">Date</th>
+              <th scrope="col">User</th>
+              <th scrope="col">Good</th>
+              <th scrope="col">Attention</th>
+              <th scrope="col">N/A</th>
+            </thead>
+            <tbody>
+            <% site.inspections.forEach(inspection => { %>
+              <tr>
+                <td><a href="/inspections/inspection/<%= inspection._id %>"><%= inspection.date.toDateString() %></a></td>
+                <td><%= inspection.user %></td> 
+                <td><%= inspection.results.good %></td>
+                <td><%= inspection.results.attention %></td> 
+                <td><%= inspection.results.na %></td> 
+              </tr>
+            <% }) %>
+            </tbody>
+          </table>
+        <% } else { %>
+          <div class="card-body">No inspections</div>
+        <% } %>
+      </div>
+    </div>
+  </div>
+
+  <%# Checkpoints %>
+  <div class="row my-3">
+    <div class="col-sm">
+      <div class="card">
+        <div class="card-header">
+          <div class="row">
+            <div class="col-4">
+              Checkpoints
+            </div>
+            <div class="col-4">
+              Last Time
+            </div>
+            <div class="col-4">
+              Needs Attention
+            </div>
+          </div>
+        </div>
+        <% if (site.checkpoints.length > 0) { %>
+          <ul class="list-group list-group-flush">
+          <% site.checkpoints.forEach(checkpoint => { %>
+            <li class="list-group-item">
+              <div class="row">
+                <div class="col-4">
+                  <%= checkpoint.name %>
+                  <small class="form-text text-muted"><%= checkpoint.description %></small>
+                </div>
+                <% if(checkpoint.lastTimeGood.inspectionId) { %>
+                  <div class="col-4">
+                    <%= checkpoint.textValues.good %> on <a href="/inspections/inspection/<%= checkpoint.lastTimeGood.inspectionId %>"><%= moment(checkpoint.lastTimeGood.date).format('MMMM DD, YYYY') %></a>
+                  </div>
+                <% } else { %>
+                  <div class="col-4">
+                    Never
+                  </div>
+                <% } %>
+                <% if(checkpoint.lastTime.value === 0) { %>
+                  <div class="col-4">
+                    <%= checkpoint.textValues.attention %> on <a href="/inspections/inspection/<%= checkpoint.lastTime.inspectionId %>"><%= moment(checkpoint.lastTime.date).format('MMMM DD, YYYY') %></a>
+                 </div>
+                <% } %>
+              </div>
+            </li>
+          <% }) %>
+          </ul>
+        <% } else { %>
+          <div class="card-body">No checkpoints</div>
+        <% } %>
+      </div>
+    </div>
+  </div>
+
+  <%# Edit %>
+  <div class="row my-3">
+    <div class="col-sm">
+      <a class="btn btn-warning" href="/sites/edit/<%= site.id %>">Edit</a>
+    </div>
+  </div>
+
+</div>
+<% include ../partials/script %>
+</body>
+</html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <% include ../partials/head %> 
+</head>
+<body>
+<% include ../partials/menu %>
+<div class="container bg-3">
+
+  <div class="row">
+    <div class="col-sm">
+      <h1><%= page %></h1>
+    </div>
+  </div>
+
+  <%# Models %>
+  <div class="row">
+    <div class="col-sm">
+      <% if (models.length > 0) {%>
+        <div class="card">
+          <ul class="list-group list-group-flush">
+          <% models.forEach(model => { %>
+              <li class="list-group-item">
+                <a href="/model/model/<%= model.id %>"><%= model.model %> - <%= model.type.name %></a>
+                <small class="form-text text-muted"><%= model.name %></small>
+                <small class="form-text text-muted"><%= model.description %></small>
+                <small class="form-text text-muted"><%= model.manufacturer %></small>
+              </li>
+          <% }) %>
+          </ul>
+        </div>
+      <% } else { %>
+        <p>No Models</p>
+      <% } %>
+    </div>
+  </div>
+
+  <%# Add %>
+  <div class="row my-3">
+    <div class="col-sm">
+      <a class="btn btn-info mt-2 mb-3" href="/model/add/">Add</a>
+    </div>
+  </div>
+
+</div>
+<% include ../partials/script %>
+</body>
+</html>

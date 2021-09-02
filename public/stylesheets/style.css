@@ -1,0 +1,106 @@
+.javaLink {
+    color: #007bff;
+}
+
+.javaLink:hover {
+    color: #17a2b8;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.delAirFilter:hover {
+    color: #dc3545;
+    text-decoration: none;
+}
+
+#addlAirFilter:hover {
+    text-decoration: none;
+}
+
+.delContact:hover {
+    color: #dc3545;
+    text-decoration: none;
+}
+
+#addContact:hover {
+    text-decoration: none;
+}
+
+#tableLicense th {
+    padding: 0;
+}
+
+#tableLicense td {
+    padding: 0;
+}
+
+.cellFrequency {
+    width: 33%;
+}
+
+.cellStation {
+    width: 33%;
+}
+
+#licenseMap {
+    height: 800px;
+    width: 100%;
+}
+
+.editLicense {
+    float: right;
+}
+
+.cancelEdit {
+    float: left;
+}
+
+.licenseEditTags {
+    width: 250px;
+}
+
+.licenseEditComment {
+    width: 250px;
+}
+
+#formClear {
+    float: right;
+}
+
+#licenseTable {
+    margin: 0 5px 0 5px;
+}
+
+#tableExport {
+    float: right;
+    margin: 10px;
+}
+
+.mapsMarker{
+    width: 25px;
+}
+
+#mask{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #000;
+    display: none;
+    z-index: 10000;
+}
+
+#popup
+{
+    width: 200px;
+    height: 200px;
+    margin: 10px auto; 
+    border: 1px solid #333;
+    background-color: #ffffdd;
+    cursor: pointer;
+    padding: 10px;
+    position: relative;
+    z-index: 10001;
+    display: none;
+}

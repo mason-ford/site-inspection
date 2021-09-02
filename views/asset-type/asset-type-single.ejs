@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <% include ../partials/head %> 
+</head>
+<body>
+<% include ../partials/menu %>
+<div class="container bg-3">
+
+  <div class="row">
+    <div class="col-sm">
+      <h1><%= page %></h1>
+    </div>
+  </div>
+
+  <% if (assetType) { %>
+
+  <%# Asset Type %>
+  <div class="row">
+    <div class="col-sm">
+      
+        <div class="card">
+
+          <div class="card-header">
+            Asset Type Information
+          </div>
+
+          <div class="card-body">
+            <p class="card-text"><b>Name:</b> <%= assetType.name %></p>
+            <p class="card-text"><b>Description:</b> <%= assetType.description %></p>
+          </div>
+
+        </div>
+
+    </div>
+  </div>
+
+  <%# Edit %>
+  <div class="row my-3">
+    <div class="col-sm-4">
+      <a class="btn btn-warning" href="/asset-type/edit/<%= assetType.id %>">Edit</a>
+    </div>
+  </div>
+
+  <% } else { %>
+    <div class="row">
+      <p>Does not exist</p>
+    </div>
+  <% } %>
+
+</div>
+<% include ../partials/script %>
+</body>
+</html>

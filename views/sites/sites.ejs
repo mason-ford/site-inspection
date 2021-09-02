@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <% include ../partials/head %> 
+</head>
+<body>
+<% include ../partials/menu %>
+<div class="container bg-3"> 
+
+  <div class="row">
+    <div class="col-sm">
+      <h1><%= page %></h1>
+    </div>
+  </div>
+
+  <%# Sites %>
+  <div class="row">
+    <div class="col-sm">
+      <% if (sites.length > 0) {%>
+        <div class="card">
+
+          <div class="card-header">
+            <div class="row">
+              <div class="col-sm-8">
+                Site Name 
+              </div>
+              <div class="col-sm-4">
+                Last Inspection 
+              </div>
+            </div>
+          </div>
+
+          <ul class="list-group list-group-flush">
+            <% sites.forEach(site => { %>
+              <li class="list-group-item">
+                <div class="row">
+                  <div class="col-sm-8">
+                    <a href="/sites/site/<%= site.id %>"><%= site.number %> <%= site.name %> (<%= site.acronym %>)</a>
+                  </div>
+                  <div class="col-sm-4">
+                    <% if (site.newestInspection) { %>
+                      <a href="/inspections/inspection/<%= site.newestInspection._id %>"><%= moment(site.newestInspection.date).format('MMMM DD, YYYY') %></a>
+                    <% } else { %>
+                      Never
+                    <% } %>
+                  </div>
+                </div>
+              </li>
+            <% }) %>
+          </ul>
+        </div>
+      <% } else { %>
+          <p>No Sites</p>
+      <% } %>
+    </div>
+  </div>
+
+  <%# Add %>
+  <div class="row my-3">
+    <div class="col-sm">
+      <a class="btn btn-info mt-2 mb-3" href="/sites/add/">Add</a>
+    </div>
+  </div>
+  
+</div>
+<% include ../partials/script %>
+</body>
+</html>

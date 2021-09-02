@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <% include ../partials/head %> 
+</head>
+<body>
+<% include ../partials/menu %>
+<div class="container bg-3"> 
+
+  <div class="row">
+    <div class="col">
+      <h1><%= page %></h1>
+    </div>
+  </div>  
+
+  <%# Licenses %>
+  <% if (license.length > 0) {%>
+    <div class="card">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th scope="col">License #</th>
+            <th scope="col">Start Date</th>
+            <th scope="col"># of Stations</th>
+            <th scope="col">Station 1</th>
+            <th scope="col">Station 1 Type</th>
+            <th scope="col">Station 1 Channels</th>
+          </tr>
+        </thead>
+        <tbody>
+        <% for(let i=0; i < license.length; i++) { %>
+            <tr>
+              <td><%= license[i].number %></td>
+              <td><%= moment(license[i].dateStart).format('YYYY-MM-DD') %></td>
+              <td><%= license[i].station.length %></td>
+              <td><%= license[i].station[0].name %></td>
+              <td><%= license[i].station[0].type %></td>
+              <td><%= license[i].station[0].channel.length %></td>
+            </tr>
+        <% } %>
+        </tbody>
+      </table>
+    </div>
+  <% } else { %>
+    <p>No Licenses</p>
+  <% } %>
+
+</div>
+<% include ../partials/script %>
+</body>
+</html>
