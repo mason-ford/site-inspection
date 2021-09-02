@@ -7,9 +7,9 @@ var bodyParser = require('body-parser');
 var logger = require('morgan');
 const session = require('express-session');
 const flash = require('connect-flash');
-const msal = require('@azure/msal-node');
+//const msal = require('@azure/msal-node');
 
-var authRouter = require('./routes/auth');
+//var authRouter = require('./routes/auth');
 var indexRouter = require('./routes/index');
 var sitesRouter = require('./routes/sites');
 var checkpointsRouter = require('./routes/checkpoints');
@@ -31,7 +31,7 @@ var app = express();
 app.locals.users = {};
 
 // MSAL config
-const msalConfig = {
+/*const msalConfig = {
   auth: {
     clientId: process.env.OAUTH_APP_ID,
     authority: process.env.OAUTH_AUTHORITY,
@@ -85,6 +85,7 @@ app.use(function(req, res, next) {
 
   next();
 });
+*/
 
 function loginRequired(req, res, next) {
   if(process.env.PRODUCTION === 'false') {
@@ -114,7 +115,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/auth', authRouter);
+//app.use('/auth', authRouter);
 app.use(express.static(path.join(__dirname, 'private')), loginRequired);
 
 //app.use('/', indexRouter);
