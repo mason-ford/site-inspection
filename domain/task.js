@@ -51,12 +51,12 @@ class Task {
       ]).toArray();
 
       var taskArray = [];
-      console.log(result);
+      //console.log(result);
       result.forEach(task => {
-        console.log(task);
+        //console.log(task);
         taskArray.push(new Task(task._id, task.siteId, task.complete, task.taskInfo, task.completeInfo));
       });
-      console.log(taskArray);
+      //console.log(taskArray);
       return taskArray;
     } catch (e) {
       console.log(e);

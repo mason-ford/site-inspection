@@ -108,7 +108,7 @@
             <tbody>
             <% site.tasks.forEach(task => { %>
               <tr>
-                <td><a href="/tasks/task/<%= task.id %>"><%= task.taskInfo.date.toDateString() %></a></td>
+                <td><%= task.taskInfo.date.toDateString() %></td>
                 <td><%= task.taskInfo.text %></td> 
                 <td><%= task.complete %></td>
                 <td><%= task.taskInfo.user %></td> 

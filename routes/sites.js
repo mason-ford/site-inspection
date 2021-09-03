@@ -30,7 +30,7 @@ router.get('/site/:id', (req, res) => {
     returnSite.findLastTimeCheckpointsGood();
     return Task.getTasksForSite(id);
   }).then(tasks => {
-    console.log(tasks);
+    //console.log(tasks);
     returnSite.tasks = tasks;
     res.render('sites/sites-single', {moment: moment, page:'Site', menuId: menuId, site: returnSite, moment: moment})
   });

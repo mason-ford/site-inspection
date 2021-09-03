@@ -6,8 +6,8 @@ const fs = require('fs');
 
 var app = require('../app');
 var debug = require('debug')('siteinspector:server');
-//var http = require('http');
-var https = require('https');
+var http = require('http');
+//var https = require('https');
 
 /**
  * Certificats
@@ -29,7 +29,7 @@ app.set('port', port);
  * Create HTTP server.
  */
 
-var server = https.createServer(options, app);
+var server = http.createServer(options, app);
 
 /**
  * Listen on provided port, on all network interfaces.
