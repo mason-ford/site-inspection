@@ -59,6 +59,8 @@ router.get('/', (req, res) => {
       return (a.date - b.date);
     });
     res.render('index', {moment: moment, page:'Home', menuId: menuId, oldestInspection: oldestInspection, needsAttention: needsAttention});
+  }).catch(e => {
+    res.render(`Error ${e}`);
   });
 
 });

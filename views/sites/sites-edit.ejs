@@ -202,7 +202,7 @@
           Checkpoints
         </div>
 
-        <% if (site.checkpoints.length > 0) {%>
+        <% if (site.checkpoints && site.checkpoints.length > 0) {%>
           <ul class="list-group list-group-flush">
           <% site.checkpoints.forEach(checkpoint => { %>
             <li class="list-group-item">
@@ -215,7 +215,11 @@
           <% }) %>
           </ul>
         <% } else { %>
-          <div class="row"><p>No checkpoints to add.</p></div>
+          <div class="card-body">
+            <span class="card-text">
+              No checkpoints to add.
+            </span>
+          </div>
         <% } %>
 
       </div>
@@ -225,8 +229,9 @@
   <%# Submit/Cancel %>
   <div class="row my-3">
     <div class="col-sm">
-      <button type="submit" class="btn btn-success float-left">Submit</button>
-      <a href="/sites/site/<%= site.id %>" class="btn btn-danger float-right">Cancel</a> 
+      <button type="submit" name="send" value="update" class="btn btn-success float-left">Submit</button>
+      <a href="/sites/site/<%= site.id %>" class="btn btn-secondary float-left">Cancel</a> 
+      <button type="submit" name="send" value="delete" class="btn btn-danger float-right">Delete</button>
     </div>
   </div>
 

@@ -1,15 +1,17 @@
 var DbConnection = require('../database/db');
+var pool  = require('../database/mysql')
 var ObjectId = require('mongodb').ObjectID;
 const collection = 'sites';
 
 class Site {
 
-  constructor(id,name,acronym,number,address,airfilter,contact,checkpoints,inspections) {
+  constructor(id,name,acronym,number,address,latlong,airfilter,contact,checkpoints,inspections) {
     this.id = id;
     this.name = name;
     this.acronym = acronym;
     this.number = number;
     this.address = address;
+    this.latlong = latlong;
     this.airfilter = airfilter;
     this.contact = contact;
     this.checkpoints = checkpoints;
@@ -111,115 +113,115 @@ class Site {
     }
   }
 
-  async addSite() {
-    try {
-      var newCheckpoints = [];
-      this.checkpoints.forEach(checkpoint => {
-            newCheckpoints.push(new ObjectId(checkpoint));
-      });
-      let newSite = {name: this.name, acronym: this.acronym, number: this.number, address: this.address, airfilter: this.airfilter, contact: this.contact, checkpoints: newCheckpoints};
-      let db = await DbConnection.Get();
-      let result = await db.collection(collection).insertOne(newSite);
-
-      return result.insertedId;
-    } catch (e) {
-      console.log(e);
-      return e;
-    }
-  }
-
-  async editSite() {
-    try {
-      var newCheckpoints = [];
-      this.checkpoints.forEach(checkpoint => {
-          newCheckpoints.push(new ObjectId(checkpoint));
-      });
-      let newValues = { $set: {name: this.name, acronym: this.acronym, number: this.number, address: this.address, airfilter: this.airfilter, contact: this.contact, checkpoints: newCheckpoints}};
-      let db = await DbConnection.Get();
-      let result = await db.collection(collection).updateOne({_id: new ObjectId(this.id)}, newValues);
-
-      return result;
-    } catch (e) {
-      console.log(e);
-      return e;
-    }
-  }
-
-  static async getSite(id) {
-    try {
-      let db = await DbConnection.Get();
-      let result = await db.collection(collection).aggregate([
-        {
-          '$match': {
-            '_id': new ObjectId(id)
-          }
-        }, {
-          '$unwind': {
-            'path': '$checkpoints', 
-            'preserveNullAndEmptyArrays': true
-          }
-        }, {
-          '$lookup': {
-            'from': 'checkpoints', 
-            'localField': 'checkpoints', 
-            'foreignField': '_id', 
-            'as': 'checkpoint'
-          }
-        }, {
-          '$unwind': {
-            'path': '$checkpoint', 
-            'preserveNullAndEmptyArrays': true
-          }
-        }, {
-          '$sort': {
-            'checkpoint.name': 1
-          }
-        }, {
-          '$group': {
-            '_id': '$_id', 
-            'name': {
-              '$first': '$name'
-            }, 
-            'acronym': {
-              '$first': '$acronym'
-            }, 
-            'number': {
-              '$first': '$number'
-            }, 
-            'address': {
-              '$first': '$address'
-            }, 
-            'airfilter': {
-              '$first': '$airfilter'
-            }, 
-            'checkpoints': {
-              '$push': '$checkpoint'
-            }, 
-            'contact': {
-              '$first': '$contact'
-            }
-          }
+  addSite() {
+    return new Promise((resolve, reject) => {
+      pool.getConnection((err, connection) => {
+        if (err) {
+          connection.release();
+          return reject(err);
         }
-      ]).toArray();
-      let s = result[0];
-      let newSite = new Site(s._id, s.name, s.acronym, s.number, s.address, s.airfilter, s.contact, s.checkpoints);
-      return newSite;
-    } catch (e) {
-      console.log(e);
-      return e;
-    }
+
+        const sql = `INSERT INTO site (name, acronym, number, address, latlong) VALUES (?, ?, ?, ?, ?)`;
+        const values = [this.name, this.acronym, this.number, this.address, this.latlong]
+
+        connection.query(sql, values, (err, result) => {
+          connection.release();
+
+          if (err) {
+            return reject(err);
+          }
+
+          const newSiteId = result.insertId;
+          console.log('Site added successfully with ID: ', newSiteId)
+          resolve(newSiteId);
+        });
+      });
+    });
   }
 
-  static async getAllSites() {
-    try {
-      let db = await DbConnection.Get();
-      let result = await db.collection(collection).aggregate( [ { $sort: { number: 1 } } ] ).toArray();
+  static editSite(siteId, newName, newAcronym, newNumber, newAddress, newLatlong) {
+    return new Promise((resolve, reject) => {
+      pool.getConnection((err, connection) => {
+        if (err) {
+          connection.release(); // Ensure connection is released
+          return reject(err);
+        }
+        
+        const sql = 'UPDATE site SET name = ?, acronym = ?, number = ?, address = ?, latlong = ? WHERE id = ?';
+        const values = [newName, newAcronym, newNumber, newAddress, newLatlong, siteId];
+        
+        connection.query(sql, values, (err, result) => {
+          connection.release(); // Release connection after query execution
+          
+          if (err) {
+            return reject(err);
+          }
+          
+          // Check if any rows were affected
+          if (result.affectedRows > 0) {
+            resolve();
+          } else {
+            reject(new Error('Site not found or no changes made.'));
+          }
+        });
+      });
+    });
+  }
 
-      return result;
-    } catch (e) {
-      console.log(e);
-      return e;
-    }
+  static getSite(siteId) {
+    return new Promise((resolve, reject) => {
+      pool.getConnection((err, connection) => {
+        if (err) {
+          connection.release(); // Ensure connection is released
+          return reject(err);
+        }
+        
+        const sql = 'SELECT * FROM site WHERE id = ?';
+        
+        connection.query(sql, [siteId], (err, results) => {
+          connection.release(); // Release connection after query execution
+          
+          if (err) {
+            return reject(err);
+          }
+          
+          // If site with given ID exists, resolve with the site object
+          if (results.length > 0) {
+            const siteData = results[0];
+            const site = new Site(siteData.id, siteData.name, siteData.acronym, siteData.number, siteData.address, siteData.latlong);
+            resolve(site);
+          } else {
+            // If no site found with the given ID, resolve with null
+            resolve(null);
+          }
+        });
+      });
+    });
+  }
+
+  static getAllSites() {
+    return new Promise((resolve, reject) => {
+      pool.getConnection((err, connection) => {
+        if (err) {
+          connection.release(); // Ensure connection is released
+          return reject(err);
+        }
+        
+        const sql = 'SELECT * FROM site';
+        
+        connection.query(sql, (err, results) => {
+          connection.release(); // Release connection after query execution
+          
+          if (err) {
+            return reject(err);
+          }
+          
+          // Map results to Site objects
+          const sites = results.map(siteData => new Site(siteData.id, siteData.name, siteData.acronym, siteData.number, siteData.address, siteData.latlong));
+          resolve(sites);
+        });
+      });
+    });
   }
 
   static async getAllSitesWithInfo() {
@@ -319,12 +321,12 @@ class Site {
       var returnSites = [];
       
       for(let i = 0; i < result.length; i++) {
-        returnSites.push(new Site(result[i]._id, result[i].name, result[i].acronym, result[i].number, result[i].address, result[i].airfilter, null, result[i].checkpoints, result[i].inspections));
+        returnSites.push(new Site(result[i]._id, result[i].name, result[i].acronym, result[i].number, result[i].address, "", result[i].airfilter, null, result[i].checkpoints, result[i].inspections));
       }
 
       return returnSites;
     } catch (e) {
-      console.log(e);
+      console.log(`ERROR! : ${e}`);
       return e;
     }
   }
@@ -349,7 +351,7 @@ class Site {
 
         var sitesArray = [];
         result.forEach(s => {
-          var newSite = new Site(s._id, s.name, s.acronym, s.number, s.address, s.airfilter, s.checkpoints, s.contact, s.inspections);
+          var newSite = new Site(s._id, s.name, s.acronym, s.number, s.address, "", s.airfilter, s.checkpoints, s.contact, s.inspections);
           newSite.findNewestInspection();
           sitesArray.push(newSite);
         });
@@ -361,6 +363,34 @@ class Site {
     }
   }
 
+  static deleteSite(siteId) {
+    return new Promise((resolve, reject) => {
+      pool.getConnection((err, connection) => {
+        if (err) {
+          connection.release(); // Ensure connection is released
+          return reject(err);
+        }
+        
+        const sql = 'DELETE FROM site WHERE id = ?';
+        
+        connection.query(sql, [siteId], (err, result) => {
+          connection.release(); // Release connection after query execution
+          
+          if (err) {
+            return reject(err);
+          }
+          
+          // Check if any rows were affected
+          if (result.affectedRows > 0) {
+            resolve();
+          } else {
+            reject(new Error('Site not found.'));
+          }
+        });
+      });
+    });
+  }
+  
 }
 
 module.exports = Site;

@@ -9,7 +9,7 @@ const session = require('express-session');
 const flash = require('connect-flash');
 //const msal = require('@azure/msal-node');
 
-//var authRouter = require('./routes/auth');
+//var authRouter = require('./routes/auth'); 
 var indexRouter = require('./routes/index');
 var sitesRouter = require('./routes/sites');
 var checkpointsRouter = require('./routes/checkpoints');
@@ -21,7 +21,6 @@ var licensesRouter = require('./routes/licenses');
 var assetTypesRouter = require('./routes/asset-types');
 var modelsRouter = require('./routes/models');
 var agenciesRouter = require('./routes/agencies');
-
 
 var app = express();
 
@@ -126,11 +125,11 @@ app.use('/checkpoints', loginRequired, checkpointsRouter);
 app.use('/inspections', loginRequired, inspectionsRouter);
 app.use('/tasks', loginRequired, tasksRouter);
 
-app.use('/licenses', loginRequired, licensesRouter);
-
-app.use('/asset-type', loginRequired, assetTypesRouter);
-app.use('/model', loginRequired, modelsRouter);
-app.use('/agency', loginRequired, agenciesRouter);
+// FUTURE
+//app.use('/licenses', loginRequired, licensesRouter);
+//app.use('/asset-type', loginRequired, assetTypesRouter);
+//app.use('/model', loginRequired, modelsRouter);
+//app.use('/agency', loginRequired, agenciesRouter);
 
 
 // catch 404 and forward to error handler
@@ -148,5 +147,7 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+
+app.listen(3000);
 
 module.exports = app;
