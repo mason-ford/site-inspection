@@ -8,6 +8,7 @@ const Task = require('../domain/task');
 
 const menuId = 'site';
 
+// GET ALL SITES
 router.get('/', (req, res) => {
   console.log('Get all sites');
 
@@ -20,6 +21,7 @@ router.get('/', (req, res) => {
     });
 });
 
+// GET SITE
 router.get('/site/:id', (req, res) => {
   console.log('Get site ' + req.params.id);
 
@@ -39,14 +41,18 @@ router.get('/site/:id', (req, res) => {
     });
 });
 
+// ADD PAGE
 router.get('/add', (req, res) => {
   console.log('Add site page');
 
-  Checkpoint.getAllCheckpoints().then(checkpoints => {
+  res.render('sites/sites-add', {page: 'Add Site', menuId: menuId, checkpoints: false});
+
+  /*Checkpoint.getAllCheckpoints().then(checkpoints => {
     res.render('sites/sites-add', {page: 'Add Site', menuId: menuId, checkpoints: checkpoints});
-  });
+  });*/
 });
 
+// ADD SUBMIT
 router.post('/add', (req, res) => {
   console.log('Add site');
 
@@ -54,7 +60,23 @@ router.post('/add', (req, res) => {
   let acronym = req.body.site_acronym;
   let number = req.body.site_number;
   let address = req.body.site_address;
+  let lat = req.body.site_lat;
+  let long = req.body.site_long;
+  let standardKey = req.body.access_key_standard;
+  let keyInstructions = req.body.access_key_instructions;
+  let accessInstructions = req.body.access_instructions;
 
+  const site = new Site(null, name, acronym, number, address, {x: long, y: lat}, standardKey, keyInstructions, accessInstructions);
+  site.addSite()
+    .then(newSiteId => {
+      console.log('Redirect to /sites/site/'+newSiteId)
+      res.redirect('/sites/site/'+newSiteId);
+    })
+    .catch(err => {
+      console.error('Error adding site:', err);
+    });
+
+  /*
   if(req.body.site_checkpoints === undefined) {
     var checkpoints = [];
   } else {
@@ -98,18 +120,11 @@ router.post('/add', (req, res) => {
       }
     }
   }
-
-  const site = new Site(null, name, acronym, number, address, "", airfilter, contact, checkpoints);
-  site.addSite()
-    .then(newSiteId => {
-      console.log('Redirect to /sites/site/'+newSiteId)
-      res.redirect('/sites/site/'+newSiteId);
-    })
-    .catch(err => {
-      console.err('Error adding site:', err);
-    });
+  */
+  
 });
 
+// EDIT PAGE
 router.get('/edit/:id', (req, res) => {
   console.log('Update site page');
 
@@ -129,6 +144,7 @@ router.get('/edit/:id', (req, res) => {
   });
 });
 
+// EDIT SUBMIT AND DELETE
 router.post('/edit/:id', (req, res) => {
   console.log('Edit site');
 
@@ -136,14 +152,17 @@ router.post('/edit/:id', (req, res) => {
   let siteId = req.params.id;
 
   if (task == "update") {
-
     let newName = req.body.site_name;
     let newAcronym = req.body.site_acronym;
     let newNumber = req.body.site_number;
     let newAddress = req.body.site_address;
-    //let newLatlong = req.body.site_latlong;
+    let newLat = req.body.site_lat;
+    let newLong = req.body.site_long;
+    let newStandardKey = req.body.access_key_standard;
+    let newKeyInstructions = req.body.access_key_instructions;
+    let newAccessInstructions = req.body.access_instructions;
 
-    Site.editSite(siteId, newName, newAcronym, newNumber, newAddress, "")
+    Site.editSite(siteId, newName, newAcronym, newNumber, newAddress, newLat, newLong, newStandardKey, newKeyInstructions, newAccessInstructions)
       .then(() => {
         console.log('Site edited successfully.');
         res.redirect('/sites/site/'+siteId);

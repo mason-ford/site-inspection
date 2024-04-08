@@ -19,13 +19,33 @@
       <div class="card">
 
         <div class="card-header">
-          Information
+          Site Information
         </div>
 
         <div class="card-body">
           <p class="card-text">Number: <%= site.number %></p>
           <p class="card-text">Acronym: <%= site.acronym %></p>
           <p class="card-text">Address: <%= site.address %></p>
+          <p class="card-text">Latitude, Longitude: <%= site.latlong.y %>, <%= site.latlong.x %></p>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <%# Information %>
+  <div class="row my-3">
+    <div class="col-sm">
+      <div class="card">
+
+        <div class="card-header">
+          Site Access
+        </div>
+
+        <div class="card-body">
+          <p class="card-text">Standard Key: <%= site.standardKey ? 'YES' : 'NO' %></p>
+          <p class="card-text">Key Information: <%= site.keyInstructions %></p>
+          <p class="card-text">Access Instructions: <%= site.accessInstructions %></p>
         </div>
 
       </div>

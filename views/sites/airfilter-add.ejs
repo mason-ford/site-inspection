@@ -1,0 +1,47 @@
+<%# Air Filter %>
+  <div class="row my-3">
+    <div class="col-sm">
+      <div class="card">
+
+        <div class="card-header">
+          Air Filter
+        </div>
+
+        <ul class="list-group list-group-flush" id="airFilterList">
+          <li class="list-group-item">
+            <div class="form-row">
+              <% var rand = Math.floor(Math.random()*10*(new Date().getTime())); %>
+              <div class="form-group col-md-12">
+                <label for="airfilter-type-<%= rand %>">Type</label>
+                <input type="text" class="form-control" name="airfilter_type[]" id="airfilter-type-<%= rand %>" required title="Air Filter type">
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group col-md-6">
+                <label for="airfilter-size-<%= rand %>">Size</label>
+                <input type="text" class="form-control" name="airfilter_size[]" id="airfilter-size-<%= rand %>" title="Air Filter size ex. 10x20x1">
+              </div>
+              <div class="form-group col-md-6">
+                <label for="airfilter-amount-<%= rand %>">Quantity</label>
+                <input type="text" class="form-control" name="airfilter_amount[]" id="airfilter-amount-<%= rand %>" title="Air Filter amount">
+              </div>
+            </div>
+            <div class="form-row">
+              <span class="card-text javaLink delAirFilter">
+                <i class="bi bi-x-circle-fill"></i>
+                Delete
+              </span>
+            </div>
+          </li>
+        </ul>
+
+        <div class="card-body">
+          <span class="card-text javaLink" id="addAirFilter">
+            <i class="bi bi-plus-circle-fill"></i>
+            Add
+          </span>
+        </div>
+
+      </div>
+    </div>
+  </div>

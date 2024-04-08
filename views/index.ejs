@@ -21,7 +21,7 @@
         <div class="card-header">
           Sites that Needs Attention
         </div>
-        <% if (needsAttention.length > 0) { %>
+        <% if (needsAttention && needsAttention.length > 0) { %>
           <ul class="list-group list-group-flush">
             <% needsAttention.forEach(attention => { %>
               <li class="list-group-item">
@@ -48,7 +48,7 @@
     </div>
 
     <div class="col-sm-6 mb-3">
-      <% if (oldestInspection.length > 0) { %>
+      <% if (oldestInspection && oldestInspection.length > 0) { %>
         <div class="card">
 
           <div class="card-header">

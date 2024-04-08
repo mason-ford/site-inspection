@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 08, 2024 at 06:32 AM
+-- Generation Time: Apr 08, 2024 at 06:40 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `crest_site_inspector`
+-- Database: `site_inspector`
 --
 
 -- --------------------------------------------------------
@@ -33,30 +33,21 @@ CREATE TABLE `site` (
   `acronym` varchar(4) NOT NULL,
   `number` int(11) NOT NULL,
   `address` varchar(255) NOT NULL,
-  `latlong` point NOT NULL
+  `latlong` point NOT NULL,
+  `standard_key` tinyint(1) NOT NULL,
+  `key_instructions` text NOT NULL,
+  `access_instructions` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `site`
 --
 
-INSERT INTO `site` (`id`, `name`, `acronym`, `number`, `address`, `latlong`) VALUES
-(1, 'Wickaninnishhhhhhh', 'WICK', 101, '1174 7th Ave', 0x),
-(2, 'Florencia', 'FLO', 102, 'Park', 0x);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `site_access`
---
-
-CREATE TABLE `site_access` (
-  `id` int(11) NOT NULL,
-  `site_id` int(11) NOT NULL,
-  `crest_key` tinyint(1) NOT NULL,
-  `key_notes` varchar(255) NOT NULL,
-  `instructions` text NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+INSERT INTO `site` (`id`, `name`, `acronym`, `number`, `address`, `latlong`, `standard_key`, `key_instructions`, `access_instructions`) VALUES
+(1, 'Wickaninnish', 'WICK', 101, 'Park', 0x00000000010100000079aeefc3416b5fc0baf59a1e14824840, 1, 'Standard', 'Go to park'),
+(2, 'Florencia', 'FLO', 102, 'National Park', 0x0000000001010000007c2c7de882695fc01a31b3cf63804840, 1, 'Standard Key', 'National park, need to pay'),
+(6, 'Cox Bay', 'COX', 201, 'Tofino', 0x0000000001010000008d0a9c6c03785fc06d0377a04e8d4840, 1, 'Standard Key', 'Go to the bay'),
+(7, 'South Chesterman', 'SCHN', 202, 'South chesterman road', 0x000000000101000000e44c13b69f785fc0c74b3789418e4840, 1, 'Standard Key', 'Through the path');
 
 -- --------------------------------------------------------
 
@@ -98,13 +89,6 @@ ALTER TABLE `site`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `site_access`
---
-ALTER TABLE `site_access`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `SiteAccess` (`site_id`);
-
---
 -- Indexes for table `site_airfilter`
 --
 ALTER TABLE `site_airfilter`
@@ -126,13 +110,7 @@ ALTER TABLE `site_contact`
 -- AUTO_INCREMENT for table `site`
 --
 ALTER TABLE `site`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
-
---
--- AUTO_INCREMENT for table `site_access`
---
-ALTER TABLE `site_access`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `site_airfilter`
@@ -149,12 +127,6 @@ ALTER TABLE `site_contact`
 --
 -- Constraints for dumped tables
 --
-
---
--- Constraints for table `site_access`
---
-ALTER TABLE `site_access`
-  ADD CONSTRAINT `SiteAccess` FOREIGN KEY (`site_id`) REFERENCES `site` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `site_airfilter`

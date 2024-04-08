@@ -5,17 +5,16 @@ const collection = 'sites';
 
 class Site {
 
-  constructor(id,name,acronym,number,address,latlong,airfilter,contact,checkpoints,inspections) {
+  constructor(id,name,acronym,number,address,latlong,standardKey,keyInstructions,accessInstructions) {
     this.id = id;
     this.name = name;
     this.acronym = acronym;
     this.number = number;
     this.address = address;
     this.latlong = latlong;
-    this.airfilter = airfilter;
-    this.contact = contact;
-    this.checkpoints = checkpoints;
-    this.inspections = inspections;
+    this.standardKey = standardKey;
+    this.keyInstructions = keyInstructions;
+    this.accessInstructions = accessInstructions;
 
     this.oldestInspection = null;
     this.newestInspection = null;
@@ -117,12 +116,14 @@ class Site {
     return new Promise((resolve, reject) => {
       pool.getConnection((err, connection) => {
         if (err) {
-          connection.release();
+          if (connection) connection.release();
           return reject(err);
         }
 
-        const sql = `INSERT INTO site (name, acronym, number, address, latlong) VALUES (?, ?, ?, ?, ?)`;
-        const values = [this.name, this.acronym, this.number, this.address, this.latlong]
+        let sqlLatLong = 'POINT(' + this.latlong.x + ' ' + this.latlong.y + ')';
+
+        const sql = `INSERT INTO site (name, acronym, number, address, latlong, standard_key, key_instructions, access_instructions) VALUES (?, ?, ?, ?, ST_GeomFromText('${sqlLatLong}'), ?, ?, ?)`;
+        const values = [this.name, this.acronym, this.number, this.address, this.standardKey, this.keyInstructions, this.accessInstructions]
 
         connection.query(sql, values, (err, result) => {
           connection.release();
@@ -139,16 +140,21 @@ class Site {
     });
   }
 
-  static editSite(siteId, newName, newAcronym, newNumber, newAddress, newLatlong) {
+  static editSite(siteId, newName, newAcronym, newNumber, newAddress, newLat, newLong, newStandardKey, newKeyInstructions, newAccessInstructions) {
     return new Promise((resolve, reject) => {
       pool.getConnection((err, connection) => {
         if (err) {
-          connection.release(); // Ensure connection is released
+          if (connection) connection.release(); // Ensure connection is released
           return reject(err);
         }
+
+        if (newStandardKey === "true") newStandardKey = 1;
+        else newStandardKey = 0;
+
+        let newLongLat = 'POINT(' + newLong + ' ' + newLat + ')';
         
-        const sql = 'UPDATE site SET name = ?, acronym = ?, number = ?, address = ?, latlong = ? WHERE id = ?';
-        const values = [newName, newAcronym, newNumber, newAddress, newLatlong, siteId];
+        const sql = 'UPDATE site SET name = ?, acronym = ?, number = ?, address = ?, latlong = ST_GeomFromText(\''+newLongLat+'\'), standard_key = ?, key_instructions = ?, access_instructions = ? WHERE id = ?';
+        const values = [newName, newAcronym, newNumber, newAddress, newStandardKey, newKeyInstructions, newAccessInstructions, siteId];
         
         connection.query(sql, values, (err, result) => {
           connection.release(); // Release connection after query execution
@@ -172,7 +178,7 @@ class Site {
     return new Promise((resolve, reject) => {
       pool.getConnection((err, connection) => {
         if (err) {
-          connection.release(); // Ensure connection is released
+          if (connection) connection.release(); // Ensure connection is released
           return reject(err);
         }
         
@@ -188,7 +194,7 @@ class Site {
           // If site with given ID exists, resolve with the site object
           if (results.length > 0) {
             const siteData = results[0];
-            const site = new Site(siteData.id, siteData.name, siteData.acronym, siteData.number, siteData.address, siteData.latlong);
+            const site = new Site(siteData.id, siteData.name, siteData.acronym, siteData.number, siteData.address, siteData.latlong, siteData.standard_key, siteData.key_instructions, siteData.access_instructions);
             resolve(site);
           } else {
             // If no site found with the given ID, resolve with null
@@ -203,7 +209,7 @@ class Site {
     return new Promise((resolve, reject) => {
       pool.getConnection((err, connection) => {
         if (err) {
-          connection.release(); // Ensure connection is released
+          if (connection) connection.release(); // Ensure connection is released
           return reject(err);
         }
         
@@ -217,7 +223,7 @@ class Site {
           }
           
           // Map results to Site objects
-          const sites = results.map(siteData => new Site(siteData.id, siteData.name, siteData.acronym, siteData.number, siteData.address, siteData.latlong));
+          const sites = results.map(siteData => new Site(siteData.id, siteData.name, siteData.acronym, siteData.number, siteData.address, siteData.latlong, siteData.standard_key, siteData.key_instructions, siteData.access_instructions));
           resolve(sites);
         });
       });
