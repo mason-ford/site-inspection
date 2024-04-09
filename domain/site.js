@@ -1,6 +1,5 @@
 var DbConnection = require('../database/db');
-var pool  = require('../database/mysql')
-var ObjectId = require('mongodb').ObjectID;
+var pool  = require('../database/mysql');
 const collection = 'sites';
 
 class Site {
@@ -112,6 +111,39 @@ class Site {
     }
   }
 
+    // Method to get a site by id
+  static getSiteById(siteId) {
+    return new Promise((resolve, reject) => {
+      pool.getConnection((err, connection) => {
+        if (err) {
+          if (connection) connection.release(); // Ensure connection is released
+          return reject(err);
+        }
+        
+        const sql = 'SELECT * FROM site WHERE id = ?';
+        
+        connection.query(sql, [siteId], (err, results) => {
+          connection.release(); // Release connection after query execution
+          
+          if (err) {
+            return reject(err);
+          }
+          
+          // If site with given ID exists, resolve with the site object
+          if (results.length > 0) {
+            const siteData = results[0];
+            const site = new Site(siteData.id, siteData.name, siteData.acronym, siteData.number, siteData.address, siteData.latlong, siteData.standard_key, siteData.key_instructions, siteData.access_instructions);
+            resolve(site);
+          } else {
+            // If no site found with the given ID, resolve with null
+            resolve(null);
+          }
+        });
+      });
+    });
+  }
+
+  // Method to add a site
   addSite() {
     return new Promise((resolve, reject) => {
       pool.getConnection((err, connection) => {
@@ -140,6 +172,7 @@ class Site {
     });
   }
 
+  // Method to update a site
   static editSite(siteId, newName, newAcronym, newNumber, newAddress, newLat, newLong, newStandardKey, newKeyInstructions, newAccessInstructions) {
     return new Promise((resolve, reject) => {
       pool.getConnection((err, connection) => {
@@ -174,37 +207,7 @@ class Site {
     });
   }
 
-  static getSite(siteId) {
-    return new Promise((resolve, reject) => {
-      pool.getConnection((err, connection) => {
-        if (err) {
-          if (connection) connection.release(); // Ensure connection is released
-          return reject(err);
-        }
-        
-        const sql = 'SELECT * FROM site WHERE id = ?';
-        
-        connection.query(sql, [siteId], (err, results) => {
-          connection.release(); // Release connection after query execution
-          
-          if (err) {
-            return reject(err);
-          }
-          
-          // If site with given ID exists, resolve with the site object
-          if (results.length > 0) {
-            const siteData = results[0];
-            const site = new Site(siteData.id, siteData.name, siteData.acronym, siteData.number, siteData.address, siteData.latlong, siteData.standard_key, siteData.key_instructions, siteData.access_instructions);
-            resolve(site);
-          } else {
-            // If no site found with the given ID, resolve with null
-            resolve(null);
-          }
-        });
-      });
-    });
-  }
-
+  // Method to get all sites
   static getAllSites() {
     return new Promise((resolve, reject) => {
       pool.getConnection((err, connection) => {

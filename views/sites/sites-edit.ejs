@@ -13,7 +13,7 @@
     </div>
   </div>
 
-  <form class="site-edit-form" action="" method="post">
+  <form class="site-edit-form" action="" data-site-id="<%= site.id %>" method="post">
 
   <%# Information %>
   <div class="row">
@@ -21,7 +21,7 @@
       <div class="card">
 
         <div class="card-header">
-          Site Information
+          Information
         </div>
 
         <div class="card-body">
@@ -68,7 +68,7 @@
       <div class="card">
 
         <div class="card-header">
-          Site Access
+          Access
         </div>
 
         <div class="card-body">
@@ -98,6 +98,137 @@
         </div>
         
       </div>
+    </div>
+  </div>
+
+    <%# Submit/Cancel %>
+  <div class="row my-3">
+    <div class="col-sm">
+      <button type="submit" name="send" value="update" class="btn btn-success float-left">Submit</button>
+      <a href="/sites/<%= site.id %>" class="btn btn-secondary float-left mx-5">Cancel</a> 
+      <button type="submit" name="send" value="delete" class="btn btn-danger float-right">Delete</button>
+    </div>
+  </div>
+
+  </form>
+
+  <%# Contact %>
+  <div class="row my-3">
+    <div class="col-sm">
+      <div class="card">
+
+        <div class="card-header">
+          Contact
+        </div>
+
+        <ul class="list-group list-group-flush" id="contactList">
+          <% if (contacts && contacts.length > 0) { %>
+            <% for (let i=0; i < contacts.length; i++) { %>
+              <% var rand = Math.floor(Math.random()*10*(new Date().getTime())); %>
+              <li class="list-group-item contactItem" data-contact-id="<%= contacts[i].id %>">
+                <div class="form-row">
+                  <div class="form-group col-md-12">
+                    <label for="contact-name-<%= rand %>">Name</label>
+                    <input type="text" class="name form-control" name="contact_name[]" id="contact-name-<%= rand %>" value="<%= contacts[i].name %>" required title="Contact Name">
+                  </div>
+                </div>
+                <div class="form-row">
+                  <div class="form-group col-md-6">
+                    <label for="contact-number-<%= rand %>">Number</label>
+                    <input type="text" class="number form-control" name="contact_number[]" id="contact-number-<%= rand %>" value="<%= contacts[i].number %>" title="Contact Number">
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label for="contact-email-<%= rand %>">Email</label>
+                    <input type="text" class="email form-control" name="contact_email[]" id="contact-email-<%= rand %>" value="<%= contacts[i].email %>" title="Contact Email">
+                  </div>
+                </div>
+                <div class="form-row">
+                  <div class="form-group col-md-12">
+                    <label for="contact-info-<%= rand %>">Info</label>
+                    <textarea class="information form-control" name="contact_info[]" id="contact-info-<%= rand %>" title="Contact Info" rows="5"><%= contacts[i].info %></textarea>
+                  </div>
+                </div>
+                <div class="form-row">
+                  <div class="form-group col">
+                    <button type="button" class="updateBtn btn btn-success float-left">Update</button>
+                    <button type="button" class="deleteBtn btn btn-danger float-right">Delete</button>
+                  </div>
+                </div>
+              </li>
+            <% } %>
+          <% } %>
+        </ul>
+
+        <div class="card-body">
+          <button type="button" id="addContact" class="btn btn-primary float-left">New Contact</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <%# Air Filter %>
+  <div class="row my-3">
+    <div class="col-sm">
+      <div class="card">
+
+        <div class="card-header">
+          Air Filter
+        </div>
+
+        <ul class="list-group list-group-flush" id="airFilterList">
+          <% if (airFilters && airFilters.length > 0) {%>
+            <% for (let i=0; i < airFilters.length; i++) { %>
+              <% var rand = Math.floor(Math.random()*10*(new Date().getTime())); %>
+              <li class="list-group-item">
+                <div class="form-row">
+                  <div class="form-group col-md-6">
+                    <label for="airfilter-type-<%= rand %>">Type</label>
+                    <input type="text" class="form-control" name="airfilter_type[]" id="airfilter-type-<%= rand %>" value="<%= airFilters[i].type %>" required title="Air Filter type">
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label for="airfilter-quantity-<%= rand %>">Quantity</label>
+                    <input type="text" class="form-control" name="airfilter_quantity[]" id="airfilter-quantity-<%= rand %>" value="<%= airFilters[i].quantity %>" title="Air Filter Quantity">
+                  </div>
+                </div>
+                <div class="form-row">
+                  <div class="form-group col-md-12">
+                    <label for="airfilter-size-<%= rand %>">Size</label>
+                    <input type="text" class="form-control" name="airfilter_size[]" id="airfilter-size-<%= rand %>" value="<%= airFilters[i].size %>" title="Air Filter size ex. 10x20x1">
+                  </div>
+                </div>
+                <div class="form-row">
+                  <div class="form-group col-md-12">
+                    <label for="airfilter-information-<%= rand %>">Information</label>
+                    <textarea class="form-control" name="airfilter_information[]" id="airfilter-information-<%= rand %>" title="Air Filter Information" rows="5"><%= airFilters[i].information %></textarea>
+                  </div>
+                </div>
+                <div class="form-row">
+                  <span class="card-text javaLink delAirFilter">
+                    <i class="bi bi-x-circle-fill"></i>
+                    Delete
+                  </span>
+                </div>
+              </li>
+            <% } %>
+          <% } %>
+        </ul>
+
+        <div class="card-body">
+          <span class="card-text javaLink" id="addAirFilter">
+            <i class="bi bi-plus-circle-fill"></i>
+            Add
+          </span>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <%# Edit Air Filter %>
+  <div class="row my-3">
+    <div class="col-sm">
+      <a class="btn btn-warning" href="/sites/airfilters/<%= site.id %>">Edit Air Filters</a>
     </div>
   </div>
 
@@ -133,17 +264,6 @@
       </div>
     </div>
   </div>
-
-  <%# Submit/Cancel %>
-  <div class="row my-3">
-    <div class="col-sm">
-      <button type="submit" name="send" value="update" class="btn btn-success float-left">Submit</button>
-      <a href="/sites/site/<%= site.id %>" class="btn btn-secondary float-left mx-5">Cancel</a> 
-      <button type="submit" name="send" value="delete" class="btn btn-danger float-right">Delete</button>
-    </div>
-  </div>
-
-  </form>
 
 </div>
 <% include ../partials/script %>

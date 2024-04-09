@@ -19,27 +19,34 @@
       <div class="card">
 
         <div class="card-header">
-          Site Information
+          <div class="row align-items-center">
+            <div class="col-6">
+              Information
+            </div>
+            <div class="col-6">
+              <a class="btn btn-warning float-right" href="/sites/edit/<%= site.id %>">Edit</a>
+            </div>
+          </div>
         </div>
 
         <div class="card-body">
           <p class="card-text">Number: <%= site.number %></p>
           <p class="card-text">Acronym: <%= site.acronym %></p>
           <p class="card-text">Address: <%= site.address %></p>
-          <p class="card-text">Latitude, Longitude: <%= site.latlong.y %>, <%= site.latlong.x %></p>
+          <p class="card-text">Location (Lat, Long): <%= site.latlong.y %>, <%= site.latlong.x %></p>
         </div>
 
       </div>
     </div>
   </div>
 
-  <%# Information %>
+  <%# Access %>
   <div class="row my-3">
     <div class="col-sm">
       <div class="card">
 
         <div class="card-header">
-          Site Access
+          Access
         </div>
 
         <div class="card-body">
@@ -61,13 +68,14 @@
           Contact
         </div>
 
-        <% if (site.contact && site.contact.length > 0) {%>
+        <% if (contacts && contacts.length > 0) {%>
           <ul class="list-group list-group-flush" id="contactList">
-            <% for (let i=0; i < site.contact.length; i++) { %>
+            <% for (let i=0; i < contacts.length; i++) { %>
               <li class="list-group-item">
-                <p class="card-text">Name: <%= site.contact[i].name %></p>
-                <p class="card-text">Number: <%= site.contact[i].number %></p>
-                <p class="card-text">Info: <%= site.contact[i].info %></p>
+                <p class="card-text">Name: <%= contacts[i].name %></p>
+                <p class="card-text">Number: <%= contacts[i].number %></p>
+                <p class="card-text">Email: <%= contacts[i].email %></p>
+                <p class="card-text">Info: <%= contacts[i].info %></p>
               </li>
             <% } %>
           </ul>
@@ -87,16 +95,24 @@
       <div class="card">
 
         <div class="card-header">
-          Air Filter
+          <div class="row align-items-center">
+            <div class="col-6">
+              Air Filters
+            </div>
+            <div class="col-6">
+              <a class="btn btn-warning float-right" href="/sites/<%= site.id %>/airfilters">Edit</a>
+            </div>
+          </div>
         </div>
 
-        <% if (site.airfilter && site.airfilter.length > 0) {%>
+        <% if (airFilters && airFilters.length > 0) {%>
           <ul class="list-group list-group-flush" id="airFilterList">
-            <% for (let i=0; i < site.airfilter.length; i++) { %>
+            <% for (let i=0; i < airFilters.length; i++) { %>
               <li class="list-group-item">
-                  <p class="card-text">Type: <%= site.airfilter[i].type %></p>
-                  <p class="card-text">Size: <%= site.airfilter[i].size %></p>
-                  <p class="card-text">Amount: <%= site.airfilter[i].amount %></p>
+                  <p class="card-text">Type: <%= airFilters[i].type %></p>
+                  <p class="card-text">Size: <%= airFilters[i].size %></p>
+                  <p class="card-text">Quantity: <%= airFilters[i].quantity %></p>
+                  <p class="card-text">Information: <%= airFilters[i].information %></p>
               </li>
             <% } %>
           </ul>
