@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 08, 2024 at 06:40 PM
+-- Generation Time: Apr 09, 2024 at 03:37 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -64,6 +64,18 @@ CREATE TABLE `site_airfilter` (
   `information` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `site_airfilter`
+--
+
+INSERT INTO `site_airfilter` (`id`, `site_id`, `type`, `size`, `quantity`, `information`) VALUES
+(1, 1, 'Shelter', '8in x 8in x 3in', 2, 'Serial Number: 123456789\r\nManufacturer: Best Air Filters\r\nSupplier: Amazon'),
+(2, 1, 'vehicle', '304', 0, 'asdf'),
+(3, 1, 'asdf', 'asdf', 0, 'asdf'),
+(4, 2, 'asdf', 'asdf', 0, 'asdf'),
+(5, 7, 'Ventilation', '1', 10, 'On the roof'),
+(6, 7, 'asdf', 'asdf', 0, 'asdf');
+
 -- --------------------------------------------------------
 
 --
@@ -75,8 +87,17 @@ CREATE TABLE `site_contact` (
   `site_id` int(11) NOT NULL,
   `name` varchar(255) NOT NULL,
   `number` varchar(10) NOT NULL,
+  `email` varchar(255) NOT NULL,
   `info` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `site_contact`
+--
+
+INSERT INTO `site_contact` (`id`, `site_id`, `name`, `number`, `email`, `info`) VALUES
+(1, 1, 'Mason Ford', '7786785942', 'forddmason@gmail.com', 'Primary'),
+(6, 1, 'Mahikan Ford', '7786785942', 'mahikandford@gmail.com', 'Secondary');
 
 --
 -- Indexes for dumped tables
@@ -116,13 +137,13 @@ ALTER TABLE `site`
 -- AUTO_INCREMENT for table `site_airfilter`
 --
 ALTER TABLE `site_airfilter`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `site_contact`
 --
 ALTER TABLE `site_contact`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- Constraints for dumped tables
