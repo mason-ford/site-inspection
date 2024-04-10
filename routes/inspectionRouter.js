@@ -62,12 +62,14 @@ router.get('/add', (req, res) => {
 router.post('/add', (req, res) => {
   console.log('Add inspection page');
 
-  let siteId = req.body.inspection_siteId;
+  let siteId = req.body.site;
 
-  Site.getSite(siteId).then(site => {
+  console.log(req.body);
+
+  /*Site.getSite(siteId).then(site => {
     console.log(site.id);
     res.render('inspections/inspections-add', {page: 'Inspection', menuId: menuId, site: site});
-  });
+  });*/
 });
 
 router.post('/addInspection', upload.any(), (req, res) => {
