@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <% include ../partials/head %> 
+</head>
+<body>
+<% include ../partials/menu %>
+<div class="container bg-3">
+
+  <div class="row align-items-center">
+    <div class="col-6">
+      <h1><i class="bi bi-clipboard"></i></i> Checkpoints</h1>
+    </div>
+    <div class="col-6">
+      <a class="btn btn-primary float-right" href="/checkpoints/add/"><i class="bi bi-clipboard-plus"></i> Add Checkpoint</a>
+    </div>
+  </div>
+
+  <%# Checkpoints %>
+  <div class="row">
+    <div class="col-sm">
+      <% if (checkpoints.length > 0) {%>
+        <div class="card">
+
+          <div class="card-header">
+            <div class="row">
+              <div class="col-sm-2">
+                Name 
+              </div>
+              <div class="col-sm-5">
+                Information
+              </div>
+              <div class="col-sm-2">
+                Pass Text
+              </div>
+              <div class="col-sm-2">
+                Fail Text
+              </div>
+              <div class="col-sm-1">
+                Edit
+              </div>
+            </div>
+          </div>
+
+          <ul class="list-group list-group-flush">
+          <% checkpoints.forEach(checkpoint => { %>
+              <li class="list-group-item">
+                <div class="row">
+                  <div class="col-sm-2">
+                    <%= checkpoint.name %>
+                  </div>
+                  <div class="col-sm-5">
+                    <%= checkpoint.information %>
+                  </div>
+                  <div class="col-sm-2">
+                    <%= checkpoint.passText %>
+                  </div>
+                  <div class="col-sm-2">
+                    <%= checkpoint.failText %>
+                  </div>
+                  <div class="col-sm-1">
+                    <a class="btn btn-warning float-right" href="/checkpoints/<%= checkpoint.id %>/update"><i class="bi bi-gear"></i> Edit</a>
+                  </div>
+                </div>
+              </li>
+          <% }) %>
+          </ul>
+
+        </div>
+      <% } else { %>
+        <p>No Checkpoints</p>
+      <% } %>
+    </div>
+  </div>
+
+</div>
+<% include ../partials/script %>
+</body>
+</html>

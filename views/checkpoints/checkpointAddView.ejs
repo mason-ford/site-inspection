@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <% include ../partials/head %>
+</head>
+
+<body>
+  <% include ../partials/menu %>
+    <div class="container bg-3">
+
+      <div class="row">
+        <div class="col-sm">
+          <h1>
+            <%= page %>
+          </h1>
+        </div>
+      </div>
+
+      <form class="checkpoint-add-form" action="" method="post">
+
+        <%# Information %>
+          <div class="row">
+            <div class="col-sm">
+              <div class="card">
+
+                <div class="card-header">
+                  Checkpoint
+                </div>
+
+                <div class="card-body">
+
+                  <div class="form-row">
+                    <div class="form-group col-md">
+                      <label for="name">Name</label>
+                      <input type="text" class="form-control" name="name" id="name" required title="Checkpoint Name">
+                    </div>
+                  </div>
+
+                  <div class="form-row">
+                    <div class="form-group col-md-12">
+                      <label for="information">Information</label>
+                      <input type="text" class="form-control" name="information" id="information" required
+                        title="Checkpoint Information">
+                    </div>
+                  </div>
+
+                  <div class="form-row">
+                    <div class="form-group col-md-6">
+                      <label for="type">Pass Text</label>
+                      <input type="text" class="form-control" name="passText" id="passText" required title="Pass Text">
+                    </div>
+                    <div class="form-group col-md-6">
+                      <label for="type">Fail Text</label>
+                      <input type="text" class="form-control" name="failText" id="failText" required title="Fail Text">
+                    </div>
+                  </div>
+
+                </div>
+
+                <div class="card-footer">
+                  <button type="submit" name="send" class="btn btn-success float-left"><i class="bi bi-clipboard-plus"></i> Add</button>
+                  <a href="../" class="btn btn-secondary float-right"><i class="bi bi-clipboard2-minus"></i> Cancel</a>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+
+
+      </form>
+
+    </div>
+    <% include ../partials/script %>
+</body>
+
+</html>

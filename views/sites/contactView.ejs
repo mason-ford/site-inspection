@@ -9,42 +9,45 @@
 
   <div class="row align-items-center">
     <div class="col-6">
-      <h1><a href="/sites/<%= site.id %>"><%= site.name %></a> - Air Filters</h1>
+      <h1><a href="/sites/<%= site.id %>"><%= site.name %></a> - Contacts</h1>
     </div>
     <div class="col-6">
-      <a class="btn btn-primary float-right" href="/sites/<%= site.id %>/airfilters/add"><i class="bi bi-plus-circle"></i> Add Air Filter</a>
+      <a class="btn btn-primary float-right" href="/sites/<%= site.id %>/contacts/add"><i class="bi bi-person-add"></i> Add Contact</a>
     </div>
   </div>
 
-  <%# Air Filter %>
+  <%# Contact %>
   <div class="row">
     <div class="col-sm">
-      <% if (airFilters && airFilters.length > 0) {%>
-        <% for (let i=0; i < airFilters.length; i++) { %>
+      <% if (contacts && contacts.length > 0) {%>
+        <% for (let i=0; i < contacts.length; i++) { %>
         <div class="card mb-3">
+
           <div class="card-header">
             <div class="row align-items-center">
               <div class="col-6">
-                <%= airFilters[i].type %>
+                <%= contacts[i].name %>
               </div>
               <div class="col-6">
-                <a class="btn btn-warning float-right" href="/sites/<%= site.id %>/airfilters/edit/<%= airFilters[i].id %>"><i class="bi bi-gear"></i> Edit</a>
+                <a class="btn btn-warning float-right" href="/sites/<%= site.id %>/contacts/edit/<%= contacts[i].id %>"><i class="bi bi-person-gear"></i> Edit</a>
               </div>
             </div>
           </div>
+
           <ul class="list-group list-group-flush" id="airFilterList">
             <li class="list-group-item">
-                <p class="card-text">Type: <%= airFilters[i].type %></p>
-                <p class="card-text">Size: <%= airFilters[i].size %></p>
-                <p class="card-text">Quantity: <%= airFilters[i].quantity %></p>
-                <p class="card-text">Information: <%= airFilters[i].information %></p>
+                <p class="card-text">Name: <%= contacts[i].name %></p>
+                <p class="card-text">Number: <%= contacts[i].number %></p>
+                <p class="card-text">Email: <%= contacts[i].email %></p>
+                <p class="card-text">Information: <%= contacts[i].information %></p>
             </li>
           </ul>
+
         </div>
         <% } %>
       <% } else { %>
         <span>
-          No air filters
+          No contacts
         </span>
       <% } %>
     </div>

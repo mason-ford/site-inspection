@@ -7,53 +7,38 @@
 <% include ../partials/menu %>
 <div class="container bg-3">    
 
-  <div class="row">
-    <div class="col-sm">
-      <h1><%= site.name %></h1>
-    </div>
-  </div>
-
   <%# Information %>
-  <div class="row">
+  <div class="row my-3">
     <div class="col-sm">
       <div class="card">
 
         <div class="card-header">
           <div class="row align-items-center">
             <div class="col-6">
-              Information
+              <i class="bi bi-building"></i> <%= site.name %>
             </div>
             <div class="col-6">
-              <a class="btn btn-warning float-right" href="/sites/edit/<%= site.id %>">Edit</a>
+              <a class="btn btn-warning float-right" href="/sites/edit/<%= site.id %>"><i class="bi bi-building-gear"></i> Edit</a>
             </div>
           </div>
         </div>
 
-        <div class="card-body">
-          <p class="card-text">Number: <%= site.number %></p>
-          <p class="card-text">Acronym: <%= site.acronym %></p>
-          <p class="card-text">Address: <%= site.address %></p>
-          <p class="card-text">Location (Lat, Long): <%= site.latlong.y %>, <%= site.latlong.x %></p>
-        </div>
-
-      </div>
-    </div>
-  </div>
-
-  <%# Access %>
-  <div class="row my-3">
-    <div class="col-sm">
-      <div class="card">
-
-        <div class="card-header">
-          Access
-        </div>
-
-        <div class="card-body">
-          <p class="card-text">Standard Key: <%= site.standardKey ? 'YES' : 'NO' %></p>
-          <p class="card-text">Key Information: <%= site.keyInstructions %></p>
-          <p class="card-text">Access Instructions: <%= site.accessInstructions %></p>
-        </div>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">
+            <p class="card-text"><b>Information</b></p>
+            <p class="card-text">Name: <%= site.name %></p>
+            <p class="card-text">Number: <%= site.number %></p>
+            <p class="card-text">Acronym: <%= site.acronym %></p>
+            <p class="card-text">Address: <%= site.address %></p>
+            <p class="card-text">Location (Lat, Long): <%= site.latlong.y %>, <%= site.latlong.x %></p>
+          </li>
+          <li class="list-group-item">
+            <p class="card-text"><b>Access</b></p>
+            <p class="card-text">Standard Key: <%= site.standardKey ? 'YES' : 'NO' %></p>
+            <p class="card-text">Key Information: <%= site.keyInstructions %></p>
+            <p class="card-text">Access Instructions: <%= site.accessInstructions %></p>
+          </li>
+        </ul>
 
       </div>
     </div>
@@ -65,10 +50,17 @@
       <div class="card">
 
         <div class="card-header">
-          Contact
+          <div class="row align-items-center">
+            <div class="col-6">
+              <i class="bi bi-person"></i> Contacts (<%= contacts.length %>)
+            </div>
+            <div class="col-6">
+              <a class="btn btn-warning float-right" href="/sites/<%= site.id %>/contacts"><i class="bi bi-person-gear"></i> Edit</a>
+            </div>
+          </div>
         </div>
 
-        <% if (contacts && contacts.length > 0) {%>
+        <% if (contacts.length > 0) {%>
           <ul class="list-group list-group-flush" id="contactList">
             <% for (let i=0; i < contacts.length; i++) { %>
               <li class="list-group-item">
@@ -97,10 +89,10 @@
         <div class="card-header">
           <div class="row align-items-center">
             <div class="col-6">
-              Air Filters
+              Air Filters (<%= airFilters.length %>)
             </div>
             <div class="col-6">
-              <a class="btn btn-warning float-right" href="/sites/<%= site.id %>/airfilters">Edit</a>
+              <a class="btn btn-warning float-right" href="/sites/<%= site.id %>/airfilters"><i class="bi bi-gear"></i> Edit</a>
             </div>
           </div>
         </div>
@@ -242,13 +234,6 @@
           <div class="card-body">No checkpoints</div>
         <% } %>
       </div>
-    </div>
-  </div>
-
-  <%# Edit %>
-  <div class="row my-3">
-    <div class="col-sm">
-      <a class="btn btn-warning" href="/sites/edit/<%= site.id %>">Edit</a>
     </div>
   </div>
 

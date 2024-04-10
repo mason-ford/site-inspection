@@ -15,43 +15,43 @@
 
   <form class="site-edit-form" action="" method="post">
 
-  <%# Air Filter %>
+  <%# Contact %>
   <div class="row my-3">
     <div class="col-sm">
       <div class="card">
 
         <div class="card-header">
-          Air Filter
+          Contact
         </div>
 
         <div class="card-body">
           <div class="form-row">
-            <div class="form-group col-md-6">
-              <label for="type">Type</label>
-              <input type="text" class="form-control" name="type" id="type" required title="Air Filter Type">
-            </div>
-            <div class="form-group col-md-6">
-              <label for="quantity">Quantity</label>
-              <input type="text" class="form-control" name="quantity" id="quantity" title="Air Filter Quantity">
+            <div class="form-group col-md-12">
+              <label for="name">Name</label>
+              <input type="text" class="name form-control" name="name" id="name" required title="Contact Name">
             </div>
           </div>
           <div class="form-row">
-            <div class="form-group col-md-12">
-              <label for="size">Size</label>
-              <input type="text" class="form-control" name="size" id="size" title="Air Filter Size ex. 10x20x1">
+            <div class="form-group col-md-6">
+              <label for="number">Number</label>
+              <input type="text" class="number form-control" name="number" id="number" title="Contact Number">
+            </div>
+            <div class="form-group col-md-6">
+              <label for="email">Email</label>
+              <input type="text" class="email form-control" name="email" id="email" title="Contact Email">
             </div>
           </div>
           <div class="form-row">
             <div class="form-group col-md-12">
               <label for="information">Information</label>
-              <textarea class="form-control" name="information" id="information" title="Air Filter Information" rows="5"></textarea>
+              <textarea class="information form-control" name="information" id="information" title="Contact Info" rows="5"></textarea>
             </div>
           </div>
         </div>
 
         <div class="card-footer">
           <button type="submit" name="send" class="btn btn-success float-left">Add</button>
-          <a href="../" class="btn btn-secondary float-right">Cancel</a>
+          <a href="./" class="btn btn-secondary float-right">Cancel</a>
         </div>
 
       </div>

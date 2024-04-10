@@ -1,13 +1,44 @@
 var pool = require('../database/mysql');
 
-class SiteContact {
-    constructor(id, siteId, name, number, email, info) {
+class Contact {
+    constructor(id, siteId, name, number, email, information) {
         this.id = id,
         this.siteId = siteId;
         this.name = name;
         this.number = number;
         this.email = email;
-        this.info = info;
+        this.information = information;
+    }
+
+    // Method to get contact
+    static getContact(contactId) {
+      return new Promise((resolve, reject) => {
+        pool.getConnection((err, connection) => {
+            if (err) {
+              connection.release(); // Ensure connection is released
+              return reject(err);
+            }
+
+            const sql = 'SELECT * FROM site_contact WHERE id = ?';
+            
+            connection.query(sql, [contactId], (err, results) => {
+              connection.release(); // Release connection after query execution
+              
+              if (err) {
+                  return reject(err);
+              }
+
+              // If contact with given ID exists, resolve with the contact object
+              if (results.length > 0) {
+                const contactData = results[0];
+                const contact = new Contact(contactData.id, contactData.site_id, contactData.name, contactData.number, contactData.email, contactData.information);
+                resolve(contact);
+              } else {
+                resolve(null);
+              }
+            });
+        });
+      });
     }
 
     // Method to get all contacts for a site
@@ -28,7 +59,7 @@ class SiteContact {
                     return reject(err);
                 }
 
-                const contacts = results.map(contactData => new SiteContact(contactData.id, contactData.site_id, contactData.name, contactData.number, contactData.email, contactData.info));
+                const contacts = results.map(contactData => new Contact(contactData.id, contactData.site_id, contactData.name, contactData.number, contactData.email, contactData.information));
                 resolve(contacts);
                 });
             });
@@ -36,7 +67,7 @@ class SiteContact {
     }
   
     // Method to add a contact for a site
-    static addContact(siteId, name, number, email, info) {
+    static addContact(siteId, name, number, email, information) {
       return new Promise((resolve, reject) => {
         pool.getConnection((err, connection) => {
           if (err) {
@@ -44,8 +75,8 @@ class SiteContact {
             return reject(err);
           }
           
-          const sql = 'INSERT INTO site_contact (site_id, name, number, email, info) VALUES (?, ?, ?, ?, ?)';
-          const values = [siteId, name, number, email, info];
+          const sql = 'INSERT INTO site_contact (site_id, name, number, email, information) VALUES (?, ?, ?, ?, ?)';
+          const values = [siteId, name, number, email, information];
           
           connection.query(sql, values, (err, result) => {
             connection.release(); // Release connection after query execution
@@ -63,7 +94,7 @@ class SiteContact {
     }
   
     // Method to update a contact for a site
-    static updateContact(contactId, newName, newNumber, newEmail, newInfo) {
+    static updateContact(contactId, newName, newNumber, newEmail, newInformation) {
       return new Promise((resolve, reject) => {
         pool.getConnection((err, connection) => {
           if (err) {
@@ -71,8 +102,8 @@ class SiteContact {
             return reject(err);
           }
           
-          const sql = 'UPDATE site_contact SET name = ?, number = ?, email = ?, info = ? WHERE id = ?';
-          const values = [newName, newNumber, newEmail, newInfo, contactId];
+          const sql = 'UPDATE site_contact SET name = ?, number = ?, email = ?, information = ? WHERE id = ?';
+          const values = [newName, newNumber, newEmail, newInformation, contactId];
           
           connection.query(sql, values, (err, result) => {
             connection.release(); // Release connection after query execution
@@ -123,4 +154,4 @@ class SiteContact {
 
 }
 
-module.exports = SiteContact;
+module.exports = Contact;

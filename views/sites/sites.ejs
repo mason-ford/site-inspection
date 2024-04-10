@@ -7,9 +7,12 @@
 <% include ../partials/menu %>
 <div class="container bg-3"> 
 
-  <div class="row">
-    <div class="col-sm">
-      <h1><%= page %></h1>
+  <div class="row align-items-center">
+    <div class="col-6">
+      <h1><i class="bi bi-building"></i> <%= page %></h1>
+    </div>
+    <div class="col-6">
+      <a class="btn btn-primary float-right" href="/sites/add/"><i class="bi bi-building-add"></i> Add Site</a>
     </div>
   </div>
 
@@ -52,13 +55,6 @@
       <% } else { %>
           <p>No Sites</p>
       <% } %>
-    </div>
-  </div>
-
-  <%# Add %>
-  <div class="row my-3">
-    <div class="col-sm">
-      <a class="btn btn-info mt-2 mb-3" href="/sites/add/">Add</a>
     </div>
   </div>
   

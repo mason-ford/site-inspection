@@ -4,3 +4,4 @@ Site:
 
 Additions:
 - Battery tracker!
+- Generator information to site!

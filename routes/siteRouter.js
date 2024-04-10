@@ -2,8 +2,10 @@ var express = require('express');
 var moment = require('moment');
 var router = express.Router();
 var airFilterRouter = require ('./airfilterRouter');
+var contactRouter = require ('./contactRouter');
+
 const Site = require('../domain/site');
-const SiteContact = require('../domain/SiteContact');
+const SiteContact = require('../domain/contact');
 const SiteAirFilter = require('../domain/airFilter');
 const Checkpoint = require('../domain/checkpoint');
 const Inspection = require('../domain/inspection');
@@ -16,6 +18,11 @@ router.use('/:siteId/airfilters', (req, res, next) => {
   next();
 }  , airFilterRouter);
 
+router.use('/:siteId/contacts', (req, res, next) => {
+  req.siteId = req.params.siteId; // Pass the siteId to the contactRouter
+  next();
+}  , contactRouter);
+
 // GET ALL SITES
 router.get('/', (req, res) => {
   console.log('Get all sites');
@@ -27,6 +34,13 @@ router.get('/', (req, res) => {
     .catch(err => {
       console.error('Error getting sites:', err);
     });
+});
+
+// ADD PAGE
+router.get('/add', (req, res) => {
+  console.log('Add site page');
+
+  res.render('sites/sites-add', {page: 'Add Site', menuId: menuId, checkpoints: false});
 });
 
 // GET SITE
@@ -64,13 +78,6 @@ router.get('/:siteId', (req, res) => {
       console.error('Error:', err);
       // Handle error
     });
-});
-
-// ADD PAGE
-router.get('/add', (req, res) => {
-  console.log('Add site page');
-
-  res.render('sites/sites-add', {page: 'Add Site', menuId: menuId, checkpoints: false});
 });
 
 // ADD SUBMIT
@@ -141,7 +148,7 @@ router.post('/edit/:siteId', (req, res) => {
   let task = req.body.send;
   let siteId = req.params.siteId;
 
-  if (task == "update") {
+  if (task === "update") {
     let newName = req.body.site_name;
     let newAcronym = req.body.site_acronym;
     let newNumber = req.body.site_number;

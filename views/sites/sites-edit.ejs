@@ -7,263 +7,100 @@
 <% include ../partials/menu %>
 <div class="container bg-3">
 
-  <div class="row">
-    <div class="col-sm">
-      <h1><%= page %></h1>
-    </div>
-  </div>
-
   <form class="site-edit-form" action="" data-site-id="<%= site.id %>" method="post">
 
-  <%# Information %>
-  <div class="row">
-    <div class="col-sm">
-      <div class="card">
+    <%# Information %>
+    <div class="row my-3">
+      <div class="col-sm">
+        <div class="card">
 
-        <div class="card-header">
-          Information
-        </div>
-
-        <div class="card-body">
-          <div class="form-row">
-            <div class="form-group col-md-6">
-              <label for="site-name">Name</label>
-              <input type="text" class="form-control" name="site_name" id="site-name" value="<%= site.name %>" required title="Site name">
-            </div>
-            <div class="form-group col-md-3">
-              <label for="site-type">Acronym</label>
-              <input type="text" class="form-control" name="site_acronym" id="site-acronym" value="<%= site.acronym %>" required title="Site type">
-            </div>
-            <div class="form-group col-md-3">
-              <label for="site-description">Number</label>
-              <input type="text" class="form-control" name="site_number" id="site-number" value="<%= site.number %>" required title="Site description">
-            </div>
-          </div>
-          <div class="form-row">
-            <div class="form-group col-md-12">
-              <label for="site-address">Address</label>
-              <input type="text" class="form-control" name="site_address" id="site-address" value="<%= site.address %>" title="Site address">
-            </div>
-          </div>
-          <div class="form-row">
-            <div class="form-group col-md-6">
-              <label for="site-lat">Latitude</label>
-              <input type="text" class="form-control" name="site_lat" id="site-lat" value="<%= site.latlong.y %>" required title="Latitude">
-            </div>
-            <div class="form-group col-md-6">
-              <label for="site-long">Longitude</label>
-              <input type="text" class="form-control" name="site_long" id="site-long" value="<%= site.latlong.x %>" required title="Longitude">
-            </div>
-          </div>
-
-        </div>
-        
-      </div>
-    </div>
-  </div>
-
-  <%# Access %>
-  <div class="row my-3">
-    <div class="col-sm">
-      <div class="card">
-
-        <div class="card-header">
-          Access
-        </div>
-
-        <div class="card-body">
-          <div class="form-row">
-            <div class="form-group col-md-2">
-              <label>Standard Key</label>
-              <div class="form-check">
-                  <input class="form-check-input" type="radio" id="access-key-standard-yes" name="access_key_standard" value="true" <%= site.standardKey ? 'checked' : '' %>>
-                  <label class="form-check-label" for="access-key-standard-yes">Yes</label>
+          <div class="card-header">
+            <div class="row align-items-center">
+              <div class="col-6">
+                Update Site
               </div>
-              <div class="form-check">
-                  <input class="form-check-input" type="radio" id="access-key-standard-no" name="access_key_standard" value="false" <%= !site.standardKey ? 'checked' : '' %>>
-                  <label class="form-check-label" for="access-key-standard-no">No</label>
+              <div class="col-6">
+                <button type="submit" name="send" value="delete" class="btn btn-danger float-right"><i class="bi bi-building-x"></i> Delete</button>
               </div>
             </div>
-            <div class="form-group col-md-10">
-              <label for="access-key-instructions">Key Instructions</label>
-              <input type="text" class="form-control" name="access_key_instructions" id="access-key-instructions" value="<%= site.keyInstructions %>" title="Key Instructions">
-            </div>
           </div>
-          <div class="form-row">
-            <div class="form-group col-md-12">
-              <label for="access-instructions">Instructions</label>
-              <textarea class="form-control" name="access_instructions" id="access-instructions" title="Access Instructions" rows="5"><%= site.accessInstructions %></textarea>
-            </div>
-          </div>
-        </div>
-        
-      </div>
-    </div>
-  </div>
 
-    <%# Submit/Cancel %>
-  <div class="row my-3">
-    <div class="col-sm">
-      <button type="submit" name="send" value="update" class="btn btn-success float-left">Submit</button>
-      <a href="/sites/<%= site.id %>" class="btn btn-secondary float-left mx-5">Cancel</a> 
-      <button type="submit" name="send" value="delete" class="btn btn-danger float-right">Delete</button>
-    </div>
-  </div>
-
-  </form>
-
-  <%# Contact %>
-  <div class="row my-3">
-    <div class="col-sm">
-      <div class="card">
-
-        <div class="card-header">
-          Contact
-        </div>
-
-        <ul class="list-group list-group-flush" id="contactList">
-          <% if (contacts && contacts.length > 0) { %>
-            <% for (let i=0; i < contacts.length; i++) { %>
-              <% var rand = Math.floor(Math.random()*10*(new Date().getTime())); %>
-              <li class="list-group-item contactItem" data-contact-id="<%= contacts[i].id %>">
-                <div class="form-row">
-                  <div class="form-group col-md-12">
-                    <label for="contact-name-<%= rand %>">Name</label>
-                    <input type="text" class="name form-control" name="contact_name[]" id="contact-name-<%= rand %>" value="<%= contacts[i].name %>" required title="Contact Name">
-                  </div>
-                </div>
-                <div class="form-row">
-                  <div class="form-group col-md-6">
-                    <label for="contact-number-<%= rand %>">Number</label>
-                    <input type="text" class="number form-control" name="contact_number[]" id="contact-number-<%= rand %>" value="<%= contacts[i].number %>" title="Contact Number">
-                  </div>
-                  <div class="form-group col-md-6">
-                    <label for="contact-email-<%= rand %>">Email</label>
-                    <input type="text" class="email form-control" name="contact_email[]" id="contact-email-<%= rand %>" value="<%= contacts[i].email %>" title="Contact Email">
-                  </div>
-                </div>
-                <div class="form-row">
-                  <div class="form-group col-md-12">
-                    <label for="contact-info-<%= rand %>">Info</label>
-                    <textarea class="information form-control" name="contact_info[]" id="contact-info-<%= rand %>" title="Contact Info" rows="5"><%= contacts[i].info %></textarea>
-                  </div>
-                </div>
-                <div class="form-row">
-                  <div class="form-group col">
-                    <button type="button" class="updateBtn btn btn-success float-left">Update</button>
-                    <button type="button" class="deleteBtn btn btn-danger float-right">Delete</button>
-                  </div>
-                </div>
-              </li>
-            <% } %>
-          <% } %>
-        </ul>
-
-        <div class="card-body">
-          <button type="button" id="addContact" class="btn btn-primary float-left">New Contact</button>
-        </div>
-
-      </div>
-    </div>
-  </div>
-
-  <%# Air Filter %>
-  <div class="row my-3">
-    <div class="col-sm">
-      <div class="card">
-
-        <div class="card-header">
-          Air Filter
-        </div>
-
-        <ul class="list-group list-group-flush" id="airFilterList">
-          <% if (airFilters && airFilters.length > 0) {%>
-            <% for (let i=0; i < airFilters.length; i++) { %>
-              <% var rand = Math.floor(Math.random()*10*(new Date().getTime())); %>
-              <li class="list-group-item">
-                <div class="form-row">
-                  <div class="form-group col-md-6">
-                    <label for="airfilter-type-<%= rand %>">Type</label>
-                    <input type="text" class="form-control" name="airfilter_type[]" id="airfilter-type-<%= rand %>" value="<%= airFilters[i].type %>" required title="Air Filter type">
-                  </div>
-                  <div class="form-group col-md-6">
-                    <label for="airfilter-quantity-<%= rand %>">Quantity</label>
-                    <input type="text" class="form-control" name="airfilter_quantity[]" id="airfilter-quantity-<%= rand %>" value="<%= airFilters[i].quantity %>" title="Air Filter Quantity">
-                  </div>
-                </div>
-                <div class="form-row">
-                  <div class="form-group col-md-12">
-                    <label for="airfilter-size-<%= rand %>">Size</label>
-                    <input type="text" class="form-control" name="airfilter_size[]" id="airfilter-size-<%= rand %>" value="<%= airFilters[i].size %>" title="Air Filter size ex. 10x20x1">
-                  </div>
-                </div>
-                <div class="form-row">
-                  <div class="form-group col-md-12">
-                    <label for="airfilter-information-<%= rand %>">Information</label>
-                    <textarea class="form-control" name="airfilter_information[]" id="airfilter-information-<%= rand %>" title="Air Filter Information" rows="5"><%= airFilters[i].information %></textarea>
-                  </div>
-                </div>
-                <div class="form-row">
-                  <span class="card-text javaLink delAirFilter">
-                    <i class="bi bi-x-circle-fill"></i>
-                    Delete
-                  </span>
-                </div>
-              </li>
-            <% } %>
-          <% } %>
-        </ul>
-
-        <div class="card-body">
-          <span class="card-text javaLink" id="addAirFilter">
-            <i class="bi bi-plus-circle-fill"></i>
-            Add
-          </span>
-        </div>
-
-      </div>
-    </div>
-  </div>
-
-  <%# Edit Air Filter %>
-  <div class="row my-3">
-    <div class="col-sm">
-      <a class="btn btn-warning" href="/sites/airfilters/<%= site.id %>">Edit Air Filters</a>
-    </div>
-  </div>
-
-  <%# Checkpoints %>
-  <div class="row my-3">
-    <div class="col-sm">
-      <div class="card">
-
-        <div class="card-header">
-          Checkpoints
-        </div>
-
-        <% if (site.checkpoints && site.checkpoints.length > 0) {%>
           <ul class="list-group list-group-flush">
-          <% site.checkpoints.forEach(checkpoint => { %>
             <li class="list-group-item">
-              <div class="form-check">
-                <input class="form-check-input" type="checkbox" name="site_checkpoints[]" value="<%= checkpoint._id %>" id="check-<%= checkpoint.name %>" <% if(checkpoint.added) { %>checked <% } %> >
-                <label class="form-check-label" for="check-<%= checkpoint.name %>"><%= checkpoint.name %></label>
-                <small class="form-text text-muted"><%= checkpoint.description %></small>
+              <h4>Information</h4>
+              <div class="form-row">
+                <div class="form-group col-md-6">
+                  <label for="site-name">Name</label>
+                  <input type="text" class="form-control" name="site_name" id="site-name" value="<%= site.name %>" required title="Site name">
+                </div>
+                <div class="form-group col-md-3">
+                  <label for="site-type">Acronym</label>
+                  <input type="text" class="form-control" name="site_acronym" id="site-acronym" value="<%= site.acronym %>" required title="Site type">
+                </div>
+                <div class="form-group col-md-3">
+                  <label for="site-description">Number</label>
+                  <input type="text" class="form-control" name="site_number" id="site-number" value="<%= site.number %>" required title="Site description">
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group col-md-12">
+                  <label for="site-address">Address</label>
+                  <input type="text" class="form-control" name="site_address" id="site-address" value="<%= site.address %>" title="Site address">
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group col-md-6">
+                  <label for="site-lat">Latitude</label>
+                  <input type="text" class="form-control" name="site_lat" id="site-lat" value="<%= site.latlong.y %>" required title="Latitude">
+                </div>
+                <div class="form-group col-md-6">
+                  <label for="site-long">Longitude</label>
+                  <input type="text" class="form-control" name="site_long" id="site-long" value="<%= site.latlong.x %>" required title="Longitude">
+                </div>
               </div>
             </li>
-          <% }) %>
+            <li class="list-group-item">
+              <h4>Access</h4>
+              <div class="form-row">
+                <div class="form-group col-md-2">
+                  <label>Standard Key</label>
+                  <div class="form-check">
+                      <input class="form-check-input" type="radio" id="access-key-standard-yes" name="access_key_standard" value="true" <%= site.standardKey ? 'checked' : '' %>>
+                      <label class="form-check-label" for="access-key-standard-yes">Yes</label>
+                  </div>
+                  <div class="form-check">
+                      <input class="form-check-input" type="radio" id="access-key-standard-no" name="access_key_standard" value="false" <%= !site.standardKey ? 'checked' : '' %>>
+                      <label class="form-check-label" for="access-key-standard-no">No</label>
+                  </div>
+                </div>
+                <div class="form-group col-md-10">
+                  <label for="access-key-instructions">Key Instructions</label>
+                  <input type="text" class="form-control" name="access_key_instructions" id="access-key-instructions" value="<%= site.keyInstructions %>" title="Key Instructions">
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group col-md-12">
+                  <label for="access-instructions">Instructions</label>
+                  <textarea class="form-control" name="access_instructions" id="access-instructions" title="Access Instructions" rows="5"><%= site.accessInstructions %></textarea>
+                </div>
+              </div>
+            </li>
           </ul>
-        <% } else { %>
-          <div class="card-body">
-            <span class="card-text">
-              No checkpoints to add.
-            </span>
-          </div>
-        <% } %>
 
+          <div class="card-footer">
+            <div class="form-row">
+              <div class="col-sm">
+                <button type="submit" name="send" value="update" class="btn btn-success float-left"><i class="bi bi-building-check"></i> Update</button>
+                <a href="../<%= site.id %>" class="btn btn-secondary float-left mx-5">Cancel</a> 
+              </div>
+            </div>
+          </div>    
+
+        </div>
       </div>
     </div>
-  </div>
+
+  </form>
 
 </div>
 <% include ../partials/script %>

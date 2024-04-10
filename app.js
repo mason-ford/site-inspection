@@ -12,16 +12,16 @@ const flash = require('connect-flash');
 //var authRouter = require('./routes/auth'); 
 var indexRouter = require('./routes/index');
 var sitesRouter = require('./routes/siteRouter');
-var siteContactsRouter = require ('./routes/siteContacts');
-var checkpointsRouter = require('./routes/checkpoints');
+var checkpointsRouter = require('./routes/checkpointRouter');
 var inspectionsRouter = require('./routes/inspections');
 var tasksRouter = require('./routes/tasks');
 
+/*
 var licensesRouter = require('./routes/licenses');
-
 var assetTypesRouter = require('./routes/asset-types');
 var modelsRouter = require('./routes/models');
 var agenciesRouter = require('./routes/agencies');
+*/
 
 var app = express();
 
@@ -121,7 +121,6 @@ app.use(express.static(path.join(__dirname, 'private')), loginRequired);
 //app.use('/', indexRouter);
 
 app.get('/', loginRequired, indexRouter);
-app.use('/sites/contacts', loginRequired, siteContactsRouter);
 app.use('/sites', loginRequired, sitesRouter);
 app.use('/checkpoints', loginRequired, checkpointsRouter);
 app.use('/inspections', loginRequired, inspectionsRouter);
