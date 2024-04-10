@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 10, 2024 at 03:10 AM
+-- Generation Time: Apr 10, 2024 at 06:01 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -40,10 +40,11 @@ CREATE TABLE `checkpoint` (
 --
 
 INSERT INTO `checkpoint` (`id`, `name`, `information`, `pass_text`, `fail_text`) VALUES
-(1, 'Wave Height', 'How is the swell wave height?', 'Big', 'Small'),
+(1, 'Swell Height', 'How is the swell height?', 'Big', 'Small'),
 (2, 'Swell Period', 'How is the swell period?', 'Long', 'Short'),
 (3, 'Wind Direction', 'What is the wind direction?', 'Offshore', 'Onshore'),
-(4, 'Wind Speed', 'How is the wind speed?', 'Fast', 'Slow');
+(4, 'Wind Speed', 'How is the wind speed?', 'Fast', 'Slow'),
+(7, 'Crowded', 'How many people are out there?', 'No', 'Yes');
 
 -- --------------------------------------------------------
 
@@ -55,9 +56,17 @@ CREATE TABLE `inspection` (
   `id` int(11) NOT NULL,
   `site_id` int(11) NOT NULL,
   `date_time` datetime NOT NULL,
+  `information` text NOT NULL,
   `user_name` varchar(255) NOT NULL,
   `user_id` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `inspection`
+--
+
+INSERT INTO `inspection` (`id`, `site_id`, `date_time`, `information`, `user_name`, `user_id`) VALUES
+(1, 1, '2024-04-09 12:12:12', 'Inspection went really well.', 'Mason Ford', '1');
 
 -- --------------------------------------------------------
 
@@ -201,13 +210,13 @@ ALTER TABLE `site_contact`
 -- AUTO_INCREMENT for table `checkpoint`
 --
 ALTER TABLE `checkpoint`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `inspection`
 --
 ALTER TABLE `inspection`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `site`

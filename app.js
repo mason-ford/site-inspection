@@ -13,7 +13,7 @@ const flash = require('connect-flash');
 var indexRouter = require('./routes/index');
 var sitesRouter = require('./routes/siteRouter');
 var checkpointsRouter = require('./routes/checkpointRouter');
-var inspectionsRouter = require('./routes/inspections');
+var inspectionsRouter = require('./routes/inspectionRouter');
 var tasksRouter = require('./routes/tasks');
 
 /*

@@ -3,6 +3,10 @@ var moment = require('moment');
 var router = express.Router();
 var multer  = require('multer');
 
+const Inspection = require('../domain/inspection');
+const Site = require('../domain/site');
+const Checkpoint = require('../domain/checkpoint');
+
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, './private/uploads/photos')
@@ -15,16 +19,13 @@ var storage = multer.diskStorage({
 })
 var upload = multer({ storage: storage })
 
-const Inspection = require('../domain/inspection');
-const Site = require('../domain/site');
-
 const menuId = 'inspection';
 
 router.get('/', (req, res) => {
   console.log('Get all inspections');
 
   Inspection.getAllInspections().then(inspections => {
-    res.render('inspections/inspections', {page:'Inspections', menuId: menuId, inspections: inspections, moment: moment});
+    res.render('inspections/inspectionsView', {page:'Inspections', menuId: menuId, inspections: inspections, moment: moment});
   });
 });
 
@@ -37,12 +38,25 @@ router.get('/inspection/:id', (req, res) => {
   });
 });
 
-router.get('/addSetup', (req, res) => {
-  console.log('Add inspection setup page');
+router.get('/add', (req, res) => {
+  console.log('Add inspection');
 
-  Site.getAllSites().then(sites => {
-    res.render('inspections/inspections-addSetup', {page: 'Add Inspection', menuId: menuId, sites: sites});
-  });
+  let sites;
+
+  Site.getAllSites()
+    .then(sitesData => {
+      sites = sitesData;
+
+      return Checkpoint.getAllCheckpoints();
+    })
+    .then(checkpoints => {
+
+      res.render('inspections/inspectionAddView', { page: 'New Inspection', menuId: menuId, sites: sites, checkpoints: checkpoints })
+    })
+    .catch(err => {
+      console.error('Error:', err);
+      res.status(500).send('Internal Server Error');
+    })
 });
 
 router.post('/add', (req, res) => {

@@ -33,6 +33,7 @@ router.get('/', (req, res) => {
     })
     .catch(err => {
       console.error('Error getting sites:', err);
+      res.status(500).send('Internal Server Error');
     });
 });
 
@@ -76,7 +77,7 @@ router.get('/:siteId', (req, res) => {
     })
     .catch(err => {
       console.error('Error:', err);
-      // Handle error
+      res.status(500).send('Internal Server Error');
     });
 });
 
@@ -102,6 +103,7 @@ router.post('/add', (req, res) => {
     })
     .catch(err => {
       console.error('Error adding site:', err);
+      res.status(500).send('Internal Server Error');
     });
   
 });
@@ -137,7 +139,7 @@ router.get('/edit/:siteId', (req, res) => {
     })
     .catch(err => {
       console.error('Error:', err);
-      // Handle error
+      res.status(500).send('Internal Server Error');
     });
 });
 
@@ -166,7 +168,7 @@ router.post('/edit/:siteId', (req, res) => {
       })
       .catch(err => {
         console.error('Error editing site:', err);
-        res.redirect('/sites/'+siteId);
+        res.status(500).send('Internal Server Error');
       });
   } else if (task == "delete") {
     Site.deleteSite(siteId)
@@ -176,7 +178,7 @@ router.post('/edit/:siteId', (req, res) => {
     })
     .catch(err => {
       console.error('Error deleting site:', err);
-      res.redirect('/sites/'+siteId);
+      res.status(500).send('Internal Server Error');
     });
   }
 });
