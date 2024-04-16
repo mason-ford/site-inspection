@@ -30,9 +30,9 @@ router.get('/add', (req, res) => {
 router.post('/add', (req, res) => {
   console.log('Route to add a new checkpoint');
 
-  const { name, information, passText, failText } = req.body;
+  const { name, information, passText, failText, actionText } = req.body;
 
-  Checkpoint.addCheckpoint(name, information, passText, failText)
+  Checkpoint.addCheckpoint(name, information, passText, failText, actionText)
     .then(newCheckpointId => {
       res.redirect(req.baseUrl);
     })
@@ -89,9 +89,9 @@ router.post('/:id/update', (req, res) => {
 
   if (task === "update") {
 
-    const { name, information, passText, failText } = req.body;
+    const { name, information, passText, failText, actionText } = req.body;
 
-    Checkpoint.updateCheckpoint(checkpointId, name, information, passText, failText)
+    Checkpoint.updateCheckpoint(checkpointId, name, information, passText, failText, actionText)
       .then(() => {
         res.redirect(req.baseUrl);
       })

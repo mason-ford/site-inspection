@@ -2,6 +2,8 @@ Site:
 - Access instructions make markup? text, be able to put numbers, html, links, etc.
 - Air filter add information section for serial#, manufacturer, etc.
 
+- Apply/update should be on right side?
+
 Additions:
 - Battery tracker!
 - Generator information to site!

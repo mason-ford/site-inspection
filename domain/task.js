@@ -1,7 +1,3 @@
-var DbConnection = require('../database/db');
-var ObjectId = require('mongodb').ObjectID;
-const collection = 'tasks';
-
 class Task {
 
   constructor(id, siteId, complete, taskInfo, completeInfo) {

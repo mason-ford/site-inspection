@@ -1,11 +1,13 @@
 var express = require('express');
 var moment = require('moment');
 var router = express.Router();
-var multer  = require('multer');
+var multer = require('multer');
 
 const Inspection = require('../domain/inspection');
 const Site = require('../domain/site');
 const Checkpoint = require('../domain/checkpoint');
+const InspectionCheckpoint = require('../domain/inspectionCheckpoint');
+const { check } = require('express-validator');
 
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -24,18 +26,14 @@ const menuId = 'inspection';
 router.get('/', (req, res) => {
   console.log('Get all inspections');
 
-  Inspection.getAllInspections().then(inspections => {
-    res.render('inspections/inspectionsView', {page:'Inspections', menuId: menuId, inspections: inspections, moment: moment});
-  });
-});
-
-router.get('/inspection/:id', (req, res) => {
-  console.log('Get inspection ' + req.params.id);
-
-  let id = req.params.id;
-  Inspection.getInspection(id).then(inspection => {
-    res.render('inspections/inspections-single', {page:'Inspection', menuId: menuId, inspection: inspection})
-  });
+  Inspection.getAllInspections()
+    .then(inspections => {
+      res.render('inspections/inspectionsView', { page: 'Inspections', menuId: menuId, inspections: inspections, moment: moment });
+    })
+    .catch(err => {
+      console.error('Error:', err);
+      res.status(500).send('Internal Server Error');
+    });
 });
 
 router.get('/add', (req, res) => {
@@ -51,7 +49,7 @@ router.get('/add', (req, res) => {
     })
     .then(checkpoints => {
 
-      res.render('inspections/inspectionAddView', { page: 'New Inspection', menuId: menuId, sites: sites, checkpoints: checkpoints })
+      res.render('inspections/inspectionAddView', { page: 'New Inspection', menuId: menuId, moment: moment, sites: sites, checkpoints: checkpoints })
     })
     .catch(err => {
       console.error('Error:', err);
@@ -59,43 +57,118 @@ router.get('/add', (req, res) => {
     })
 });
 
+router.get('/:id', (req, res) => {
+  console.log('Get inspection ' + req.params.id);
+
+  let id = req.params.id;
+  let inspection, site;
+
+  Inspection.getInspectionById(id)
+    .then(inspectionData => {
+      console.log(inspectionData);
+      inspection = inspectionData;
+
+      return Site.getSiteById(inspectionData.siteId);
+    })
+    .then(siteData => {
+      console.log(siteData);
+      site = siteData
+      
+      return InspectionCheckpoint.getAllInspectionCheckpointsForInspection(inspection.id);
+    })
+    .then(icData => {
+      console.log(icData);
+
+      res.render('inspections/inspectionView', { page: 'Inspection', menuId: menuId, moment: moment, inspection: inspection, site: site, checkpoints: icData })
+    })
+    .catch(err => {
+      console.error('Error:', err);
+      res.status(500).send('Internal Server Error');
+    });
+});
+
+// Route to render update inspection page
+router.get('/:id/update', (req, res) => {
+  console.log('Route to render update inspection page');
+
+  const inspectionId = req.params.id;
+  let inspection, site;
+
+  Inspection.getInspectionById(inspectionId)
+    .then(inspectionData => {
+      if (!inspectionData) {
+        throw new Error('Inspection not found.');
+      }
+      console.log(inspectionData);
+      inspection = inspectionData;
+
+      return Site.getSiteById(inspectionData.siteId);
+    })
+    .then(siteData => {
+      console.log(siteData);
+      site = siteData
+      
+      return InspectionCheckpoint.getAllInspectionCheckpointsForInspection(inspection.id);
+    })
+    .then(icData => {
+      console.log(icData);
+
+      res.render('inspections/inspectionUpdateView', { page: 'Inspection', menuId: menuId, moment: moment, inspection: inspection, site: site, checkpoints: icData })
+    })
+    .catch(err => {
+      console.error('Error:', err);
+      res.status(500).send('Internal Server Error');
+    });
+});
+
 router.post('/add', (req, res) => {
   console.log('Add inspection page');
 
-  let siteId = req.body.site;
+  const { site, dateTime, information, userName, userId, checkpoints } = req.body;
 
-  console.log(req.body);
-
-  /*Site.getSite(siteId).then(site => {
-    console.log(site.id);
-    res.render('inspections/inspections-add', {page: 'Inspection', menuId: menuId, site: site});
-  });*/
+  Inspection.addInspection(site, dateTime, information, userName, userId, checkpoints)
+    .then(newInspectionId => {
+      res.redirect(req.baseUrl);
+    })
+    .catch(err => {
+      console.error('Error:', err);
+      res.status(500).send('Internal Server Error');
+    });
 });
 
-router.post('/addInspection', upload.any(), (req, res) => {
-  console.log('Add inspection');
-  console.log(req.body);
-  console.log(req.files);
+// Route to update or delete inspection
+router.post('/:id/update', (req, res) => {
+  console.log('Route to update or delete inspection');
 
-  let date = new Date(Date.now());
-  let user = req.body.inspection_user;
-  let siteId = req.body.inspection_site;
-  let checkpoints = req.body.inspection_checkpoints;
+  const inspectionId = req.params.id;
 
-  if(req.files.length > 0) {
-    checkpoints.forEach(checkpoint => {
-      req.files.forEach(file => {
-        if(checkpoint.id === file.fieldname) {
-          checkpoint.photo = file.filename;
-        };
+  let task = req.body.send;
+
+  if (task === "update") {
+
+    const { information, checkpoints } = req.body;
+
+    Inspection.updateInspection(inspectionId, information, checkpoints)
+      .then(() => {
+        res.redirect('./');
+      })
+      .catch(err => {
+        cconsole.error('Error:', err);
+        res.status(500).send('Internal Server Error');
       });
-    });
-  }
 
-  let inspection = new Inspection(null, date, siteId, user, checkpoints);
-  inspection.addInspection().then(id => {
-    res.redirect('/inspections/inspection/'+id);
-  });
+  } else if (task == "delete") {
+
+    Inspection.deleteInspection(inspectionId)
+      .then(() => {
+        res.redirect(req.baseUrl);
+      })
+      .catch(err => {
+        console.error('Error:', err);
+        res.status(500).send('Internal Server Error');
+      });
+
+  }
 });
 
 module.exports = router;

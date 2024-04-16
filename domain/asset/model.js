@@ -1,8 +1,3 @@
-var DbConnection = require('../../database/db');
-var ObjectId = require('mongodb').ObjectID;
-const collection = 'model';
-const AssetType = require('./asset-type');
-
 class Model {
 
     constructor(id,type,model,name,description,manufacturer) {

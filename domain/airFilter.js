@@ -16,7 +16,8 @@ class AirFilter {
     return new Promise((resolve, reject) => {
       pool.getConnection((err, connection) => {
         if (err) {
-          connection.release(); // Ensure connection is released
+          // Check if connection exists before releasing
+          if (connection) connection.release(); // Ensure connection is released
           return reject(err);
         }
 
@@ -47,7 +48,8 @@ class AirFilter {
     return new Promise((resolve, reject) => {
       pool.getConnection((err, connection) => {
         if (err) {
-          connection.release(); // Ensure connection is released
+          // Check if connection exists before releasing
+          if (connection) connection.release(); // Ensure connection is released
           return reject(err);
         }
 
@@ -72,7 +74,8 @@ class AirFilter {
     return new Promise((resolve, reject) => {
       pool.getConnection((err, connection) => {
         if (err) {
-          connection.release(); // Ensure connection is released
+          // Check if connection exists before releasing
+          if (connection) connection.release(); // Ensure connection is released
           return reject(err);
         }
 
@@ -99,7 +102,8 @@ class AirFilter {
     return new Promise((resolve, reject) => {
       pool.getConnection((err, connection) => {
         if (err) {
-          connection.release(); // Ensure connection is released
+          // Check if connection exists before releasing
+          if (connection) connection.release(); // Ensure connection is released
           return reject(err);
         }
 
@@ -129,7 +133,8 @@ class AirFilter {
     return new Promise((resolve, reject) => {
       pool.getConnection((err, connection) => {
         if (err) {
-          connection.release(); // Ensure connection is released
+          // Check if connection exists before releasing
+          if (connection) connection.release(); // Ensure connection is released
           return reject(err);
         }
 

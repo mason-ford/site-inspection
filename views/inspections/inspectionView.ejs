@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <% include ../partials/head %>
+</head>
+
+<body>
+  <% include ../partials/menu %>
+    <div class="container bg-3">
+
+      <div class="row">
+        <div class="col-sm">
+          <h1>
+            <%= page %>
+          </h1>
+        </div>
+      </div>
+
+      <%# Information %>
+        <% if (!inspection) { %>
+          <p>Does not exist</p>
+          <% } else { %>
+            <div class="row">
+              <div class="col-sm">
+                <div class="card">
+
+                  <div class="card-header">
+                      <div class="row align-items-center">
+                        <div class="col-6">
+                          Inspection
+                        </div>
+                        <div class="col-6">
+                          <a class="btn btn-warning float-right" href="/inspections/<%= inspection.id %>/update"><i class="bi bi-pencil-square"></i> Edit</a>
+                        </div>
+                      </div>
+                    </div>
+
+                  <div class="card-body">
+                    <p class="card-text">
+                      Site: <a href="/sites/<%= site.id %>"><%= site.number %> <%= site.name %> (<%= site.acronym %>)</a>
+                    </p>
+                    <p class="card-text">
+                      Information: <%= inspection.information %>
+                    </p>
+                    <p class="card-text">
+                      Date: <%= moment(inspection.dateTime).format('DD MMMM YYYY') %>
+                    </p>
+                    <p class="card-text">
+                      Edited: <%= moment(inspection.dateTimeEdit).format('DD MMMM YYYY') %>
+                    </p>
+                    <p class="card-text">
+                      User: <%= inspection.userName %>
+                    </p>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+
+            <%# Checkpoints %>
+              <div class="row my-3">
+                <div class="col-sm">
+                  <div class="card">
+
+                    <div class="card-header">
+                      Checkpoints
+                    </div>
+
+                    <% if (checkpoints.length> 0) { %>
+                      <table class="table">
+                        <thead>
+                          <tr>
+                            <th scope="col"></th>
+                            <th scope="col">Checkpoint</th>
+                            <th scope="col">Result</th>
+                            <th scope="col">Note</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <% checkpoints.forEach(checkpoint=> {
+                            var rowClass = "table-secondary";
+                            var textValue = "N/A"
+                            var icon = '<i class="bi bi-dash-circle"></i>';
+                            var resultText = 'N/A';
+                            if(checkpoint.result === 2) {
+                              rowClass = "table-success";
+                              textValue = checkpoint.passText;
+                              resultText = 'PASS';
+                              icon = '<i class="bi bi-check-circle"></i>';
+                            } else if(checkpoint.result === 1) {
+                              rowClass = "table-danger";
+                              textValue = checkpoint.failText;
+                              resultText = 'FAIL';
+                              icon = '<i class="bi bi-x-circle"></i>';
+                            } else if(checkpoint.result === 3) {
+                              rowClass = "table-warning";
+                              textValue = checkpoint.actionText;
+                              resultText = 'ACTION';
+                              icon = '<i class="bi bi-exclamation-circle"></i>';
+                            }
+                            %>
+                            <tr scope="row" class="<%= rowClass %>">
+                              <td>
+                                <%- icon %> <%= resultText %>
+                              </td>
+                              <td>
+                                <%= checkpoint.name %>
+                                <small class="text-muted">
+                                  <%= checkpoint.information %>
+                                </small>
+                              </td>
+                              <td>
+                                <%= textValue %>
+                              </td>
+                              <td>
+                                <%= checkpoint.note %>
+                              </td>
+                            </tr>
+                          <% }) %>
+                        </tbody>
+                      </table>
+                      <% } else { %>
+                        <p>No checkpoints</p>
+                      <% } %>
+
+                  </div>
+                </div>
+              </div>
+
+              <% } %>
+    </div>
+    <% include ../partials/script %>
+</body>
+
+</html>

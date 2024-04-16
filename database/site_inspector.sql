@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 10, 2024 at 06:01 AM
+-- Generation Time: Apr 16, 2024 at 05:04 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -32,19 +32,21 @@ CREATE TABLE `checkpoint` (
   `name` varchar(255) NOT NULL,
   `information` text NOT NULL,
   `pass_text` varchar(255) NOT NULL,
-  `fail_text` varchar(255) NOT NULL
+  `fail_text` varchar(255) NOT NULL,
+  `action_text` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `checkpoint`
 --
 
-INSERT INTO `checkpoint` (`id`, `name`, `information`, `pass_text`, `fail_text`) VALUES
-(1, 'Swell Height', 'How is the swell height?', 'Big', 'Small'),
-(2, 'Swell Period', 'How is the swell period?', 'Long', 'Short'),
-(3, 'Wind Direction', 'What is the wind direction?', 'Offshore', 'Onshore'),
-(4, 'Wind Speed', 'How is the wind speed?', 'Fast', 'Slow'),
-(7, 'Crowded', 'How many people are out there?', 'No', 'Yes');
+INSERT INTO `checkpoint` (`id`, `name`, `information`, `pass_text`, `fail_text`, `action_text`) VALUES
+(1, 'Swell Height', 'How is the swell height?', 'Big', 'Small', ''),
+(2, 'Swell Period', 'How is the swell period?', 'Long', 'Short', ''),
+(3, 'Wind Direction', 'What is the wind direction?', 'Offshore', 'Onshore', ''),
+(4, 'Wind Speed', 'How is the wind speed?', 'Slow', 'Fast', ''),
+(7, 'Crowded', 'How many people are out there?', 'No', 'Yes', 'Scared people away'),
+(8, 'Lost Equipment', 'Is there any lost equipment found on the beach or parking lot?', 'No', 'Yes', 'Returned equipment');
 
 -- --------------------------------------------------------
 
@@ -56,6 +58,7 @@ CREATE TABLE `inspection` (
   `id` int(11) NOT NULL,
   `site_id` int(11) NOT NULL,
   `date_time` datetime NOT NULL,
+  `date_time_edit` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `information` text NOT NULL,
   `user_name` varchar(255) NOT NULL,
   `user_id` varchar(255) NOT NULL
@@ -65,8 +68,12 @@ CREATE TABLE `inspection` (
 -- Dumping data for table `inspection`
 --
 
-INSERT INTO `inspection` (`id`, `site_id`, `date_time`, `information`, `user_name`, `user_id`) VALUES
-(1, 1, '2024-04-09 12:12:12', 'Inspection went really well.', 'Mason Ford', '1');
+INSERT INTO `inspection` (`id`, `site_id`, `date_time`, `date_time_edit`, `information`, `user_name`, `user_id`) VALUES
+(2, 1, '2024-04-14 00:00:00', '2024-04-15 20:08:57', 'First inspection.', 'Mason Ford', '1'),
+(3, 8, '2024-04-14 00:00:00', '2024-04-14 19:07:31', 'Late afternoon', 'Mason Ford', '1'),
+(8, 6, '2024-04-12 00:00:00', '2024-04-14 20:30:43', 'Inspect cox', 'Mason Ford', '1'),
+(9, 2, '2024-04-01 00:00:00', '2024-04-14 20:46:25', 'Old', 'Mason Ford', '1'),
+(10, 1, '2024-04-16 00:00:00', '2024-04-15 20:08:45', 'Future inspection.', 'Mason Ford', '1');
 
 -- --------------------------------------------------------
 
@@ -77,9 +84,44 @@ INSERT INTO `inspection` (`id`, `site_id`, `date_time`, `information`, `user_nam
 CREATE TABLE `inspection_checkpoint` (
   `id` int(11) NOT NULL,
   `inspection_id` int(11) NOT NULL,
+  `checkpoint_id` int(11) NOT NULL,
   `result` int(1) NOT NULL,
   `note` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `inspection_checkpoint`
+--
+
+INSERT INTO `inspection_checkpoint` (`id`, `inspection_id`, `checkpoint_id`, `result`, `note`) VALUES
+(6, 3, 7, 0, 'Lots of people'),
+(7, 3, 1, 0, 'Small, as usual for summer'),
+(8, 3, 2, 0, 'Long swell period though with south swell'),
+(9, 3, 3, 0, 'Nice offshore'),
+(10, 3, 4, 0, 'Slow wind speed'),
+(116, 8, 7, 1, 'Always'),
+(117, 8, 8, 2, ''),
+(118, 8, 1, 2, 'Barrels'),
+(119, 8, 2, 2, 'Lines'),
+(120, 8, 3, 2, 'Clean'),
+(121, 8, 4, 1, 'Gusty'),
+(122, 9, 7, 2, ''),
+(123, 9, 8, 3, 'Found glove and was returned.'),
+(124, 9, 1, 2, ''),
+(125, 9, 2, 2, ''),
+(126, 9, 3, 2, ''),
+(127, 9, 4, 2, ''),
+(203, 10, 7, 3, 'Scared lots of people.'),
+(204, 10, 8, 3, 'Returned a board someone left behind.'),
+(205, 10, 1, 2, ''),
+(206, 10, 2, 2, ''),
+(207, 10, 3, 1, ''),
+(208, 10, 4, 1, ''),
+(209, 2, 7, 3, ''),
+(210, 2, 1, 2, ''),
+(211, 2, 2, 2, ''),
+(212, 2, 3, 1, ''),
+(213, 2, 4, 0, '');
 
 -- --------------------------------------------------------
 
@@ -183,6 +225,14 @@ ALTER TABLE `inspection`
   ADD KEY `Inspection` (`site_id`);
 
 --
+-- Indexes for table `inspection_checkpoint`
+--
+ALTER TABLE `inspection_checkpoint`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `Checkpoint` (`checkpoint_id`),
+  ADD KEY `Inspection Checkpoint` (`inspection_id`);
+
+--
 -- Indexes for table `site`
 --
 ALTER TABLE `site`
@@ -210,31 +260,37 @@ ALTER TABLE `site_contact`
 -- AUTO_INCREMENT for table `checkpoint`
 --
 ALTER TABLE `checkpoint`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `inspection`
 --
 ALTER TABLE `inspection`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+
+--
+-- AUTO_INCREMENT for table `inspection_checkpoint`
+--
+ALTER TABLE `inspection_checkpoint`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=214;
 
 --
 -- AUTO_INCREMENT for table `site`
 --
 ALTER TABLE `site`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `site_airfilter`
 --
 ALTER TABLE `site_airfilter`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `site_contact`
 --
 ALTER TABLE `site_contact`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- Constraints for dumped tables
@@ -245,6 +301,13 @@ ALTER TABLE `site_contact`
 --
 ALTER TABLE `inspection`
   ADD CONSTRAINT `Inspection` FOREIGN KEY (`site_id`) REFERENCES `site` (`id`);
+
+--
+-- Constraints for table `inspection_checkpoint`
+--
+ALTER TABLE `inspection_checkpoint`
+  ADD CONSTRAINT `Checkpoint` FOREIGN KEY (`checkpoint_id`) REFERENCES `checkpoint` (`id`),
+  ADD CONSTRAINT `Inspection Checkpoint` FOREIGN KEY (`inspection_id`) REFERENCES `inspection` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `site_airfilter`

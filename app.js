@@ -5,12 +5,12 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var logger = require('morgan');
-const session = require('express-session');
-const flash = require('connect-flash');
+//const session = require('express-session');
+//const flash = require('connect-flash');
 //const msal = require('@azure/msal-node');
 
 //var authRouter = require('./routes/auth'); 
-var indexRouter = require('./routes/index');
+var indexRouter = require('./routes/indexRouter');
 var sitesRouter = require('./routes/siteRouter');
 var checkpointsRouter = require('./routes/checkpointRouter');
 var inspectionsRouter = require('./routes/inspectionRouter');
@@ -88,12 +88,12 @@ app.use(function(req, res, next) {
 */
 
 function loginRequired(req, res, next) {
-  if(process.env.PRODUCTION === 'false') {
+  //if(process.env.PRODUCTION === 'false') {
     res.locals.user = {
       displayName: 'John Doe',
       email: 'jdoe@crest.ca'
     };
-  }
+  //}
 
   if (!res.locals.user) {
     return res.redirect('/auth/signinPage');
@@ -148,7 +148,5 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
-
-app.listen(3000);
 
 module.exports = app;

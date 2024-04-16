@@ -1,11 +1,3 @@
-var fs = require('fs').promises;
-var xml2js = require('xml2js');
-const Station = require('./station');
-const licenseFolder = './private/uploads/licenses/';
-
-var DbConnection = require('../../database/db');
-const collection = 'licenses';
-
 class License {
 
     constructor(parsed) {

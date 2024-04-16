@@ -1,86 +1,132 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
- <% include partials/head %> 
+  <% include partials/head %>
 </head>
+
 <body>
-<% include partials/menu %>
-<div class="container-fluid bg-3">
+  <% include partials/menu %>
+    <div class="container bg-3">
 
-  <div class="row">
-    <div class="col-sm">
-      <h1><%= page %></h1>
-    </div>
-  </div>
-
-  <div class="row mb-3">
-
-    <div class="col-sm-6 mb-3">
-      <div class="card">
-
-        <div class="card-header">
-          Sites that Needs Attention
+      <div class="row">
+        <div class="col-sm">
+          <h1><i class="bi bi-house-door"></i>
+            <%= page %>
+          </h1>
         </div>
-        <% if (needsAttention && needsAttention.length > 0) { %>
-          <ul class="list-group list-group-flush">
-            <% needsAttention.forEach(attention => { %>
-              <li class="list-group-item">
-                <div class="row">
-                  <div class="col-sm-4">
-                    <a href="/sites/site/<%= attention.siteId %>"><%= attention.siteName %></a>
+      </div>
+
+
+      <div class="row">
+
+        <%# Latest Inspections %>
+          <div class="col-sm-6 mb-3">
+            <% if (inspections && inspections.length> 0) { %>
+              <div class="card">
+
+                <div class="card-header">
+                  Latest Inspections
+                </div>
+
+                <ul class="list-group list-group-flush">
+                  <% inspections.forEach(inspection=> { %>
+                    <li class="list-group-item">
+                      <div class="row">
+                        <div class="col-sm-6">
+                          <a href="/inspections/<%= inspection.id %> %>">
+                            <%= moment(inspection.dateTime).format('DD MMMM YYYY') %>
+                          </a>
+                        </div>
+                        <div class="col-sm-6">
+                          <%= inspection.siteNumber %>
+                            <%= inspection.siteName %> (<%= inspection.siteAcronym %>)
+                        </div>
+                    </li>
+                    <% }); %>
+                </ul>
+              </div>
+              <% } else { %>
+                <p>No inspections</p>
+                <% } %>
+          </div>
+
+          <%# Oldest Inspections %>
+            <div class="col-sm-6 mb-3">
+              <% if (sites && sites.length > 0) { %>
+                <div class="card">
+
+                  <div class="card-header">
+                    Sites with Oldest Inspections
                   </div>
-                  <div class="col-sm-4">
-                    <%= attention.checkpoint %>
-                  </div>
-                  <div class="col-sm-4">
-                    <%= moment(attention.date).format('MMMM DD, YYYY') %>
-                  </div>
-              </li>
+
+                  <ul class="list-group list-group-flush">
+                    <% sites.forEach(site=> { %>
+                      <li class="list-group-item">
+                        <div class="row">
+                          <div class="col-sm-6">
+                            <% if(site.newestInspection) { %>
+                              <a href="/sites/site.siteId %>">
+                                <%= moment(site.newestInspection).format('DD MMMM YYYY') %>
+                              </a>
+                              <% } else { %>
+                                Never
+                                <% } %>
+                          </div>
+                          <div class="col-sm-6">
+                            <%= site.number %>
+                              <%= site.name %> (<%= site.acronym %>)
+                          </div>
+
+                      </li>
+                      <% }); %>
+                  </ul>
+                </div>
+                <% } else { %>
+                  <p>No sites</p>
+                  <% } %>
+            </div>
+
+      </div>
+
+    </div>
+</body>
+<% include partials/script %>
+
+</html>
+
+<% /* %>
+  <div class="col-sm">
+    <div class="card">
+
+      <div class="card-header">
+        Sites that Needs Attention
+      </div>
+      <% if (needsAttention && needsAttention.length> 0) { %>
+        <ul class="list-group list-group-flush">
+          <% needsAttention.forEach(attention=> { %>
+            <li class="list-group-item">
+              <div class="row">
+                <div class="col-sm-4">
+                  <a href="/sites/site/<%= attention.siteId %>">
+                    <%= attention.siteName %>
+                  </a>
+                </div>
+                <div class="col-sm-4">
+                  <%= attention.checkpoint %>
+                </div>
+                <div class="col-sm-4">
+                  <%= moment(attention.date).format('MMMM DD, YYYY') %>
+                </div>
+            </li>
             <% }) %>
-          </ul>
+        </ul>
         <% } else { %>
           <div class="card-body">
             <p class="card-text">No sites need attention</p>
           </div>
-        <% } %>
-        
-      </div>
+          <% } %>
+
     </div>
-
-    <div class="col-sm-6 mb-3">
-      <% if (oldestInspection && oldestInspection.length > 0) { %>
-        <div class="card">
-
-          <div class="card-header">
-            Oldest 10 Site Inspections
-          </div>
-
-          <ul class="list-group list-group-flush">
-            <% for(var i = 0; i < 10 && i < oldestInspection.length; i++) { %>
-              <li class="list-group-item">
-                <div class="row">
-                  <div class="col-sm-6">
-                    <a href="/sites/site/<%= oldestInspection[i].siteId %>"><%= oldestInspection[i].siteName %></a>
-                  </div>
-                  <div class="col-sm-6">
-                    <% if(oldestInspection[i].date) { %>
-                      <%= moment(oldestInspection[i].date).format('MMMM DD, YYYY') %>
-                    <% } else { %>
-                      Never
-                    <% } %>
-                  </div>
-              </li>
-            <% } %>
-          </ul>
-        </div>
-      <% } else { %>
-          <p>No sites</p>
-      <% } %>
-    </div>
-
   </div>
-
-</div>
-</body>
-<% include partials/script %>
-</html>
+  <% */ %>

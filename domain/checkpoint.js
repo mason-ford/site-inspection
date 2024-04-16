@@ -2,12 +2,13 @@ var pool = require('../database/mysql');
 
 class Checkpoint {
 
-    constructor(id, name, information, passText, failText) {
+    constructor(id, name, information, passText, failText, actionText) {
         this.id = id;
         this.name = name;
         this.information = information;
         this.passText = passText;
         this.failText = failText;
+        this.actionText = actionText;
     }
 
     // Method to get a checkpoint by ID
@@ -15,7 +16,8 @@ class Checkpoint {
         return new Promise((resolve, reject) => {
             pool.getConnection((err, connection) => {
                 if (err) {
-                    connection.release(); // Ensure connection is released
+                    // Check if connection exists before releasing
+                    if (connection) connection.release(); // Ensure connection is released
                     return reject(err);
                 }
 
@@ -33,7 +35,7 @@ class Checkpoint {
                     }
 
                     const checkpointData = results[0];
-                    const checkpoint = new Checkpoint(checkpointData.id, checkpointData.name, checkpointData.information, checkpointData.pass_text, checkpointData.fail_text);
+                    const checkpoint = new Checkpoint(checkpointData.id, checkpointData.name, checkpointData.information, checkpointData.pass_text, checkpointData.fail_text, checkpointData.action_text);
                     resolve(checkpoint);
                 });
             });
@@ -45,11 +47,12 @@ class Checkpoint {
         return new Promise((resolve, reject) => {
             pool.getConnection((err, connection) => {
                 if (err) {
-                    connection.release(); // Ensure connection is released
+                    // Check if connection exists before releasing
+                    if (connection) connection.release(); // Ensure connection is released
                     return reject(err);
                 }
 
-                const sql = 'SELECT * FROM checkpoint';
+                const sql = 'SELECT * FROM checkpoint ORDER BY name ASC';
 
                 connection.query(sql, (err, results) => {
                     connection.release(); // Release connection after query execution
@@ -58,7 +61,7 @@ class Checkpoint {
                         return reject(err);
                     }
                     console.log(results);
-                    const checkpoints = results.map(checkpointData => new Checkpoint(checkpointData.id, checkpointData.name, checkpointData.information, checkpointData.pass_text, checkpointData.fail_text));
+                    const checkpoints = results.map(checkpointData => new Checkpoint(checkpointData.id, checkpointData.name, checkpointData.information, checkpointData.pass_text, checkpointData.fail_text, checkpointData.action_text));
                     resolve(checkpoints);
                 });
             });
@@ -66,16 +69,17 @@ class Checkpoint {
     }
 
     // Method to add a checkpoint
-    static addCheckpoint(name, information, passText, failText) {
+    static addCheckpoint(name, information, passText, failText, actionText) {
         return new Promise((resolve, reject) => {
             pool.getConnection((err, connection) => {
                 if (err) {
-                    connection.release(); // Ensure connection is released
+                    // Check if connection exists before releasing
+                    if (connection) connection.release(); // Ensure connection is released
                     return reject(err);
                 }
 
-                const sql = 'INSERT INTO checkpoint (name, information, pass_text, fail_text) VALUES (?, ?, ?, ?)';
-                const values = [name, information, passText, failText];
+                const sql = 'INSERT INTO checkpoint (name, information, pass_text, fail_text, action_text) VALUES (?, ?, ?, ?, ?)';
+                const values = [name, information, passText, failText, actionText];
 
                 connection.query(sql, values, (err, result) => {
                     connection.release(); // Release connection after query execution
@@ -94,16 +98,17 @@ class Checkpoint {
     }
 
     // Method to update a checkpoint
-    static updateCheckpoint(checkpointId, newName, newInformation, newPassText, newFailText) {
+    static updateCheckpoint(checkpointId, newName, newInformation, newPassText, newFailText, newActionText) {
         return new Promise((resolve, reject) => {
             pool.getConnection((err, connection) => {
                 if (err) {
-                    connection.release(); // Ensure connection is released
+                    // Check if connection exists before releasing
+                    if (connection) connection.release(); // Ensure connection is released
                     return reject(err);
                 }
 
-                const sql = 'UPDATE checkpoint SET name = ?, information = ?, pass_text = ?, fail_text = ? WHERE id = ?';
-                const values = [newName, newInformation, newPassText, newFailText, checkpointId];
+                const sql = 'UPDATE checkpoint SET name = ?, information = ?, pass_text = ?, fail_text = ?, action_text = ? WHERE id = ?';
+                const values = [newName, newInformation, newPassText, newFailText, newActionText, checkpointId];
 
                 connection.query(sql, values, (err, result) => {
                     connection.release(); // Release connection after query execution
@@ -128,7 +133,8 @@ class Checkpoint {
         return new Promise((resolve, reject) => {
             pool.getConnection((err, connection) => {
                 if (err) {
-                    connection.release(); // Ensure connection is released
+                    // Check if connection exists before releasing
+                    if (connection) connection.release(); // Ensure connection is released
                     return reject(err);
                 }
 

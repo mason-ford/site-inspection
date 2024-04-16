@@ -46,21 +46,30 @@
                   </div>
 
                   <div class="form-row">
-                    <div class="form-group col-md-6">
+                    <div class="form-group col-md-4">
                       <label for="type">Pass Text</label>
                       <input type="text" class="form-control" name="passText" id="passText" required title="Pass Text">
                     </div>
-                    <div class="form-group col-md-6">
+                    <div class="form-group col-md-4">
                       <label for="type">Fail Text</label>
                       <input type="text" class="form-control" name="failText" id="failText" required title="Fail Text">
+                    </div>
+                    <div class="form-group col-md-4">
+                      <label for="type">Action Text</label>
+                      <input type="text" class="form-control" name="actionText" id="actionText" title="Action Text">
                     </div>
                   </div>
 
                 </div>
 
                 <div class="card-footer">
-                  <button type="submit" name="send" class="btn btn-success float-left"><i class="bi bi-clipboard-plus"></i> Add</button>
-                  <a href="../" class="btn btn-secondary float-right"><i class="bi bi-clipboard2-minus"></i> Cancel</a>
+                  <div class="form-row">
+                    <div class="col-sm">
+                      <button type="submit" name="send" value="update" class="btn btn-success float-right"><i
+                          class="bi bi-check-circle"></i> Add</button>
+                      <a href="../" class="btn btn-secondary float-left">Cancel</a>
+                    </div>
+                  </div>
                 </div>
 
               </div>

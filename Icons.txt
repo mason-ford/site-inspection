@@ -1,0 +1,11 @@
+Add
+<i class="bi bi-plus-circle"></i>
+
+Edit
+<i class="bi bi-pencil-square"></i>
+
+Update
+<i class="bi bi-check-circle"></i>
+
+Delete
+<i class="bi bi-x-circle"></i>

@@ -12,7 +12,7 @@
       <h1><a href="/sites/<%= site.id %>"><%= site.name %></a> - Contacts</h1>
     </div>
     <div class="col-6">
-      <a class="btn btn-primary float-right" href="/sites/<%= site.id %>/contacts/add"><i class="bi bi-person-add"></i> Add Contact</a>
+      <a class="btn btn-primary float-right" href="/sites/<%= site.id %>/contacts/add"><i class="bi bi-plus-circle"></i> Add Contact</a>
     </div>
   </div>
 
@@ -29,7 +29,7 @@
                 <%= contacts[i].name %>
               </div>
               <div class="col-6">
-                <a class="btn btn-warning float-right" href="/sites/<%= site.id %>/contacts/edit/<%= contacts[i].id %>"><i class="bi bi-person-gear"></i> Edit</a>
+                <a class="btn btn-warning float-right" href="/sites/<%= site.id %>/contacts/edit/<%= contacts[i].id %>"><i class="bi bi-pencil-square"></i> Edit</a>
               </div>
             </div>
           </div>

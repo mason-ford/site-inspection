@@ -9,10 +9,10 @@
 
   <div class="row align-items-center">
     <div class="col-6">
-      <h1><i class="bi bi-clipboard"></i></i> Checkpoints</h1>
+      <h1><i class="bi bi-card-checklist"></i> Checkpoints</h1>
     </div>
     <div class="col-6">
-      <a class="btn btn-primary float-right" href="/checkpoints/add/"><i class="bi bi-clipboard-plus"></i> Add Checkpoint</a>
+      <a class="btn btn-primary float-right" href="/checkpoints/add/"><i class="bi bi-plus-circle"></i> Add Checkpoint</a>
     </div>
   </div>
 
@@ -27,7 +27,7 @@
               <div class="col-sm-2">
                 Name 
               </div>
-              <div class="col-sm-5">
+              <div class="col-sm-3">
                 Information
               </div>
               <div class="col-sm-2">
@@ -35,6 +35,9 @@
               </div>
               <div class="col-sm-2">
                 Fail Text
+              </div>
+              <div class="col-sm-2">
+                Action Text
               </div>
               <div class="col-sm-1">
                 Edit
@@ -49,7 +52,7 @@
                   <div class="col-sm-2">
                     <%= checkpoint.name %>
                   </div>
-                  <div class="col-sm-5">
+                  <div class="col-sm-3">
                     <%= checkpoint.information %>
                   </div>
                   <div class="col-sm-2">
@@ -58,8 +61,11 @@
                   <div class="col-sm-2">
                     <%= checkpoint.failText %>
                   </div>
+                  <div class="col-sm-2">
+                    <%= checkpoint.actionText %>
+                  </div>
                   <div class="col-sm-1">
-                    <a class="btn btn-warning" href="/checkpoints/<%= checkpoint.id %>/update"><i class="bi bi-gear"></i> Edit</a>
+                    <a class="btn btn-warning" href="/checkpoints/<%= checkpoint.id %>/update"><i class="bi bi-pencil-square"></i> Edit</a>
                   </div>
                 </div>
               </li>

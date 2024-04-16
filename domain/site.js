@@ -1,6 +1,4 @@
-var DbConnection = require('../database/db');
 var pool  = require('../database/mysql');
-const collection = 'sites';
 
 class Site {
 
@@ -83,32 +81,31 @@ class Site {
     });
   }
 
-  findNewestInspection() {
-    if(this.inspections.length > 0) {
-      var newestInspection = this.inspections[0];
-      for(var ins in this.inspections) {
-        if(this.inspections[ins].date > newestInspection.date) {
-          newestInspection = this.inspections[ins];
+  // Method to get the newest inspection date for this site
+  getNewestInspectionDate() {
+    return new Promise((resolve, reject) => {
+      pool.getConnection((err, connection) => {
+        if (err) {
+          // Check if connection exists before releasing
+          if (connection) connection.release(); // Ensure connection is released
+          return reject(err);
         }
-      }
-      this.newestInspection = newestInspection;
-    } else {
-      this.newestInspection = null;
-    }
-  }
 
-  findOldestInspection() {
-    if(this.inspections.length > 0) {
-      var oldestInspection = this.inspections[0];
-      for(var ins in this.inspections) {
-        if(this.inspections[ins].date < oldestInspection.date) {
-          oldestInspection = this.inspections[ins];
-        }
-      }
-      this.oldestInspection = oldestInspection;
-    } else {
-      this.oldestInspection = null;
-    }
+        const sql = 'SELECT MAX(date_time) AS newestInspectionDate FROM inspection WHERE site_id = ?';
+        
+        connection.query(sql, [this.id], (err, results) => {
+          connection.release(); // Release connection after query execution
+          
+          if (err) {
+            return reject(err);
+          }
+
+          // Extract the newest inspection date from the query result
+          const newestInspectionDate = results[0].newestInspectionDate;
+          resolve(newestInspectionDate);
+        });
+      });
+    });
   }
 
     // Method to get a site by id
@@ -216,7 +213,7 @@ class Site {
           return reject(err);
         }
         
-        const sql = 'SELECT * FROM site';
+        const sql = 'SELECT * FROM site ORDER BY number ASC';
         
         connection.query(sql, (err, results) => {
           connection.release(); // Release connection after query execution
@@ -233,150 +230,12 @@ class Site {
     });
   }
 
-  static async getAllSitesWithInfo() {
-    try {
-      let db = await DbConnection.Get();
-      let result = await db.collection(collection).aggregate([
-        {
-          '$unwind': {
-            'path': '$checkpoints', 
-            'preserveNullAndEmptyArrays': true
-          }
-        }, {
-          '$lookup': {
-            'from': 'checkpoints', 
-            'localField': 'checkpoints', 
-            'foreignField': '_id', 
-            'as': 'checkpoint'
-          }
-        }, {
-          '$unwind': {
-            'path': '$checkpoint', 
-            'preserveNullAndEmptyArrays': true
-          }
-        }, {
-          '$sort': {
-            'checkpoint.name': 1
-          }
-        }, {
-          '$group': {
-            '_id': '$_id', 
-            'name': {
-              '$first': '$name'
-            }, 
-            'acronym': {
-              '$first': '$acronym'
-            }, 
-            'number': {
-              '$first': '$number'
-            }, 
-            'address': {
-              '$first': '$address'
-            }, 
-            'airfilter': {
-              '$first': '$airfilter'
-            }, 
-            'checkpoints': {
-              '$push': '$checkpoint'
-            }
-          }
-        }, {
-          '$lookup': {
-            'from': 'inspections', 
-            'localField': '_id', 
-            'foreignField': 'site_id', 
-            'as': 'inspections'
-          }
-        }, {
-          '$unwind': {
-            'path': '$inspections', 
-            'preserveNullAndEmptyArrays': true
-          }
-        }, {
-          '$sort': {
-            'inspections.date': 1
-          }
-        }, {
-          '$group': {
-            '_id': '$_id', 
-            'name': {
-              '$first': '$name'
-            }, 
-            'acronym': {
-              '$first': '$acronym'
-            }, 
-            'number': {
-              '$first': '$number'
-            }, 
-            'address': {
-              '$first': '$address'
-            }, 
-            'airfilter': {
-              '$first': '$airfilter'
-            }, 
-            'checkpoints': {
-              '$first': '$checkpoints'
-            }, 
-            'inspections': {
-              '$push': '$inspections'
-            }
-          }
-        }, {
-          '$sort': {
-            'number': 1
-          }
-        }
-      ]).toArray();
-      var returnSites = [];
-      
-      for(let i = 0; i < result.length; i++) {
-        returnSites.push(new Site(result[i]._id, result[i].name, result[i].acronym, result[i].number, result[i].address, "", result[i].airfilter, null, result[i].checkpoints, result[i].inspections));
-      }
-
-      return returnSites;
-    } catch (e) {
-      console.log(`ERROR! : ${e}`);
-      return e;
-    }
-  }
-
-  static async getAllSitesWithInspectionInfo() {
-    try {
-        let db = await DbConnection.Get();
-        let result = await db.collection(collection).aggregate([
-          {
-              '$lookup': {
-                  'from': 'inspections', 
-                  'localField': '_id', 
-                  'foreignField': 'site_id', 
-                  'as': 'inspections'
-              }
-          }, {
-              '$sort': {
-                  'number': 1
-              }
-          }
-      ]).toArray();
-
-        var sitesArray = [];
-        result.forEach(s => {
-          var newSite = new Site(s._id, s.name, s.acronym, s.number, s.address, "", s.airfilter, s.checkpoints, s.contact, s.inspections);
-          newSite.findNewestInspection();
-          sitesArray.push(newSite);
-        });
-
-        return sitesArray;
-    } catch (e) {
-        console.log(e);
-        return e;
-    }
-  }
-
   static deleteSite(siteId) {
     return new Promise((resolve, reject) => {
       pool.getConnection((err, connection) => {
         if (err) {
-          connection.release(); // Ensure connection is released
+          // Check if connection exists before releasing
+          if (connection) connection.release(); // Ensure connection is released
           return reject(err);
         }
         
