@@ -113,7 +113,7 @@ class Inspection {
           return reject(err);
         }
 
-        const sql = 'SELECT * FROM inspection WHERE site_id = ? ORDER BY date_time DESC';
+        const sql = 'SELECT * FROM inspection WHERE site_id = ? ORDER BY date_time_edit DESC';
 
         connection.query(sql, [siteId], (err, results) => {
           connection.release(); // Release connection after query execution
@@ -158,7 +158,7 @@ class Inspection {
             site.number AS siteNumber
           FROM inspection 
           JOIN site ON inspection.site_id = site.id
-          ORDER BY inspection.date_time DESC
+          ORDER BY inspection.date_time_edit DESC
           LIMIT ?`;
 
         connection.query(sql, [amount], (err, results) => {
@@ -205,7 +205,7 @@ class Inspection {
             site.number AS siteNumber
           FROM inspection 
           JOIN site ON inspection.site_id = site.id
-          ORDER BY inspection.date_time DESC`;
+          ORDER BY inspection.date_time_edit DESC`;
 
         connection.query(sql, (err, results) => {
           connection.release(); // Release connection after query execution

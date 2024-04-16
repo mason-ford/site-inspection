@@ -128,7 +128,7 @@ router.post('/add', (req, res) => {
 
   Inspection.addInspection(site, dateTime, information, userName, userId, checkpoints)
     .then(newInspectionId => {
-      res.redirect(req.baseUrl);
+      res.redirect(req.baseUrl +"/" + newInspectionId);
     })
     .catch(err => {
       console.error('Error:', err);

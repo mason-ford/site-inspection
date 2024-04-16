@@ -41,9 +41,6 @@
                       Site: <a href="/sites/<%= site.id %>"><%= site.number %> <%= site.name %> (<%= site.acronym %>)</a>
                     </p>
                     <p class="card-text">
-                      Information: <%= inspection.information %>
-                    </p>
-                    <p class="card-text">
                       Date: <%= moment(inspection.dateTime).format('DD MMMM YYYY') %>
                     </p>
                     <p class="card-text">
@@ -51,6 +48,9 @@
                     </p>
                     <p class="card-text">
                       User: <%= inspection.userName %>
+                    </p>
+                    <p class="card-text">
+                      Information: <div style="white-space: pre-wrap"><%= inspection.information %></div>
                     </p>
                   </div>
 

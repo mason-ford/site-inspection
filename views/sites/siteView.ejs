@@ -37,7 +37,7 @@
                   </p>
                   <p class="card-text">Address: <%= site.address %>
                   </p>
-                  <p class="card-text">Location (Lat, Long): <%= site.latlong.y %>, <%= site.latlong.x %>
+                  <p class="card-text">Location (Lat, Long): <a href="https://maps.google.com/?q=<%= site.latlong.y %>,<%= site.latlong.x %>" target="_blank"><%= site.latlong.y %>, <%= site.latlong.x %></a>
                   </p>
                 </li>
                 <li class="list-group-item">
@@ -46,7 +46,8 @@
                   </p>
                   <p class="card-text">Key Information: <%= site.keyInstructions %>
                   </p>
-                  <p class="card-text">Access Instructions: <%= site.accessInstructions %>
+                  <p class="card-text">Access Instructions:
+                    <div style="white-space: pre-wrap"><%= site.accessInstructions %></div>
                   </p>
                 </li>
               </ul>
@@ -163,7 +164,7 @@
                             </p>
                             <p class="card-text">Email: <%= contacts[i].email %>
                             </p>
-                            <p class="card-text">Info: <%= contacts[i].info %>
+                            <p class="card-text">Info:<div style="white-space: pre-wrap"><%= contacts[i].information %></div>
                             </p>
                           </li>
                           <% } %>
@@ -204,7 +205,7 @@
                               </p>
                               <p class="card-text">Quantity: <%= airFilters[i].quantity %>
                               </p>
-                              <p class="card-text">Information: <%= airFilters[i].information %>
+                              <p class="card-text">Information:<div style="white-space: pre-wrap"><%= airFilters[i].information %></div>
                               </p>
                             </li>
                             <% } %>

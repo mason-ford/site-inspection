@@ -88,12 +88,12 @@ app.use(function(req, res, next) {
 */
 
 function loginRequired(req, res, next) {
-  //if(process.env.PRODUCTION === 'false') {
+  if(process.env.PRODUCTION === 'false') {
     res.locals.user = {
       displayName: 'John Doe',
       email: 'jdoe@crest.ca'
     };
-  //}
+  }
 
   if (!res.locals.user) {
     return res.redirect('/auth/signinPage');
