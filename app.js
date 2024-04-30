@@ -5,6 +5,8 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var logger = require('morgan');
+const multer = require('multer');
+const AWS = require('aws-sdk');
 //const session = require('express-session');
 //const flash = require('connect-flash');
 //const msal = require('@azure/msal-node');
@@ -102,8 +104,21 @@ function loginRequired(req, res, next) {
   next();
 }
 
+
+// Configure Multer for file uploads
+/*const storage = multer.memoryStorage(); // Store files in memory (to be uploaded to S3)
+const upload = multer({ storage: storage }).array('photos', 5); // 'photos' is the name attribute of the file input field, and 5 is the maximum number of files allowed to upload
+
+// Configure AWS SDK
+AWS.config.update({
+  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+  region: process.env.S3_REGION // Specify the region where your S3 bucket is located
+});
+const s3 = new AWS.S3();*/
+
 app.use(bodyParser.json()); // parse form data client
-app.use(bodyParser.urlencoded({extended:true}));
+app.use(bodyParser.urlencoded({extended:true})); 
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

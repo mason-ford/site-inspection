@@ -19,7 +19,7 @@
 
             <div class="row mb-3">
                 <div class="col-sm">
-                    <form class="inspection-add-form" action="" method="post">
+                    <form class="inspection-add-form" action="" method="post" enctype="multipart/form-data">
 
                         <%# Inspection Information %>
                             <div class="card">
@@ -74,7 +74,7 @@
                                                         <%= checkpoints[i].information %>
                                                     </small>
                                                 </div>
-                                                <div class="col-md-3">
+                                                <div class="col-md-2">
                                                     <div class="form-check">
                                                         <input class="form-check-input" type="radio"
                                                             id="checkpoint-<%= i %>-pass"
@@ -113,12 +113,16 @@
                                                             for="checkpoint-<%= i %>-na">N/A</label>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-6">
+                                                <div class="col-md-5">
                                                     <label for="checkpoint-<%= i %>-note">Note:</label>
                                                     <textarea class="form-control form-control-sm"
                                                         id="checkpoint-<%= i %>-note"
                                                         name="checkpoints[<%= i %>][note]"
                                                         title="<%= checkpoints[i].name %> Note" rows="2"></textarea>
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <label for="checkpoint-<%= i %>-photos">Photos:</label>
+                                                    <input type="file" id="checkpoint-<%= i %>-photos" name="photos_<%= checkpoints[i].id %>" multiple>
                                                 </div>
                                             </div>
                                         </li>

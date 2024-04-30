@@ -27,11 +27,17 @@ class InspectionCheckpoint {
 
                 const sql = `
                     SELECT 
-                        inspection_checkpoint.*,
-                        checkpoint.*
-                    FROM inspection_checkpoint 
-                    JOIN checkpoint ON inspection_checkpoint.checkpoint_id = checkpoint.id
-                    WHERE inspection_checkpoint.inspection_id = ?`;
+                        ic.*,
+                        c.*,
+                        p.filename AS photo_filename
+                    FROM 
+                        inspection_checkpoint ic
+                    JOIN 
+                        checkpoint c ON ic.checkpoint_id = c.id
+                    LEFT JOIN 
+                        photo p ON ic.id = p.inspection_checkpoint_id
+                    WHERE 
+                        ic.inspection_id = ?`;
 
                 connection.query(sql, [inspectionId], (err, results) => {
                     connection.release(); // Release connection after query execution
