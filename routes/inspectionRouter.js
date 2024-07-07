@@ -4,6 +4,7 @@ var router = express.Router();
 var multer = require('multer');
 const AWS = require('aws-sdk');
 
+const loginRequired = require('../middleware/loginRequired');
 const Inspection = require('../domain/inspection');
 const Site = require('../domain/site');
 const Checkpoint = require('../domain/checkpoint');
@@ -137,7 +138,7 @@ router.get('/:id/update', (req, res) => {
     });
 });
 
-router.post('/add', upload.any(), (req, res) => {
+router.post('/add', upload.any(), loginRequired, (req, res) => {
   console.log('Add inspection page');
 
   const { site, dateTime, information, userName, userId, checkpoints } = req.body;
@@ -215,7 +216,7 @@ router.post('/add', upload.any(), (req, res) => {
 });
 
 // Route to update or delete inspection
-router.post('/:id/update', (req, res) => {
+router.post('/:id/update', loginRequired, (req, res) => {
   console.log('Route to update or delete inspection');
 
   const inspectionId = req.params.id;

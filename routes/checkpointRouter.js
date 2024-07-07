@@ -1,6 +1,8 @@
 var express = require('express');
 var moment = require('moment');
 var router = express.Router();
+
+const loginRequired = require('../middleware/loginRequired');
 const Checkpoint = require('../domain/checkpoint.js');
 
 const menuId = 'checkpoint';
@@ -27,7 +29,7 @@ router.get('/add', (req, res) => {
 });
 
 // Route to add a new checkpoint
-router.post('/add', (req, res) => {
+router.post('/add', loginRequired, (req, res) => {
   console.log('Route to add a new checkpoint');
 
   const { name, information, passText, failText, actionText } = req.body;
@@ -80,7 +82,7 @@ router.get('/:id/update', (req, res) => {
 });
 
 // Route to update or delete checkpoint
-router.post('/:id/update', (req, res) => {
+router.post('/:id/update', loginRequired, (req, res) => {
   console.log('Route to update or delete checkpoint');
 
   const checkpointId = req.params.id;
