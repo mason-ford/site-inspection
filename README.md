@@ -72,6 +72,7 @@
       </ul>
     </li>
     <li><a href="#usage">Usage</a></li>
+    <li><a href="#roadmap">Roadmap</a></li>
     <li><a href="#contributing">Contributing</a></li>
     <li><a href="#license">License</a></li>
     <li><a href="#contact">Contact</a></li>
@@ -154,6 +155,16 @@ To get started with the Site Inspection Web App, follow these steps:
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
+
+
+<!-- ROADMAP -->
+## Roadmap
+
+- [ ] Proper login and user management
+
+See the [open issues](https://github.com/mason-ford/site-inspection/issues) for a full list of proposed features (and known issues).
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
 <!-- CONTRIBUTING -->
