@@ -1,7 +1,7 @@
 node_modules
-TO DO.txt
-Dockerfile
 siteinspector.code-workspace
 .env
 certs/cert.pem
 certs/key.pem
+Icons.txt
+TODO.txt
