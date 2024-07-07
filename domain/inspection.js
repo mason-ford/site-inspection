@@ -113,7 +113,7 @@ class Inspection {
           return reject(err);
         }
 
-        const sql = 'SELECT * FROM inspection WHERE site_id = ? ORDER BY date_time_edit DESC';
+        const sql = 'SELECT * FROM inspection WHERE site_id = ? ORDER BY date_time DESC';
 
         connection.query(sql, [siteId], (err, results) => {
           connection.release(); // Release connection after query execution
@@ -158,7 +158,7 @@ class Inspection {
             site.number AS siteNumber
           FROM inspection 
           JOIN site ON inspection.site_id = site.id
-          ORDER BY inspection.date_time_edit DESC
+          ORDER BY inspection.date_time DESC
           LIMIT ?`;
 
         connection.query(sql, [amount], (err, results) => {
@@ -205,7 +205,7 @@ class Inspection {
             site.number AS siteNumber
           FROM inspection 
           JOIN site ON inspection.site_id = site.id
-          ORDER BY inspection.date_time_edit DESC`;
+          ORDER BY inspection.date_time DESC`;
 
         connection.query(sql, (err, results) => {
           connection.release(); // Release connection after query execution
@@ -326,6 +326,132 @@ class Inspection {
           } else {
             reject(new Error('Inspection not found.'));
           }
+        });
+      });
+    });
+  }
+
+  // Method to get inspections within a specific date range
+  static getInspectionsWithinDateRange(startDate, endDate) {
+    return new Promise((resolve, reject) => {
+      pool.getConnection((err, connection) => {
+        if (err) {
+          if (connection) {
+            connection.release();
+          }
+          return reject(err);
+        }
+
+        const sql = `
+          SELECT inspection.*, site.name AS siteName, site.acronym AS siteAcronym, site.number AS siteNumber
+          FROM inspection
+          JOIN site ON inspection.site_id = site.id
+          WHERE inspection.date_time BETWEEN ? AND ?
+        `;
+        connection.query(sql, [startDate, endDate], (err, results) => {
+          connection.release();
+
+          if (err) {
+            return reject(err);
+          }
+
+          const inspections = results.map(inspectionData => ({
+            id: inspectionData.id,
+            siteId: inspectionData.site_id,
+            siteName: inspectionData.siteName,
+            siteAcronym: inspectionData.siteAcronym,
+            siteNumber: inspectionData.siteNumber,
+            dateTime: inspectionData.date_time,
+            dateTimeEdit: inspectionData.date_time_edit,
+            information: inspectionData.information,
+            userName: inspectionData.user_name,
+            userId: inspectionData.user_id
+          }));
+
+          resolve(inspections);
+        });
+      });
+    });
+  }
+
+  // Method to get inspections within a specific date range for report
+  static getInspectionsWithinDateRangeForReport(startDate, endDate) {
+    return new Promise((resolve, reject) => {
+      pool.getConnection((err, connection) => {
+        if (err) {
+          if (connection) {
+            connection.release();
+          }
+          return reject(err);
+        }
+
+        const sql = `
+          SELECT insp.*, 
+                  site.name AS siteName, 
+                  site.acronym AS siteAcronym, 
+                  site.number AS siteNumber,
+                  COUNT(CASE WHEN icp.result = 0 THEN 1 END) AS pass_count,
+                  COUNT(CASE WHEN icp.result = 1 THEN 1 END) AS fail_count,
+                  COUNT(CASE WHEN icp.result = 2 THEN 1 END) AS action_count
+          FROM inspection AS insp
+          JOIN site ON insp.site_id = site.id
+          JOIN inspection_checkpoint AS icp ON insp.id = icp.inspection_id
+          WHERE insp.date_time BETWEEN ? AND ?
+          GROUP BY insp.id
+          ORDER BY insp.date_time ASC;
+        `;
+        connection.query(sql, [startDate, endDate], (err, results) => {
+          connection.release();
+
+          if (err) {
+            return reject(err);
+          }
+
+          const inspections = results.map(inspectionData => ({
+            id: inspectionData.id,
+            siteId: inspectionData.site_id,
+            siteName: inspectionData.siteName,
+            siteAcronym: inspectionData.siteAcronym,
+            siteNumber: inspectionData.siteNumber,
+            dateTime: inspectionData.date_time,
+            dateTimeEdit: inspectionData.date_time_edit,
+            information: inspectionData.information,
+            userName: inspectionData.user_name,
+            userId: inspectionData.user_id,
+            passCount: inspectionData.pass_count,
+            failCount: inspectionData.fail_count,
+            actionCount: inspectionData.action_count,
+          }));
+
+          resolve(inspections);
+        });
+      });
+    });
+  }
+
+  static countUniqueInspectedSites(startDate, endDate) {
+    return new Promise((resolve, reject) => {
+      pool.getConnection((err, connection) => {
+        if (err) {
+          if (connection) connection.release();
+          return reject(err);
+        }
+
+        const sql = `
+          SELECT COUNT(DISTINCT site_id) AS uniqueSites
+          FROM inspection
+          WHERE date_time BETWEEN ? AND ?
+        `;
+        
+        connection.query(sql, [startDate, endDate], (err, results) => {
+          connection.release();
+
+          if (err) {
+            return reject(err);
+          }
+
+          const uniqueSites = results[0].uniqueSites;
+          resolve(uniqueSites);
         });
       });
     });

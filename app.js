@@ -6,7 +6,6 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var logger = require('morgan');
 const multer = require('multer');
-const AWS = require('aws-sdk');
 //const session = require('express-session');
 //const flash = require('connect-flash');
 //const msal = require('@azure/msal-node');
@@ -16,7 +15,8 @@ var indexRouter = require('./routes/indexRouter');
 var sitesRouter = require('./routes/siteRouter');
 var checkpointsRouter = require('./routes/checkpointRouter');
 var inspectionsRouter = require('./routes/inspectionRouter');
-var tasksRouter = require('./routes/tasks');
+var tasksRouter = require('./routes/taskRouter');
+var reportRouter = require('./routes/reportRouter');
 
 /*
 var licensesRouter = require('./routes/licenses');
@@ -93,7 +93,7 @@ function loginRequired(req, res, next) {
   if(process.env.PRODUCTION === 'false') {
     res.locals.user = {
       displayName: 'John Doe',
-      email: 'jdoe@crest.ca'
+      email: 'jdoe@test.ca'
     };
   }
 
@@ -140,6 +140,7 @@ app.use('/sites', loginRequired, sitesRouter);
 app.use('/checkpoints', loginRequired, checkpointsRouter);
 app.use('/inspections', loginRequired, inspectionsRouter);
 app.use('/tasks', loginRequired, tasksRouter);
+app.use('/reports', loginRequired, reportRouter);
 
 // FUTURE
 //app.use('/licenses', loginRequired, licensesRouter);

@@ -48,7 +48,7 @@ $(document).ready(function () {
   });
 
   $("#tableExport").click(function() {
-    exportTableToCSV($("#tableLicense"), "CRESTLicenseExport.csv")
+    exportTableToCSV($("#tableLicense"), "LicenseExport.csv")
   });
 
   $("#formClear").click(function() {

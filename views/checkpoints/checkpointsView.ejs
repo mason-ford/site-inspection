@@ -1,85 +1,72 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <% include ../partials/head %> 
+  <% include ../partials/head %>
 </head>
+
 <body>
-<% include ../partials/menu %>
-<div class="container bg-3">
+  <% include ../partials/menu %>
+    <div class="container bg-3">
 
-  <div class="row align-items-center">
-    <div class="col-6">
-      <h1><i class="bi bi-card-checklist"></i> Checkpoints</h1>
-    </div>
-    <div class="col-6">
-      <a class="btn btn-primary float-right" href="/checkpoints/add/"><i class="bi bi-plus-circle"></i> Add Checkpoint</a>
-    </div>
-  </div>
-
-  <%# Checkpoints %>
-  <div class="row">
-    <div class="col-sm">
-      <% if (checkpoints.length > 0) {%>
-        <div class="card">
-
-          <div class="card-header">
-            <div class="row">
-              <div class="col-sm-2">
-                Name 
-              </div>
-              <div class="col-sm-3">
-                Information
-              </div>
-              <div class="col-sm-2">
-                Pass Text
-              </div>
-              <div class="col-sm-2">
-                Fail Text
-              </div>
-              <div class="col-sm-2">
-                Action Text
-              </div>
-              <div class="col-sm-1">
-                Edit
-              </div>
-            </div>
-          </div>
-
-          <ul class="list-group list-group-flush">
-          <% checkpoints.forEach(checkpoint => { %>
-              <li class="list-group-item">
-                <div class="row">
-                  <div class="col-sm-2">
-                    <%= checkpoint.name %>
-                  </div>
-                  <div class="col-sm-3">
-                    <%= checkpoint.information %>
-                  </div>
-                  <div class="col-sm-2">
-                    <%= checkpoint.passText %>
-                  </div>
-                  <div class="col-sm-2">
-                    <%= checkpoint.failText %>
-                  </div>
-                  <div class="col-sm-2">
-                    <%= checkpoint.actionText %>
-                  </div>
-                  <div class="col-sm-1">
-                    <a class="btn btn-warning" href="/checkpoints/<%= checkpoint.id %>/update"><i class="bi bi-pencil-square"></i> Edit</a>
-                  </div>
-                </div>
-              </li>
-          <% }) %>
-          </ul>
-
+      <div class="row align-items-center">
+        <div class="col-10">
+          <h1><i class="bi bi-card-checklist"></i> Checkpoints</h1>
         </div>
-      <% } else { %>
-        <p>No Checkpoints</p>
-      <% } %>
-    </div>
-  </div>
+        <div class="col-2">
+          <a href="/checkpoints/add/" class="btn btn-primary float-right"><i class="bi bi-plus-circle"></i> Add
+            Checkpoint</a>
+        </div>
+      </div>
 
-</div>
-<% include ../partials/script %>
+      <div class="row">
+        <div class="col-sm">
+          <% if (checkpoints.length> 0) {%>
+            <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col">Checkpoint Name</th>
+                  <th scope="col">Information</th>
+                  <th scope="col">Pass Text</th>
+                  <th scope="col">Fail Text</th>
+                  <th scope="col">Action Text</th>
+                  <th scope="col">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% checkpoints.forEach(checkpoint=> { %>
+                  <tr>
+                    <td>
+                      <%= checkpoint.name %>
+                    </td>
+                    <td>
+                      <%= checkpoint.information %>
+                    </td>
+                    <td>
+                      <%= checkpoint.passText %>
+                    </td>
+                    <td>
+                      <%= checkpoint.failText %>
+                    </td>
+                    <td>
+                      <%= checkpoint.actionText %>
+                    </td>
+                    <td>
+                      <a class="btn btn-warning btn-sm" href="/checkpoints/<%= checkpoint.id %>/update"><i
+                          class="bi bi-pencil"></i> Edit</a>
+                    </td>
+                  </tr>
+                  <% }) %>
+              </tbody>
+            </table>
+            <% } else { %>
+              <p>No Checkpoints</p>
+              <% } %>
+        </div>
+      </div>
+
+    </div>
+    <% include ../partials/script %>
 </body>
+
 </html>

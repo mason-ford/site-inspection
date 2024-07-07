@@ -49,7 +49,7 @@ router.get('/:siteId', (req, res) => {
   console.log('Get site ' + req.params.siteId);
 
   const siteId = req.params.siteId;
-  let site, contacts, airFilters;
+  let site, contacts, airFilters, tasks;
 
   //res.render('sites/sites-single', {moment: moment, page:'Site', menuId: menuId, site: site, moment: moment})
 
@@ -70,8 +70,14 @@ router.get('/:siteId', (req, res) => {
       return SiteAirFilter.getAllAirFiltersForSite(siteId);
     })
     .then(airFiltersData => {
-      airFilters = airFiltersData
+      airFilters = airFiltersData;
       console.log('Air Filters:', airFilters);
+
+      return Task.getUncompletedTasksForSite(siteId);
+    })
+    .then(taskData => {
+      tasks = taskData;
+      console.log('Tasks:', tasks);
 
       return Inspection.getAllInspectionsForSite(siteId);
     })
@@ -79,7 +85,7 @@ router.get('/:siteId', (req, res) => {
       console.log('Inspections:', inspections);
 
       // Pass all data to the rendering function
-      res.render('sites/siteView', { moment: moment, page:'Site', menuId: menuId, site: site, contacts: contacts, airFilters: airFilters, inspections: inspections });
+      res.render('sites/siteView', { moment: moment, page:'Site', menuId: menuId, site: site, contacts: contacts, airFilters: airFilters, inspections: inspections, tasks: tasks });
     })
     .catch(err => {
       console.error('Error:', err);

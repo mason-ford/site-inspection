@@ -1,7 +1,7 @@
 <nav class="navbar navbar-expand-lg mb-3" style="background-color: #cf2e2e;" data-bs-theme="dark">
   <div class="container-fluid">
     <span class="navbar-brand mb-0 h1">
-      <a class="navbar-brand" href="/"><i class="bi bi-crosshair"></i> CSI</a>
+      <a class="navbar-brand" href="/"><i class="bi bi-crosshair"></i> SI</a>
     </span>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
@@ -10,16 +10,22 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
-          <a class="nav-link <%= menuId === 'home' ? 'active' : '' %>" aria-current="page" href="/">Home</a>
+          <a class="nav-link <%= menuId === 'home' ? 'active' : '' %>" aria-current="page" href="/"><i class="bi bi-house-door"></i> Home</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link <%= menuId === 'inspection' ? 'active' : '' %>" aria-current="page" href="/inspections/">Inspections</a>
+          <a class="nav-link <%= menuId === 'inspection' ? 'active' : '' %>" aria-current="page" href="/inspections/"><i class="bi bi-clipboard2-check"></i> Inspections</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link <%= menuId === 'site' ? 'active' : '' %>" href="/sites">Sites</a>
+          <a class="nav-link <%= menuId === 'site' ? 'active' : '' %>" href="/sites"><i class="bi bi-building"></i> Sites</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link <%= menuId === 'checkpoint' ? 'active' : '' %>" href="/checkpoints/">Checkpoints</a>
+          <a class="nav-link <%= menuId === 'checkpoint' ? 'active' : '' %>" href="/checkpoints/"><i class="bi bi-card-checklist"></i> Checkpoints</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link <%= menuId === 'task' ? 'active' : '' %>" href="/tasks/"><i class="bi bi-list-task"></i> Tasks</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link <%= menuId === 'report' ? 'active' : '' %>" href="/reports/"><i class="bi bi-journals"></i> Reports</a>
         </li>
         <% /* %>
         <li class="nav-item">

@@ -5,5 +5,3 @@ siteinspector.code-workspace
 .env
 certs/cert.pem
 certs/key.pem
-.env
-.env

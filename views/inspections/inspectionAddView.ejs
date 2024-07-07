@@ -11,9 +11,7 @@
 
             <div class="row">
                 <div class="col-sm">
-                    <h1>
-                        <%= page %>
-                    </h1>
+                    <h1><i class="bi bi-plus-circle"></i> Add Inspection</h1>
                 </div>
             </div>
 
@@ -24,7 +22,7 @@
                         <%# Inspection Information %>
                             <div class="card">
                                 <div class="card-header">
-                                    Information
+                                    Inspection Details
                                 </div>
 
                                 <div class="card-body">
@@ -52,7 +50,7 @@
                                                 title="Inspection Information" rows="5"></textarea>
                                         </div>
                                     </div>
-                                    <input type="hidden" name="userName" value="Mason Ford">
+                                    <input type="hidden" name="userName" value="John Doe">
                                     <input type="hidden" name="userId" value="1">
                                 </div>
                             </div>
@@ -68,7 +66,7 @@
                                         <li class="list-group-item">
                                             <div class="row mt-3">
                                                 <input type="hidden" name="checkpoints[<%= i %>][id]" value="<%= checkpoints[i].id %>">
-                                                <div class="col-md-3">
+                                                <div class="col-md-4">
                                                     <%= checkpoints[i].name %>
                                                     <small class="form-text text-muted">
                                                         <%= checkpoints[i].information %>
@@ -113,17 +111,14 @@
                                                             for="checkpoint-<%= i %>-na">N/A</label>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-5">
+                                                <div class="col-md-6">
                                                     <label for="checkpoint-<%= i %>-note">Note:</label>
                                                     <textarea class="form-control form-control-sm"
                                                         id="checkpoint-<%= i %>-note"
                                                         name="checkpoints[<%= i %>][note]"
                                                         title="<%= checkpoints[i].name %> Note" rows="2"></textarea>
                                                 </div>
-                                                <div class="col-md-2">
-                                                    <label for="checkpoint-<%= i %>-photos">Photos:</label>
-                                                    <input type="file" id="checkpoint-<%= i %>-photos" name="photos_<%= checkpoints[i].id %>" multiple>
-                                                </div>
+                                                    <input type="file" id="checkpoint-<%= i %>-photos" name="photos_<%= checkpoints[i].id %>" multiple hidden>
                                             </div>
                                         </li>
                                         <% } %>

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <% include ../partials/head %>
+</head>
+
+<body>
+  <% include ../partials/menu %>
+    <div class="container bg-3">
+
+      <div class="row">
+        <div class="col-sm">
+          <h1><i class="bi bi-list-task"></i> Task</h1>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-sm">
+          <div class="card">
+
+            <div class="card-header">
+              <div class="row align-items-center">
+                <div class="col-6">Task Details</div>
+                <div class="col-6"><a href="/tasks/edit/<%= task.id %>" class="btn btn-warning float-right"><i
+                      class="bi bi-pencil"></i> Edit</a></div>
+              </div>
+            </div>
+
+            <div class="card-body">
+              <p><strong>Task:</strong>
+                <%= task.name %>
+              </p>
+              <p><strong>Site:</strong>
+                <%= task.siteName %>
+              </p>
+              <p><strong>Information:</strong>
+                <%= task.information %>
+              </p>
+              <p><strong>Created:</strong>
+                <%= moment(task.dateCreated).format("YYYY-MM-DD") %>
+              </p>
+              <p><strong>Created By User ID:</strong>
+                <%= task.createdByUserId %>
+              </p>
+              <p><strong>Completion Status:</strong>
+                <% if (task.completed) { %><span class="badge badge-success">Completed</span>
+                  <% } else { %><span class="badge badge-warning">Incomplete</span>
+                    <% } %>
+              </p>
+              <% if (task.completed) { %>
+                <p><strong>Completed:</strong>
+                  <%= moment(task.dateCompleted).format("YYYY-MM-DD") %>
+                </p>
+                <p><strong>Completed By:</strong>
+                  <%= task.completedByUserId %>
+                </p>
+                <p><strong>Complete Information:</strong>
+                  <%= task.completeInformation %>
+                </p>
+                <% } %>
+                  <!-- Add more task details here if needed -->
+            </div>
+
+            <div class="card-footer">
+              <% if (!task.completed) { %>
+                <a href="/tasks/complete/<%= task.id %>" class="btn btn-success float-right"><i class="bi bi-check-circle"></i> Complete</a>
+              <% } %>
+              <a href="/tasks" class="btn btn-secondary float-left">Back to Tasks</a>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <% include ../partials/script %>
+</body>
+
+</html>

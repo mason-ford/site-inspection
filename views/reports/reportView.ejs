@@ -1,0 +1,33 @@
+<!-- views/generate-report.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('../partials/head') %>
+</head>
+<body>
+    <%- include('../partials/menu') %>
+
+    <div class="container bg-3">
+        <h1 class="mb-4"><i class="bi bi-journals"></i> Generate Report</h1>
+        <form action="" method="POST">
+            <div class="mb-3 row">
+                <label for="startDate" class="col-sm-2 col-form-label">Start Date</label>
+                <div class="col-sm-10">
+                    <input type="date" class="form-control" id="startDate" name="startDate" required>
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <label for="endDate" class="col-sm-2 col-form-label">End Date</label>
+                <div class="col-sm-10">
+                    <input type="date" class="form-control" id="endDate" name="endDate" required required>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary">
+                Generate Report <i class="bi bi-file-earmark-arrow-down"></i>
+            </button>
+        </form>
+    </div>
+
+    <%- include('../partials/script') %>
+</body>
+</html>

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <% include ../partials/head %>
+</head>
+
+<body>
+  <% include ../partials/menu %>
+    <div class="container bg-3">
+
+      <div class="row align-items-center">
+        <div class="col-9">
+          <h1><i class="bi bi-list-task"></i> All Tasks</h1>
+        </div>
+        <div class="col-3">
+          <a href="/tasks/add" class="btn btn-primary float-right"><i class="bi bi-plus-circle"></i> Add Task</a>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-sm">
+          <% if (tasks.length > 0) {%>
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">Task Name</th>
+                <th scope="col">Site</th>
+                <th scope="col">Information</th>
+                <th scope="col">Created</th>
+                <th scope="col">Completed</th>
+                <th scope="col">Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% tasks.forEach(task=> { %>
+                <tr>
+                  <td>
+                    <a href="/tasks/<%= task.id %>">
+                      <%= task.name %>
+                    </a>
+                  </td>
+                  <td>
+                    (<%= task.site.number %> <%= task.site.acronym %>) <%= task.site.name %>
+                  </td>
+                  <td>
+                    <%= task.information %>
+                  </td>
+                  <td>
+                    <%= moment(task.dateCreated).format("YYYY-MM-DD") %>
+                  </td>
+                  <td>
+                    <% if (task.completed) { %>
+                      <%= moment(task.dateCompleted).format("YYYY-MM-DD") %>
+                    <% } %>
+                  </td>
+                  <td>
+                    <% if (task.completed) { %>
+                      <span class="badge badge-success">Completed</span>
+                      <% } else { %>
+                        <span class="badge badge-warning">Incomplete</span>
+                        <% } %>
+                  </td>
+                </tr>
+                <% }) %>
+            </tbody>
+          </table>
+          <% } else { %>
+            <p>No Tasks</p>
+          <% } %>
+        </div>
+      </div>
+
+    </div>
+    <% include ../partials/script %>
+</body>
+
+</html>

@@ -7,126 +7,147 @@
 
 <body>
   <% include partials/menu %>
-    <div class="container bg-3">
+  <div class="container bg-3">
 
-      <div class="row">
-        <div class="col-sm">
-          <h1><i class="bi bi-house-door"></i>
-            <%= page %>
-          </h1>
+    <div class="row">
+      <div class="col-sm">
+        <h1><i class="bi bi-house-door"></i>
+          <%= page %>
+        </h1>
+      </div>
+    </div>
+
+    <div class="row">
+
+      <%# Latest Inspections %>
+      <div class="col-sm-6 mb-3">
+        <% if (inspections && inspections.length > 0) { %>
+        <div class="card">
+          <div class="card-header">
+            <i class="bi bi-clock-history"></i> Latest Inspections
+          </div>
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Site</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% inspections.forEach(inspection=> { %>
+                <tr>
+                  <td><a href="/inspections/<%= inspection.id %>"><%= moment(inspection.dateTime).format('DD MMMM YYYY') %></a></td>
+                  <td><a href="/sites/<%= inspection.siteId %>">(<%= inspection.siteNumber %> <%= inspection.siteAcronym %>) <%= inspection.siteName %></a></td>
+                </tr>
+                <% }); %>
+              </tbody>
+            </table>
         </div>
+        <% } else { %>
+        <p>No inspections</p>
+        <% } %>
       </div>
 
-
-      <div class="row">
-
-        <%# Latest Inspections %>
-          <div class="col-sm-6 mb-3">
-            <% if (inspections && inspections.length> 0) { %>
-              <div class="card">
-
-                <div class="card-header">
-                  Latest Inspections
-                </div>
-
-                <ul class="list-group list-group-flush">
-                  <% inspections.forEach(inspection=> { %>
-                    <li class="list-group-item">
-                      <div class="row">
-                        <div class="col-sm-6">
-                          <a href="/inspections/<%= inspection.id %> %>">
-                            <%= moment(inspection.dateTime).format('DD MMMM YYYY') %>
-                          </a>
-                        </div>
-                        <div class="col-sm-6">
-                          <%= inspection.siteNumber %>
-                            <%= inspection.siteName %> (<%= inspection.siteAcronym %>)
-                        </div>
-                    </li>
-                    <% }); %>
-                </ul>
-              </div>
-              <% } else { %>
-                <p>No inspections</p>
-                <% } %>
+      <%# Oldest Inspections %>
+      <div class="col-sm-6 mb-3">
+        <% if (sites && sites.length > 0) { %>
+        <div class="card">
+          <div class="card-header">
+            <i class="bi bi-clock"></i> Sites with Oldest Inspections
           </div>
-
-          <%# Oldest Inspections %>
-            <div class="col-sm-6 mb-3">
-              <% if (sites && sites.length > 0) { %>
-                <div class="card">
-
-                  <div class="card-header">
-                    Sites with Oldest Inspections
-                  </div>
-
-                  <ul class="list-group list-group-flush">
-                    <% sites.forEach(site=> { %>
-                      <li class="list-group-item">
-                        <div class="row">
-                          <div class="col-sm-6">
-                            <% if(site.newestInspection) { %>
-                              <a href="/sites/site.siteId %>">
-                                <%= moment(site.newestInspection).format('DD MMMM YYYY') %>
-                              </a>
-                              <% } else { %>
-                                Never
-                                <% } %>
-                          </div>
-                          <div class="col-sm-6">
-                            <%= site.number %>
-                              <%= site.name %> (<%= site.acronym %>)
-                          </div>
-
-                      </li>
-                      <% }); %>
-                  </ul>
-                </div>
-                <% } else { %>
-                  <p>No sites</p>
-                  <% } %>
-            </div>
-
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Site</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% sites.forEach(site=> { %>
+                <tr>
+                  <td><% if(site.newestInspection) { %><%= moment(site.newestInspection).format('DD MMMM YYYY') %><% } else { %>Never<% } %></td>
+                  <td><a href="/sites/<%= site.id %>">(<%= site.number %> <%= site.acronym %>) <%= site.name %></a></td>
+                </tr>
+                <% }); %>
+              </tbody>
+            </table>
+        </div>
+        <% } else { %>
+        <p>No sites</p>
+        <% } %>
       </div>
 
     </div>
-</body>
-<% include partials/script %>
 
-</html>
+    <div class="row">
 
-<% /* %>
-  <div class="col-sm">
-    <div class="card">
-
-      <div class="card-header">
-        Sites that Needs Attention
-      </div>
-      <% if (needsAttention && needsAttention.length> 0) { %>
-        <ul class="list-group list-group-flush">
-          <% needsAttention.forEach(attention=> { %>
-            <li class="list-group-item">
-              <div class="row">
-                <div class="col-sm-4">
-                  <a href="/sites/site/<%= attention.siteId %>">
-                    <%= attention.siteName %>
-                  </a>
-                </div>
-                <div class="col-sm-4">
-                  <%= attention.checkpoint %>
-                </div>
-                <div class="col-sm-4">
-                  <%= moment(attention.date).format('MMMM DD, YYYY') %>
-                </div>
-            </li>
-            <% }) %>
-        </ul>
-        <% } else { %>
-          <div class="card-body">
-            <p class="card-text">No sites need attention</p>
+      <%# Failed Inspection Checkpoints %>
+      <div class="col-sm-6 mb-3">
+        <% if (failedInspectionCheckpoints && failedInspectionCheckpoints.length > 0) { %>
+        <div class="card">
+          <div class="card-header">
+            <i class="bi bi-exclamation-triangle-fill"></i> Failed Inspection Checkpoints
           </div>
-          <% } %>
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Site</th>
+                  <th>Checkpoint</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% failedInspectionCheckpoints.forEach(inspectionCheckpoint=> { %>
+                <tr>
+                  <td><a href="/inspections/<%= inspectionCheckpoint.inspectionId %>"><%= moment(inspectionCheckpoint.inspectionDate).format('DD MMMM YYYY') %></a></td>
+                  <td><a href="/sites/<%= inspectionCheckpoint.siteId %>">(<%= inspectionCheckpoint.siteNumber %> <%= inspectionCheckpoint.siteAcronym %>) <%= inspectionCheckpoint.siteName %></a></td>
+                  <td><%= inspectionCheckpoint.checkpointName %></td>
+                </tr>
+                <% }); %>
+              </tbody>
+            </table>
+        </div>
+        <% } else { %>
+        <p>No failed checkpoints</p>
+        <% } %>
+      </div>
+
+      <%# Pending Tasks %>
+      <div class="col-sm-6 mb-3">
+        <% if (pendingTasks && pendingTasks.length > 0) { %>
+        <div class="card">
+          <div class="card-header">
+            <i class="bi bi-clock"></i> Pending Tasks
+          </div>
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Task Name</th>
+                  <th>Site</th>
+                  <th>Date Created</th>
+                  <th>Created By</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% pendingTasks.forEach(task => { %>
+                <tr>
+                  <td><a href="/tasks/<%= task.id %>"><%= task.name %></a></td>
+                  <td><a href="/sites/<%= task.siteId %>">(<%= task.site.number %> <%= task.site.acronym %>) <%= task.site.name %></a></td>
+                  <td><%= moment(task.dateCreated).format('DD MMMM YYYY') %></td>
+                  <td><%= task.createdByUserId %></td>
+                </tr>
+                <% }); %>
+              </tbody>
+            </table>
+        </div>
+        <% } else { %>
+        <p>No pending tasks</p>
+        <% } %>
+      </div>
 
     </div>
   </div>
-  <% */ %>
+  <% include partials/script %>
+</body>
+
+</html>

@@ -3,58 +3,57 @@ var moment = require('moment');
 var router = express.Router();
 const Site = require('../domain/site');
 const Inspection = require('../domain/inspection');
+const InspectionCheckpoint = require('../domain/inspectionCheckpoint');
+const Task = require('../domain/task');
 
 const menuId = 'home';
 
 /* GET home page. */
-router.get('/', (req, res) => {
+router.get('/', async (req, res) => {
+  try {
 
-  // Fetch latest inspections
-  const latestInspectionAmount = 5; // Number of latest inspections to fetch
-  Inspection.getLatestInspections(latestInspectionAmount)
-    .then(latestInspections => {
-      // Fetch all sites with newest inspection date
-      Site.getAllSites()
-        .then(sites => {
-          // Iterate through each site to find the newest inspection date
-          const promises = sites.map(site => {
-            return site.getNewestInspectionDate()
-              .then(newestInspectionDate => {
-                site.newestInspection = newestInspectionDate;
-                return site;
-              });
-          });
+    // Latest Inspections
+    const latestInspectionAmount = 10;
+    const latestInspections = await Inspection.getLatestInspections(latestInspectionAmount);
 
-          // Wait for all promises to resolve
-          Promise.all(promises)
-            .then(sitesWithNewestInspection => {
-              // Sort the array of sites by oldest inspection date
-              sitesWithNewestInspection.sort((a, b) => {
-                // If either of the sites has no inspection date, move it to the top
-                if (!a.newestInspection) return -1;
-                if (!b.newestInspection) return 1;
-                // Compare the inspection dates
-                return new Date(a.newestInspection) - new Date(b.newestInspection);
-              });
-
-              // Send response with sorted sites and latest inspections
-              res.render('index', { moment: moment, page: 'Home', menuId: menuId, sites: sitesWithNewestInspection, inspections: latestInspections });
-            })
-            .catch(err => {
-              console.error(err);
-              res.status(500).send('Internal Server Error');
-            });
-        })
-        .catch(err => {
-          console.error(err);
-          res.status(500).send('Internal Server Error');
-        });
-    })
-    .catch(err => {
-      console.error(err);
-      res.status(500).send('Internal Server Error');
+    const sites = await Site.getAllSites();
+    const promises = sites.map(async (site) => {
+      const newestInspectionDate = await site.getNewestInspectionDate();
+      site.newestInspection = newestInspectionDate;
+      return site;
     });
 
+    // Sites with oldest inspections
+    let sitesWithNewestInspection = await Promise.all(promises);
+
+    sitesWithNewestInspection.sort((a, b) => {
+      if (!a.newestInspection) return -1;
+      if (!b.newestInspection) return 1;
+      return new Date(a.newestInspection) - new Date(b.newestInspection);
+    });
+
+    const oldestInspectionAmount = 10;
+    const sitesWithOldestInspection = sitesWithNewestInspection.slice(0, oldestInspectionAmount);
+
+    // Failed checkpoints
+    const failedInspectionCheckpoints = await InspectionCheckpoint.getFailedInspectionCheckpointsForSites();
+
+    // Pending tasks
+    const pendingTasks = await Task.getAllUncompletedTasks();
+
+    res.render('index', {
+      moment: moment,
+      page: 'Home',
+      menuId: menuId,
+      sites: sitesWithOldestInspection,
+      inspections: latestInspections,
+      failedInspectionCheckpoints: failedInspectionCheckpoints,
+      pendingTasks: pendingTasks
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Internal Server Error');
+  }
 });
 
 module.exports = router;
