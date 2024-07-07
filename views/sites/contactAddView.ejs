@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <% include ../partials/head %>
+</head>
+
+<body>
+  <% include ../partials/menu %>
+    <div class="container bg-3">
+
+      <div class="row">
+        <div class="col-sm">
+          <h1>
+            <h1><i class="bi bi-plus-circle"></i> Add Contact</h1>
+          </h1>
+        </div>
+      </div>
+
+      <form class="site-edit-form" action="" method="post">
+
+        <%# Contact %>
+          <div class="row">
+            <div class="col-sm">
+              <div class="card">
+
+                <div class="card-header">
+                  Contact
+                </div>
+
+                <div class="card-body">
+                  <div class="form-row">
+                    <div class="form-group col-md-12">
+                      <label for="name">Name</label>
+                      <input type="text" class="name form-control" name="name" id="name" required title="Contact Name">
+                    </div>
+                  </div>
+                  <div class="form-row">
+                    <div class="form-group col-md-6">
+                      <label for="number">Number</label>
+                      <input type="tel" class="number form-control" name="number" id="number" title="Contact Number">
+                    </div>
+                    <div class="form-group col-md-6">
+                      <label for="email">Email</label>
+                      <input type="email" class="email form-control" name="email" id="email" title="Contact Email">
+                    </div>
+                  </div>
+                  <div class="form-row">
+                    <div class="form-group col-md-12">
+                      <label for="information">Information</label>
+                      <textarea class="information form-control" name="information" id="information"
+                        title="Contact Info" rows="5"></textarea>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="card-footer">
+                  <div class="form-row">
+                    <div class="col-sm">
+                      <button type="submit" name="send" class="btn btn-success float-right"><i
+                          class="bi bi-plus-circle"></i> Add</button>
+                      <a href="./" class="btn btn-secondary float-left">Cancel</a>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+          </div>
+
+      </form>
+
+    </div>
+    <% include ../partials/script %>
+</body>
+
+</html>

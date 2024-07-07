@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <% include ../partials/head %>
+</head>
+
+<body>
+  <% include ../partials/menu %>
+    <div class="container bg-3">
+
+      <div class="row">
+        <div class="col-sm">
+          <h1><i class="bi bi-check-circle"></i> Complete Task</h1>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-sm">
+          <div class="card">
+
+            <div class="card-header">
+              Complete Details
+            </div>
+
+            <div class="card-body">
+              <form action="/tasks/complete/<%= task.id %>" method="post">
+                <div class="form-group">
+                  <label for="completeInformation">Information</label>
+                  <textarea class="form-control" id="completeInformation" name="completeInformation" rows="3" required></textarea>
+                </div>
+                <!-- Add more form fields here if needed -->
+            </div>
+
+            <div class="card-footer">
+              <div class="form-row">
+                <div class="col-sm">
+                  <button type="submit" class="btn btn-success float-right"><i class="bi bi-check-circle"></i> Mark as Complete</button>
+                  <a href="/tasks" class="btn btn-secondary float-left">Cancel</a>
+                </div>
+              </div>
+            </div>
+
+            </form>
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <% include ../partials/script %>
+</body>
+
+</html>

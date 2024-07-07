@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <% include ../partials/head %>
+</head>
+
+<body>
+    <% include ../partials/menu %>
+        <div class="container bg-3">
+
+            <div class="row">
+                <div class="col-sm">
+                    <h1><i class="bi bi-plus-circle"></i> Add Inspection</h1>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-sm">
+                    <form class="inspection-add-form" action="" method="post" enctype="multipart/form-data">
+
+                        <%# Inspection Information %>
+                            <div class="card">
+                                <div class="card-header">
+                                    Inspection Details
+                                </div>
+
+                                <div class="card-body">
+                                    <div class="form-row">
+                                        <div class="form-group col-md-6">
+                                            <label for="site">Site</label>
+                                            <select class="form-select" name="site" id="site" required>
+                                                <% sites.forEach(site=> { %>
+                                                    <option value="<%= site.id %>">
+                                                        <%= site.number %> - <%= site.name %>
+                                                    </option>
+                                                    <% }) %>
+                                            </select>
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                            <label for="dateTime">Date Time (YYYY-MM-DD)</label>
+                                            <input type="date" class="form-control" name="dateTime" id="dateTime"
+                                                value="<%= moment().format('YYYY-MM-DD') %>" title="Inspection Date and Time">
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group col-md-12">
+                                            <label for="information">Information</label>
+                                            <textarea class="form-control" name="information" id="information"
+                                                title="Inspection Information" rows="5"></textarea>
+                                        </div>
+                                    </div>
+                                    <input type="hidden" name="userName" value="John Doe">
+                                    <input type="hidden" name="userId" value="1">
+                                </div>
+                            </div>
+
+                        <%# Checkpoints %>
+                            <div class="card mt-3">
+                                <div class="card-header">
+                                    Checkpoints
+                                </div>
+
+                                <ul class="list-group list-group-flush">
+                                    <% for(var i=0; i < checkpoints.length; i++) { %>
+                                        <li class="list-group-item">
+                                            <div class="row mt-3">
+                                                <input type="hidden" name="checkpoints[<%= i %>][id]" value="<%= checkpoints[i].id %>">
+                                                <div class="col-md-4">
+                                                    <%= checkpoints[i].name %>
+                                                    <small class="form-text text-muted">
+                                                        <%= checkpoints[i].information %>
+                                                    </small>
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="radio"
+                                                            id="checkpoint-<%= i %>-pass"
+                                                            name="checkpoints[<%= i %>][result]" value="2">
+                                                        <label class="form-check-label text-success"
+                                                            for="checkpoint-<%= i %>-pass">
+                                                            <%= checkpoints[i].passText %>
+                                                        </label>
+                                                    </div>
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="radio"
+                                                            id="checkpoint-<%= i %>-fail"
+                                                            name="checkpoints[<%= i %>][result]" value="1">
+                                                        <label class="form-check-label text-warning"
+                                                            for="checkpoint-<%= i %>-fail">
+                                                            <%= checkpoints[i].failText %>
+                                                        </label>
+                                                    </div>
+                                                    <% if(checkpoints[i].actionText !== "") { %>
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="radio"
+                                                            id="checkpoint-<%= i %>-action text-secondary"
+                                                            name="checkpoints[<%= i %>][result]" value="3">
+                                                        <label class="form-check-label"
+                                                            for="checkpoint-<%= i %>-action">
+                                                            <%= checkpoints[i].actionText %>
+                                                        </label>
+                                                    </div>
+                                                    <% } %>
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="radio"
+                                                            id="checkpoint-<%= i %>-na"
+                                                            name="checkpoints[<%= i %>][result]" value="0"
+                                                            checked>
+                                                        <label class="form-check-label text-muted"
+                                                            for="checkpoint-<%= i %>-na">N/A</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label for="checkpoint-<%= i %>-note">Note:</label>
+                                                    <textarea class="form-control form-control-sm"
+                                                        id="checkpoint-<%= i %>-note"
+                                                        name="checkpoints[<%= i %>][note]"
+                                                        title="<%= checkpoints[i].name %> Note" rows="2"></textarea>
+                                                </div>
+                                                    <input type="file" id="checkpoint-<%= i %>-photos" name="photos_<%= checkpoints[i].id %>" multiple hidden>
+                                            </div>
+                                        </li>
+                                        <% } %>
+                                </ul>
+                            </div>
+
+                        <div class="form-row mt-3">
+                            <div class="col-sm">
+                                <button type="submit" class="btn btn-success float-right"><i class="bi bi-plus-circle"></i></i> Add</button>
+                                <a href="../" class="btn btn-secondary float-left"> Cancel</a> 
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+
+        </div>
+        <% include ../partials/script %>
+</body>
+
+</html>

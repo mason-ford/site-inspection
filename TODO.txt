@@ -1,6 +1,7 @@
 Site:
-- Access instructions make markup? text, be able to put numbers, html, links, etc.
-- Air filter add information section for serial#, manufacturer, etc.
+- Large text boxes make markup? text, be able to put numbers, html, links, etc.
 
 Additions:
-- Battery tracker!
+- Battery tracker
+- Generator information to site
+- Image upload

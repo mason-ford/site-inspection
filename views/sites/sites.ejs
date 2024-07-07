@@ -7,58 +7,49 @@
 <% include ../partials/menu %>
 <div class="container bg-3"> 
 
-  <div class="row">
-    <div class="col-sm">
-      <h1><%= page %></h1>
+  <div class="row align-items-center">
+    <div class="col-9">
+      <h1><i class="bi bi-building"></i> <%= page %></h1>
+    </div>
+    <div class="col-3">
+      <a class="btn btn-primary float-right" href="/sites/add/"><i class="bi bi-plus-circle"></i> Add Site</a>
     </div>
   </div>
 
-  <%# Sites %>
   <div class="row">
     <div class="col-sm">
       <% if (sites.length > 0) {%>
-        <div class="card">
-
-          <div class="card-header">
-            <div class="row">
-              <div class="col-sm-8">
-                Site Name 
-              </div>
-              <div class="col-sm-4">
-                Last Inspection 
-              </div>
-            </div>
-          </div>
-
-          <ul class="list-group list-group-flush">
-            <% sites.forEach(site => { %>
-              <li class="list-group-item">
-                <div class="row">
-                  <div class="col-sm-8">
-                    <a href="/sites/site/<%= site.id %>"><%= site.number %> <%= site.name %> (<%= site.acronym %>)</a>
-                  </div>
-                  <div class="col-sm-4">
-                    <% if (site.newestInspection) { %>
-                      <a href="/inspections/inspection/<%= site.newestInspection._id %>"><%= moment(site.newestInspection.date).format('MMMM DD, YYYY') %></a>
-                    <% } else { %>
-                      Never
-                    <% } %>
-                  </div>
-                </div>
-              </li>
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">Site Name</th>
+              <th scope="col">Address</th>
+              <th scope="col">Location</th>
+              <th scope="col">Standard Key</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% sites.forEach(site=> { %>
+              <tr>
+                <td>
+                  <a href="/sites/<%= site.id %>">(<%= site.number %> <%= site.acronym %>) <%= site.name %> </a>
+                </td>
+                <td>
+                  <%= site.address %>
+                </td>
+                <td>
+                  <%= site.latlong.y %>, <%= site.latlong.x %>
+                </td>
+                <td>
+                  <%= site.standardKey ? 'Yes' : 'No' %>
+                </td>
+              </tr>
             <% }) %>
-          </ul>
-        </div>
+          </tbody>
+        </table>
       <% } else { %>
           <p>No Sites</p>
       <% } %>
-    </div>
-  </div>
-
-  <%# Add %>
-  <div class="row my-3">
-    <div class="col-sm">
-      <a class="btn btn-info mt-2 mb-3" href="/sites/add/">Add</a>
     </div>
   </div>
   

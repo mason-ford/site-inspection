@@ -9,7 +9,7 @@
 
   <div class="row">
     <div class="col-sm">
-      <h1><%= page %></h1>
+      <h1><i class="bi bi-plus-circle"></i> Add Site</h1>
     </div>
   </div>
 
@@ -21,7 +21,7 @@
       <div class="card">
 
         <div class="card-header">
-          Information
+          Site Information
         </div>
 
         <div class="card-body">
@@ -46,55 +46,17 @@
               <input type="text" class="form-control" name="site_address" id="site-address" title="Site address">
             </div>
           </div>
-
-        </div>
-
-      </div>
-    </div>
-  </div>
-
-  <%# Contact %>
-  <div class="row my-3">
-    <div class="col-sm">
-      <div class="card">
-
-        <div class="card-header">
-          Site Contact
-        </div>
-
-        <% var rand = Math.floor(Math.random()*10*(new Date().getTime())); %>
-        <ul class="list-group list-group-flush" id="contactList">
-          <li class="list-group-item">
-            <div class="form-row">
-              <div class="form-group col-md-6">
-                <label for="contact-name-<%= rand %>">Name</label>
-                <input type="text" class="form-control" name="contact_name[]" id="contact-name-<%= rand %>" required title="Contact Name">
-              </div>
-              <div class="form-group col-md-6">
-                <label for="contact-number-<%= rand %>">Number</label>
-                <input type="text" class="form-control" name="contact_number[]" id="contact-number-<%= rand %>" title="Contact Number">
-              </div>
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label for="site-lat">Latitude</label>
+              <input type="text" class="form-control" name="site_lat" id="site-lat" required title="Latitude">
             </div>
-            <div class="form-row">
-              <div class="form-group col-md-12">
-                <label for="contact-info-<%= rand %>">Info</label>
-                <input type="text" class="form-control" name="contact_info[]" id="contact-info-<%= rand %>" title="Contact Info">
-              </div>
+            <div class="form-group col-md-6">
+              <label for="site-long">Longitude</label>
+              <input type="text" class="form-control" name="site_long" id="site-long" required title="Longitude">
             </div>
-            <div class="form-row">
-              <span class="card-text javaLink delContact">
-                <i class="bi bi-x-circle-fill"></i>
-                Delete
-              </span>
-            </div>
-          </li>
-        </ul>
+          </div>
 
-        <div class="card-body">
-          <span class="card-text javaLink" id="addContact">
-            <i class="bi bi-plus-circle-fill"></i>
-            Add
-          </span>
         </div>
 
       </div>
@@ -107,31 +69,31 @@
       <div class="card">
 
         <div class="card-header">
-          Access
+          Site Access
         </div>
 
         <div class="card-body">
           <div class="form-row">
             <div class="form-group col-md-2">
-              <label>CREST Key</label>
+              <label>Standard Key</label>
               <div class="form-check">
-                  <input class="form-check-input" type="radio" id="access-key-crest-yes" name="access_key_crest" value="true" checked>
-                  <label class="form-check-label" for="access-key-crest-yes">Yes</label>
+                  <input class="form-check-input" type="radio" id="access-key-standard-yes" name="access_key_standard" value="true" checked>
+                  <label class="form-check-label" for="access-key-standard-yes">Yes</label>
               </div>
               <div class="form-check">
-                  <input class="form-check-input" type="radio" id="access-key-crest-no" name="access_key_crest" value="false">
-                  <label class="form-check-label" for="access-key-crest-no">No</label>
+                  <input class="form-check-input" type="radio" id="access-key-standard-no" name="access_key_standard" value="false">
+                  <label class="form-check-label" for="access-key-standard-no">No</label>
               </div>
             </div>
             <div class="form-group col-md-10">
-              <label for="access-key-note">Key Notes</label>
-              <input type="text" class="form-control" name="access_key_note" id="access-key-note" title="Key note">
+              <label for="access-key-note">Key Instructions</label>
+              <input type="text" class="form-control" name="access_key_instructions" id="access-key-instructions" title="Key Instructions">
             </div>
           </div>
           <div class="form-row">
             <div class="form-group col-md-12">
               <label for="access-instructions">Instructions</label>
-              <textarea class="form-control" name="access_instructions" id="access-instructions" value="" title="Access instructions" rows="5"></textarea>
+              <textarea class="form-control" name="access_instructions" id="access-instructions" title="Access Instructions" rows="5"></textarea>
             </div>
           </div>
         </div>
@@ -140,92 +102,11 @@
     </div>
   </div>
 
-  <%# Air Filter %>
-  <div class="row my-3">
-    <div class="col-sm">
-      <div class="card">
-
-        <div class="card-header">
-          Air Filter
-        </div>
-
-        <ul class="list-group list-group-flush" id="airFilterList">
-          <li class="list-group-item">
-            <div class="form-row">
-              <% var rand = Math.floor(Math.random()*10*(new Date().getTime())); %>
-              <div class="form-group col-md-12">
-                <label for="airfilter-type-<%= rand %>">Type</label>
-                <input type="text" class="form-control" name="airfilter_type[]" id="airfilter-type-<%= rand %>" required title="Air Filter type">
-              </div>
-            </div>
-            <div class="form-row">
-              <div class="form-group col-md-6">
-                <label for="airfilter-size-<%= rand %>">Size</label>
-                <input type="text" class="form-control" name="airfilter_size[]" id="airfilter-size-<%= rand %>" title="Air Filter size ex. 10x20x1">
-              </div>
-              <div class="form-group col-md-6">
-                <label for="airfilter-amount-<%= rand %>">Quantity</label>
-                <input type="text" class="form-control" name="airfilter_amount[]" id="airfilter-amount-<%= rand %>" title="Air Filter amount">
-              </div>
-            </div>
-            <div class="form-row">
-              <span class="card-text javaLink delAirFilter">
-                <i class="bi bi-x-circle-fill"></i>
-                Delete
-              </span>
-            </div>
-          </li>
-        </ul>
-
-        <div class="card-body">
-          <span class="card-text javaLink" id="addAirFilter">
-            <i class="bi bi-plus-circle-fill"></i>
-            Add
-          </span>
-        </div>
-
-      </div>
-    </div>
-  </div>
-
-  <%# Checkpoints %>
-  <div class="row my-3">
-    <div class="col-sm">
-      <div class="card">
-
-        <div class="card-header">
-          Checkpoints
-        </div>
-
-        <% if (checkpoints.length > 0) { %>
-          <ul class="list-group list-group-flush">
-          <% checkpoints.forEach(checkpoint => { %>
-            <li class="list-group-item">
-              <div class="form-check">
-                <input class="form-check-input" type="checkbox" name="site_checkpoints[]" value="<%= checkpoint._id %>" id="check-<%= checkpoint.name %>">
-                <label class="form-check-label" for="check-<%= checkpoint.name %>"><%= checkpoint.name %></label>
-                <small class="form-text text-muted"><%= checkpoint.description %></small>
-              </div>
-            </li>
-          <% }) %>
-          </ul>
-        <% } else { %>
-          <div class="card-body">No checkpoints to add.</div>
-        <% } %>
-
-        <div class="card-footer">
-          <span id="checkAll"><a href="#">Check All</a></span> / <span id="uncheckAll"><a href="#">Uncheck All</a></span>
-        </div>
-
-      </div>
-    </div>
-  </div>
-
   <%# Submit/Cancel %>
   <div class="row my-3">
     <div class="col-sm">
-      <button type="submit" class="btn btn-success float-left">Add</button>
-      <a href="/sites/" class="btn btn-danger float-right">Cancel</a>   
+      <button type="submit" class="btn btn-success float-right"><i class="bi bi-plus-circle"></i> Add</button>
+      <a href="/sites/" class="btn btn-secondary float-left">Cancel</a>   
     </div>
   </div>
 

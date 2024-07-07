@@ -5,22 +5,25 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var logger = require('morgan');
-const session = require('express-session');
-const flash = require('connect-flash');
+const multer = require('multer');
+//const session = require('express-session');
+//const flash = require('connect-flash');
 //const msal = require('@azure/msal-node');
 
 //var authRouter = require('./routes/auth'); 
-var indexRouter = require('./routes/index');
-var sitesRouter = require('./routes/sites');
-var checkpointsRouter = require('./routes/checkpoints');
-var inspectionsRouter = require('./routes/inspections');
-var tasksRouter = require('./routes/tasks');
+var indexRouter = require('./routes/indexRouter');
+var sitesRouter = require('./routes/siteRouter');
+var checkpointsRouter = require('./routes/checkpointRouter');
+var inspectionsRouter = require('./routes/inspectionRouter');
+var tasksRouter = require('./routes/taskRouter');
+var reportRouter = require('./routes/reportRouter');
 
+/*
 var licensesRouter = require('./routes/licenses');
-
 var assetTypesRouter = require('./routes/asset-types');
 var modelsRouter = require('./routes/models');
 var agenciesRouter = require('./routes/agencies');
+*/
 
 var app = express();
 
@@ -90,7 +93,7 @@ function loginRequired(req, res, next) {
   if(process.env.PRODUCTION === 'false') {
     res.locals.user = {
       displayName: 'John Doe',
-      email: 'jdoe@crest.ca'
+      email: 'jdoe@test.ca'
     };
   }
 
@@ -101,8 +104,21 @@ function loginRequired(req, res, next) {
   next();
 }
 
+
+// Configure Multer for file uploads
+/*const storage = multer.memoryStorage(); // Store files in memory (to be uploaded to S3)
+const upload = multer({ storage: storage }).array('photos', 5); // 'photos' is the name attribute of the file input field, and 5 is the maximum number of files allowed to upload
+
+// Configure AWS SDK
+AWS.config.update({
+  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+  region: process.env.S3_REGION // Specify the region where your S3 bucket is located
+});
+const s3 = new AWS.S3();*/
+
 app.use(bodyParser.json()); // parse form data client
-app.use(bodyParser.urlencoded({extended:true}));
+app.use(bodyParser.urlencoded({extended:true})); 
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -124,6 +140,7 @@ app.use('/sites', loginRequired, sitesRouter);
 app.use('/checkpoints', loginRequired, checkpointsRouter);
 app.use('/inspections', loginRequired, inspectionsRouter);
 app.use('/tasks', loginRequired, tasksRouter);
+app.use('/reports', loginRequired, reportRouter);
 
 // FUTURE
 //app.use('/licenses', loginRequired, licensesRouter);
@@ -147,7 +164,5 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
-
-app.listen(3000);
 
 module.exports = app;
