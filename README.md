@@ -72,7 +72,6 @@
       </ul>
     </li>
     <li><a href="#usage">Usage</a></li>
-    <li><a href="#roadmap">Roadmap</a></li>
     <li><a href="#contributing">Contributing</a></li>
     <li><a href="#license">License</a></li>
     <li><a href="#contact">Contact</a></li>
@@ -104,6 +103,7 @@
 
 [![NodeJS][NodeJS]][NodeJS-url]<br>
 [![Express.js][Express.js]][Express.js-url]<br>
+[![EJS][EJS]][EJS-url]<br>
 [![MySQL][MySQL]][MySQL-url]<br>
 [![Bootstrap][Bootstrap]][Bootstrap-url]<br>
 
@@ -151,20 +151,6 @@ To get started with the Site Inspection Web App, follow these steps:
 
 * Technicians: Log in to perform inspections, fill out checklists, and submit reports.
 * Managers: Log in to view site overviews, manage checklists, schedule tasks, and generate comprehensive reports.
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
-
-<!-- ROADMAP -->
-## Roadmap
-
-- [ ] Feature 1
-- [ ] Feature 2
-- [ ] Feature 3
-    - [ ] Nested Feature
-
-See the [open issues](https://github.com/mason-ford/site-inspection/issues) for a full list of proposed features (and known issues).
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -220,7 +206,7 @@ Project Link - [https://github.com/mason-ford/site-inspection](https://github.co
 [license-url]: https://github.com/mason-ford/site-inspection/blob/master/LICENSE.txt
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://linkedin.com/in/mason-ford
-[product-screenshot]: images/screenshot.png
+[product-screenshot]: public/images/Screenshot.png
 [Express.js]: https://img.shields.io/badge/express.js-%23404d59.svg?style=for-the-badge&logo=express&logoColor=%2361DAFB
 [Express.js-url]: https://expressjs.com/
 [NodeJS]: https://img.shields.io/badge/node.js-6DA55F?style=for-the-badge&logo=node.js&logoColor=white
@@ -229,3 +215,6 @@ Project Link - [https://github.com/mason-ford/site-inspection](https://github.co
 [MySQL-url]: https://www.mysql.com/
 [Bootstrap]: https://img.shields.io/badge/Bootstrap-563D7C?style=for-the-badge&logo=bootstrap&logoColor=white
 [Bootstrap-url]: https://getbootstrap.com
+[EJS]: https://img.shields.io/badge/EJS-B4CA65?style=for-the-badge&logo=ejs&logoColor=white
+[EJS-url]: https://ejs.co/
+
