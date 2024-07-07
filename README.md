@@ -76,7 +76,6 @@
     <li><a href="#contributing">Contributing</a></li>
     <li><a href="#license">License</a></li>
     <li><a href="#contact">Contact</a></li>
-    <li><a href="#acknowledgments">Acknowledgments</a></li>
   </ol>
 </details>
 
@@ -103,10 +102,10 @@
 ### Built With
 
 
-[![NodeJS][NodeJS]][NodeJS-url]
-[![Express.js][Express.js]][Express.js-url]
-[![MySQL][MySQL]][MySQL-url]
-[![Bootstrap][Bootstrap]][Bootstrap-url]
+[![NodeJS][NodeJS]][NodeJS-url]<br>
+[![Express.js][Express.js]][Express.js-url]<br>
+[![MySQL][MySQL]][MySQL-url]<br>
+[![Bootstrap][Bootstrap]][Bootstrap-url]<br>
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -115,16 +114,16 @@
 <!-- GETTING STARTED -->
 ## Getting Started
 
-This is an example of how you may give instructions on setting up your project locally.
 To get a local copy up and running follow these simple example steps.
 
 ### Prerequisites
 
-This is an example of how to list things you need to use the software and how to install them.
+List of software and how to install them.
 * npm
   ```sh
   npm install npm@latest -g
   ```
+* <a href="https://dev.mysql.com/downloads/mysql/">MySQL Server</a>
 
 ### Installation
 To get started with the Site Inspection Web App, follow these steps:
@@ -138,10 +137,10 @@ To get started with the Site Inspection Web App, follow these steps:
    ```
 3. Set up the database:
 
-* Ensure you have MySQL installed and running.
-* Create a new database for the project.
-* Update the database configuration in database/mysql.js with your MySQL credentials.
-* Import the example database in database/site_inspector.sql
+    * Ensure you have MySQL installed and running.
+    * Create a new database for the project.
+    * Import the example database in database/site_inspector.sql
+    * Update the database configuration in database/mysql.js with your MySQL credentials.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -201,24 +200,11 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 <!-- CONTACT -->
 ## Contact
 
-Your Name - [@twitter_handle](https://twitter.com/twitter_handle) - forddmason@gmail.com
+Mason Ford - forddmason@gmail.com
 
-Project Link: [https://github.com/mason-ford/site-inspection](https://github.com/mason-ford/site-inspection)
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
-
-<!-- ACKNOWLEDGMENTS -->
-## Acknowledgments
-
-* []()
-* []()
-* []()
+Project Link - [https://github.com/mason-ford/site-inspection](https://github.com/mason-ford/site-inspection)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
