@@ -10,6 +10,8 @@ const multer = require('multer');
 //const flash = require('connect-flash');
 //const msal = require('@azure/msal-node');
 
+//const loginRequired = require('./middleware/loginRequired');
+
 //var authRouter = require('./routes/auth'); 
 var indexRouter = require('./routes/indexRouter');
 var sitesRouter = require('./routes/siteRouter');
@@ -30,7 +32,14 @@ var app = express();
 // In-memory storage of logged-in users
 // For demo purposes only, production apps should store
 // this in a reliable storage
-app.locals.users = {};
+//app.locals.users = {};
+
+app.use((req, res, next) => {
+  if (!res.locals.user) {
+      res.locals.user = null;
+  }
+  next();
+});
 
 // MSAL config
 /*const msalConfig = {
@@ -89,22 +98,6 @@ app.use(function(req, res, next) {
 });
 */
 
-function loginRequired(req, res, next) {
-  if(process.env.PRODUCTION === 'false') {
-    res.locals.user = {
-      displayName: 'John Doe',
-      email: 'jdoe@test.ca'
-    };
-  }
-
-  if (!res.locals.user) {
-    return res.redirect('/auth/signinPage');
-  }
-
-  next();
-}
-
-
 // Configure Multer for file uploads
 /*const storage = multer.memoryStorage(); // Store files in memory (to be uploaded to S3)
 const upload = multer({ storage: storage }).array('photos', 5); // 'photos' is the name attribute of the file input field, and 5 is the maximum number of files allowed to upload
@@ -129,18 +122,22 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+//app.use(express.static(path.join(__dirname, 'private')), loginRequired);
 
 //app.use('/auth', authRouter);
-app.use(express.static(path.join(__dirname, 'private')), loginRequired);
 
-//app.use('/', indexRouter);
-
-app.get('/', loginRequired, indexRouter);
-app.use('/sites', loginRequired, sitesRouter);
-app.use('/checkpoints', loginRequired, checkpointsRouter);
-app.use('/inspections', loginRequired, inspectionsRouter);
-app.use('/tasks', loginRequired, tasksRouter);
-app.use('/reports', loginRequired, reportRouter);
+app.get('/', indexRouter);
+app.get('/auth/signinPage', (req, res) => {
+  res.render('auth/signinPage', { page: 'Inspection' , menuId: null } );
+});
+app.post('/auth/signinPage', (req, res) => {
+  res.render('auth/signinPage', { page: 'Inspection' , menuId: null } );
+});
+app.use('/sites', sitesRouter);
+app.use('/checkpoints', checkpointsRouter);
+app.use('/inspections', inspectionsRouter);
+app.use('/tasks', tasksRouter);
+app.use('/reports', reportRouter);
 
 // FUTURE
 //app.use('/licenses', loginRequired, licensesRouter);

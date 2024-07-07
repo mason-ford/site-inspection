@@ -2,6 +2,7 @@ var express = require('express');
 var moment = require('moment');
 var router = express.Router();
 
+const loginRequired = require('../middleware/loginRequired');
 const AirFilter = require('../domain/airFilter');
 const Site = require('../domain/site');
 
@@ -44,7 +45,7 @@ router.get('/add', (req, res) => {
 });
 
 // Add air filter
-router.post('/add', (req, res) => {
+router.post('/add', loginRequired, (req, res) => {
   console.log('Add air filter');
 
   let siteId = req.siteId;
@@ -85,7 +86,7 @@ router.get('/edit/:airFilterId', (req, res) => {
 });
 
 // Update or delete air filter
-router.post('/edit/:airFilterId', (req, res) => {
+router.post('/edit/:airFilterId', loginRequired, (req, res) => {
   console.log('Update or delete air filter');
 
   let task = req.body.send;

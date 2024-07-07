@@ -4,6 +4,7 @@ var router = express.Router();
 var airFilterRouter = require ('./airfilterRouter');
 var contactRouter = require ('./contactRouter');
 
+const loginRequired = require('../middleware/loginRequired');
 const Site = require('../domain/site');
 const SiteContact = require('../domain/contact');
 const SiteAirFilter = require('../domain/airFilter');
@@ -94,7 +95,7 @@ router.get('/:siteId', (req, res) => {
 });
 
 // ADD SUBMIT
-router.post('/add', (req, res) => {
+router.post('/add', loginRequired, (req, res) => {
   console.log('Add site');
 
   let name = req.body.site_name;
@@ -156,7 +157,7 @@ router.get('/edit/:siteId', (req, res) => {
 });
 
 // EDIT SUBMIT AND DELETE
-router.post('/edit/:siteId', (req, res) => {
+router.post('/edit/:siteId', loginRequired, (req, res) => {
   console.log('Edit site');
 
   let task = req.body.send;

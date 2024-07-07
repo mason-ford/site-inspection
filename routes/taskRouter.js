@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
 var moment = require('moment');
+
+const loginRequired = require('../middleware/loginRequired');
 const Task = require('../domain/task');
 const Site = require('../domain/site');
 
@@ -32,7 +34,7 @@ router.get('/add', (req, res) => {
 
 
 // Route to handle adding a new task
-router.post('/add', (req, res) => {
+router.post('/add', loginRequired, (req, res) => {
     const { name, information, siteId, createdByUserId } = req.body;
 
     Task.addTask(name, information, siteId, createdByUserId)
@@ -63,7 +65,7 @@ router.get('/edit/:id', (req, res) => {
 });
 
 // Route to handle updating a task
-router.post('/edit/:id', (req, res) => {
+router.post('/edit/:id', loginRequired, (req, res) => {
     const taskId = req.params.id;
     const { name, information, siteId, completed, completeInformation } = req.body;
 
@@ -94,7 +96,7 @@ router.post('/edit/:id', (req, res) => {
 });
 
 // Route to handle deleting a task
-router.post('/delete/:id', (req, res) => {
+router.post('/delete/:id', loginRequired, (req, res) => {
     const taskId = req.params.id;
 
     Task.deleteTask(taskId)
@@ -124,7 +126,7 @@ router.get('/complete/:taskId', (req, res) => {
 });
 
 // Route to handle completing a task
-router.post('/complete/:taskId', (req, res) => {
+router.post('/complete/:taskId', loginRequired, (req, res) => {
     const taskId = req.params.taskId;
     const completeInformation = req.body.completeInformation;
 

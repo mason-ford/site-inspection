@@ -2,6 +2,7 @@ var express = require('express');
 var moment = require('moment');
 var router = express.Router();
 
+const loginRequired = require('../middleware/loginRequired');
 const Contact = require('../domain/contact');
 const Site = require('../domain/site');
 
@@ -44,7 +45,7 @@ router.get('/add', (req, res) => {
 });
 
 // Add a contact
-router.post('/add', (req, res) => {
+router.post('/add', loginRequired, (req, res) => {
   console.log('Add contact');
 
   let siteId = req.siteId;
@@ -86,7 +87,7 @@ router.get('/edit/:contactId', (req, res) => {
 });
 
 // Update or delete contact
-router.post('/edit/:contactId', (req, res) => {
+router.post('/edit/:contactId', loginRequired, (req, res) => {
   console.log('Update or delete contact');
 
   let task = req.body.send;
