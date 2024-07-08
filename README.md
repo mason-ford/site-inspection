@@ -160,7 +160,7 @@ To get started with the Site Inspection Web App, follow these steps:
 <!-- ROADMAP -->
 ## Roadmap
 
-- [ ] Proper login and user management
+- [ ] Secure authentication and user handling
 
 See the [open issues](https://github.com/mason-ford/site-inspection/issues) for a full list of proposed features (and known issues).
 
