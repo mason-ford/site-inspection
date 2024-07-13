@@ -84,7 +84,7 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-[![Product Name Screen Shot][product-screenshot]](https://example.com)
+[![Product Name Screen Shot][product-screenshot]](http://siteinspection.us-east-2.elasticbeanstalk.com/)
 
 <ul>
   <li><b>Technician Inspections:</b> Technicians can perform site inspections with predefined checklist items, observing and evaluating each item efficiently.</li>
@@ -130,7 +130,7 @@ List of software and how to install them.
 To get started with the Site Inspection Web App, follow these steps:
 1. Clone the repo
    ```sh
-   git clone https://github.com/your-username/site-inspection-web-app.git
+   git clone https://github.com/mason-ford/site-inspection.git
    ```
 2. Install NPM packages
    ```sh
